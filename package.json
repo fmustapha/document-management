@@ -1,0 +1,26 @@
+{
+  "name": "document-management",
+  "version": "1.0.0",
+  "description": "Document Management System is a react redux application based on RESTful API for users to create and manage documents giving different privileges based on user roles and managing authentication using JWT.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-fmustapha/document-management.git"
+  },
+  "keywords": [
+    "'document",
+    "management'",
+    "'REACT'",
+    "'REDUX'",
+    "'postgresql'"
+  ],
+  "author": "Faith Mustapha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andela-fmustapha/document-management/issues"
+  },
+  "homepage": "https://github.com/andela-fmustapha/document-management#readme"
+}
