@@ -22,5 +22,17 @@
   "bugs": {
     "url": "https://github.com/andela-fmustapha/document-management/issues"
   },
-  "homepage": "https://github.com/andela-fmustapha/document-management#readme"
+  "homepage": "https://github.com/andela-fmustapha/document-management#readme",
+  "dependencies": {
+    "pg": "^6.1.5",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.30.4"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3"
+  }
 }
