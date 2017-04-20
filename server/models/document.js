@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate(models) {
-        Document.belongsTo(models.Users, {
+        Document.belongsTo(models.User, {
           foreignKey: 'ownerId',
           onDelete: 'CASCADE'
         });

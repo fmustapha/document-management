@@ -1,10 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('Users', {
+  const User = sequelize.define('User', {
     username: DataTypes.STRING,
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
     email: DataTypes.STRING,
-    password: DataTypes.STRING
+    password: DataTypes.STRING,
+    roleTitle: { type: DataTypes.STRING, defaultValue: 'regular' }
   }, {
     classMethods: {
       associate(models) {
@@ -13,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
           onDelete: 'CASCADE'
         });
         User.belongsTo(models.Role, {
-          foreignKey: 'roleId',
+          foreignKey: 'roleTitle',
         });
       }
     }
