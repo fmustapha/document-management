@@ -4,6 +4,7 @@
   "description": "Document Management System is a react redux application based on RESTful API for users to create and manage documents giving different privileges based on user roles and managing authentication using JWT.",
   "main": "index.js",
   "scripts": {
+    "start": "babel-watch ./server.js",
     "build": "babel src -d lib",
     "test": "npm test"
   },
@@ -35,6 +36,8 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-watch": "^2.0.6",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
