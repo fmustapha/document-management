@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Document = sequelize.define('Document', {
     ownerId: DataTypes.INTEGER,
     title: DataTypes.STRING,
-    content: DataTypes.STRING
+    content: DataTypes.TEXT
   }, {
     classMethods: {
       associate(models) {

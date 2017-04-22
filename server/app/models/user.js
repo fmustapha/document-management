@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     lastname: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    roleTitle: { type: DataTypes.STRING, defaultValue: 'regular' }
+    roleId: { type: DataTypes.INTEGER }
   }, {
     classMethods: {
       associate(models) {
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
           onDelete: 'CASCADE'
         });
         User.belongsTo(models.Role, {
-          foreignKey: 'roleTitle',
+          foreignKey: 'roleId',
         });
       }
     }

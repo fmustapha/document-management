@@ -21,12 +21,11 @@ module.exports = {
     password: {
       type: Sequelize.STRING
     },
-    roleTitle: {
-      type: Sequelize.STRING,
-      onDelete: 'CASCADE',
+    roleId: {
+      type: Sequelize.INTEGER,
       references: {
         model: 'Roles',
-        key: 'title',
+        key: 'id',
       }
     },
     createdAt: {
