@@ -1,7 +1,7 @@
 import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
-// import userRouter from './routes/User';
+import allRoutes from '../config/routes';
 // import docRouter from './routes/Document';
 // import roleRouter from './routes/Role';
 
@@ -19,8 +19,8 @@ app.get('/', (req, res) => {
   res.status(200).send({ message: 'Welcome to Document Management System' });
 });
 
-// app.use('/users', userRouter);
-// app.use('/documents', docRouter);
+app.use('/users', allRoutes.user);
+// app.use('/documents', docRoutes);
 // app.use('/roles', roleRouter);
 
 app.get('*', (req, res) => {
