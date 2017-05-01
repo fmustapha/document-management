@@ -1,18 +1,39 @@
 module.exports = (sequelize, DataTypes) => {
-  const Role = sequelize.define('Roles', {
+  const Role = sequelize.define('Role', {
     title: {
       type: DataTypes.STRING,
-      unique: true,
       allowNull: false,
+      unique: {
+        args: true,
+        msg: 'role already exist'
+      },
       validate: {
-        notEmpty: true
+        is: {
+          args: /\w+/g,
+          msg: 'Input a valid title'
+        },
+        notEmpty: {
+          msg: 'This field cannot be empty'
+        }
       }
     },
-    description: DataTypes.STRING
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        is: {
+          args: /\w+/g,
+          msg: 'Input a valid description'
+        },
+        notEmpty: {
+          msg: 'This field cannot be empty'
+        }
+      }
+    }
   }, {
     classMethods: {
-      associate(models) {
-        Role.hasMany(models.User, { foreignKey: 'roleId', as: 'users', });
+      associate: (models) => {
+        Role.hasMany(models.User, { foreignKey: 'roleId' });
       }
     }
   });
