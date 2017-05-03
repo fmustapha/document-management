@@ -2,7 +2,7 @@ import http from 'http';
 import dotenv from 'dotenv';
 import Logger from 'js-logger';
 import app from './server/config/app';
-import database from './server/app/models';
+import database from './server/models';
 
 dotenv.config();
 Logger.useDefaults();
