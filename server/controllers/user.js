@@ -9,21 +9,20 @@ const secret = process.env.SECRET || 'samplesecret';
 export default {
 
   getAllUsers(req, res) {
-    db.User.findAll({})
-      .then(users => res.status(200).json({
+    return db.User.findAll({})
+      .then(users => res.status(200).send({
         message: 'Successfull',
         users
       }))
-      .catch(error => res.status(400).json({
+      .catch(error => res.status(400).send({
         error
       }));
   },
 
   getOneUser(req, res) {
-    // console.log(req.params.id);
-    db.User.findById(req.params.id)
+    return db.User.findById(req.params.id)
       .then(user => res.status(200)
-        .json({
+        .send({
           message: 'Successful',
           user
         }))
@@ -33,7 +32,7 @@ export default {
   },
 
   getUserPagination(req, res) {
-    db.User.findAll({
+    return db.User.findAll({
       limit: 10
     })
       .then(limit => res.status(200).json({
@@ -46,7 +45,7 @@ export default {
   },
 
   getUserDocuments(req, res) {
-    db.User.findOne({
+    return db.User.findOne({
       where: {
         id: req.params.id
       },
