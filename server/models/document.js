@@ -26,9 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'public',
       type: DataTypes.ENUM('public', 'private', 'role')
     },
-    ownerRoleId: {
-      type: DataTypes.STRING
-    }
   }, {
     classMethods: {
       associate: (models) => {
