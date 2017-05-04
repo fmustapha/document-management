@@ -20,6 +20,7 @@ app.get('/', (req, res) => {
 app.use('/users', allRoutes.user);
 app.use('/documents', allRoutes.document);
 app.use('/roles', allRoutes.role);
+app.use('/search', allRoutes.search);
 
 app.get('*', (req, res) => {
   res.status(404).send({ message: 'REQUEST PAGE NOT FOUND' });
