@@ -166,7 +166,7 @@ const Helper = {
    * @returns {Boolean} true or false
    */
   isOwner(req) {
-    return String(req.tokenDecode.userId) === String(req.params.id);
+    return String(req.decoded.userId) === String(req.params.id);
   },
   /**
    * Check if document's access level is public
