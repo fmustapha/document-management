@@ -12,16 +12,15 @@ export default {
     });
   },
 
-  verifyUser(req, res, next) {
-    const token = req.body.token
-      || req.query.token
-      || req.headers['x-access-token'];
+  verifyToken(req, res, next) {
+    const token = req.headers.authorization ||
+      req.headers['x-access-token'];
     if (token) {
       jwt.verify(token, secret, (err, decoded) => {
         if (err) {
           return res.status(403).send({ message: 'Authentication failed' });
         }
-        res.locals.decoded = decoded;
+        res.decoded = decoded;
         next();
       });
     } else {
