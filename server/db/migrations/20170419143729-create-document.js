@@ -21,6 +21,10 @@ module.exports = {
       content: {
         type: Sequelize.TEXT
       },
+      access: {
+        defaultValue: 'public',
+        type: Sequelize.ENUM('public', 'private', 'role')
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
