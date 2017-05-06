@@ -1,26 +1,23 @@
 import jwt from 'jsonwebtoken';
-import db from '../models';
 
-const Users = db.Users;
 const secret = process.env.SECRET || 'samplesecret';
 
 export default {
 
-  createToken(userDetails) {
-    return jwt.sign(userDetails, secret, {
-      expiresIn: '24h'
-    });
-  },
-
   verifyToken(req, res, next) {
-    const token = req.headers.authorization ||
+    const token =
+      req.headers.authorization ||
       req.headers['x-access-token'];
     if (token) {
       jwt.verify(token, secret, (err, decoded) => {
+        console.log('user', decoded);
         if (err) {
-          return res.status(403).send({ message: 'Authentication failed' });
+          return res.status(403)
+            .send({
+              message: 'Token Authentication failed'
+            });
         }
-        res.decoded = decoded;
+        req.decoded = decoded;
         next();
       });
     } else {
@@ -31,37 +28,26 @@ export default {
   },
 
   authorizeAdmin(req, res, next) {
-    if (res.locals.decoded.roleId === 1) {
+    console.log('role', req.decoded.data);
+    if (req.decoded.data.roleId === 1) {
       next();
     } else {
-      return res.status(403).send({ message: 'Access denied' });
+      return res.status(403).send({
+        message: 'Access denied'
+      });
     }
   },
 
   authorizeOwner(req, res, next) {
-    Users.findById(req.params.id)
-      .then((user) => {
-        if (!user) return res.status(404).send({ message: 'User not found' });
-
-        if (res.locals.decoded.roleId !== 1
-          && res.locals.decoded.id !== user.id) {
-          return res.status(403).send({ message: 'Access denied' });
-        }
-
-        res.locals.user = user;
-        next();
-      })
-      .catch(error => res.status(400).send(error));
-  },
-
-  hideUserDetails(user) {
-    return {
-      id: user.id,
-      username: user.username,
-      fullName: user.fullName,
-      email: user.email,
-      roleId: user.roleId,
-    };
+    // const token = req.headers.authorization;
+    // const decoded = jwt.decode(token);
+    if (String(req.decoded.data.id) === req.params.id) {
+      next();
+    } else {
+      return res.status(403).send({
+        message: 'Access denied'
+      });
+    }
   }
 };
 
