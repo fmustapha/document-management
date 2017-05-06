@@ -1,9 +1,7 @@
 import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
-// import userRouter from './routes/User';
-// import docRouter from './routes/Document';
-// import roleRouter from './routes/Role';
+import allRoutes from '../routes';
 
 // Set up the express app
 const app = express();
@@ -19,9 +17,10 @@ app.get('/', (req, res) => {
   res.status(200).send({ message: 'Welcome to Document Management System' });
 });
 
-// app.use('/users', userRouter);
-// app.use('/documents', docRouter);
-// app.use('/roles', roleRouter);
+app.use('/users', allRoutes.user);
+app.use('/documents', allRoutes.document);
+app.use('/roles', allRoutes.role);
+app.use('/search', allRoutes.search);
 
 app.get('*', (req, res) => {
   res.status(404).send({ message: 'REQUEST PAGE NOT FOUND' });

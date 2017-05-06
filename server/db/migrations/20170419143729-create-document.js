@@ -19,7 +19,11 @@ module.exports = {
         type: Sequelize.STRING
       },
       content: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
+      },
+      access: {
+        defaultValue: 'public',
+        type: Sequelize.ENUM('public', 'private', 'role')
       },
       createdAt: {
         allowNull: false,
