@@ -21,11 +21,17 @@ export default {
 
   getOneUser(req, res) {
     return db.User.findById(req.params.id)
-      .then(user => res.status(200)
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send({ message: 'User not found' });
+        }
+
+        return res.status(200)
         .send({
           message: 'Successful',
           user
-        }))
+        });
+      })
       .catch(error => res.status(400).json({
         error
       }));
@@ -62,43 +68,50 @@ export default {
       });
   },
 
-  deleteUserDocuments(req, res) {
-    res.send('Deletes all documents belonging to a user');
-  },
-
   createUser(req, res) {
-    db.User.findOne({ where: { email: req.body.email } }).then((user) => {
+    db.User.findOne({
+      where: {
+        email: req.body.email
+      }
+    }).then((user) => {
       if (user) {
-        return res.status(409).send({ message: 'User already exists' });
+        return res.status(409).send({
+          message: 'User already exists'
+        });
       }
       db.User.create(req.body)
-      .then((newUser) => {
-        const token = jwt.sign({
-          data:
-          { id: newUser.id,
-            username: newUser.username,
-            email: newUser.email,
-            roleId: newUser.roleId }
-        }, secret, {
-          expiresIn: '24h' // expires in 24 hours
-        });
-        res.status(200)
-          .send({
-            token,
-            newUser,
-            message: 'User has been successfully created'
+        .then((newUser) => {
+          const token = jwt.sign({
+            data: {
+              id: newUser.id,
+              username: newUser.username,
+              email: newUser.email,
+              roleId: newUser.roleId
+            }
+          }, secret, {
+            expiresIn: '24h' // expires in 24 hours
           });
-      })
-      .catch((error) => {
-        res.status(400)
-          .send(error);
-      });
+          res.status(200)
+            .send({
+              token,
+              newUser,
+              message: 'User has been successfully created'
+            });
+        })
+        .catch((error) => {
+          res.status(400)
+            .send(error);
+        });
     });
   },
 
   login(req, res) {
     db.User
-      .findOne({ where: { email: req.body.email } })
+      .findOne({
+        where: {
+          email: req.body.email
+        }
+      })
       .then((user) => {
         if (!user) {
           return res.status(401).send({
@@ -112,11 +125,12 @@ export default {
           });
         }
         const token = jwt.sign({
-          data:
-          { id: user.id,
+          data: {
+            id: user.id,
             username: user.username,
             email: user.email,
-            roleId: user.roleId }
+            roleId: user.roleId
+          }
         }, secret, {
           expiresIn: '24h' // expires in 24 hours
         });
@@ -127,7 +141,7 @@ export default {
       })
       .catch(error => res.status(400).send({
         error,
-        message: 'Error occurred while authenticating user'
+        message: 'User was not authenticated'
       }));
   },
 
@@ -151,31 +165,45 @@ export default {
           username: req.body.username || user.username,
           email: req.body.email || user.email,
           password: bcrypt.hashSync(req.body.password,
-          bcrypt.genSaltSync(10)) || user.password,
+                bcrypt.genSaltSync(10)) || user.password,
           roleId: req.body.roleId || user.roleId
         })
-    .then(updatedUser => res.status(200)
-        .send({
-          message: 'User role updated',
-          updatedUser
-        }))
+          .then((updatedUser) => {
+            res.status(200).json({
+              message: 'User role updated',
+              updatedUser:
+              { firstname: updatedUser.firstname,
+                lastname: updatedUser.lastname,
+                username: updatedUser.username,
+                email: updatedUser.email,
+                roleId: updatedUser.roleId
+              }
+            });
+          })
+          .catch(error => res.status(400).send({
+            error
+          }));
+      })
       .catch(error => res.status(400).send({
         error
       }));
-      })
-    .catch(error => res.status(400).send({
-      error
-    }));
   },
 
   deleteUser(req, res) {
-    return db.User.findById(req.params.id)
+    db.User.findById(req.params.id)
       .then((user) => {
-        user.destroy().then(res.status(200)
-            .json({
-              message: 'User successfully deleted'
-            }))
-          .catch(error => res.status(400).json(error));
-      }).catch(error => res.status(400).json(error));
+        if (!user) {
+          return res.status(404).send({
+            message: 'User does not exist'
+          });
+        }
+
+        return user.destroy().then(res.status(200)
+          .send({
+            message: 'User successfully deleted'
+          }));
+      })
+      .catch(error => res.status(400).send(error));
   }
 };
+
