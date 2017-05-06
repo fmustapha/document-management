@@ -90,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     instanceMethods: {
       generateHash() {
-        this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8));
+        this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10));
       },
       validPassword(password) {
         return bcrypt.compareSync(password, this.password);
@@ -99,11 +99,6 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       beforeCreate(user) {
         user.generateHash();
-      },
-      beforeUpdate(user) {
-        if (user._changed.password) {
-          user.generateHash();
-        }
       }
     }
   });
