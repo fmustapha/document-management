@@ -10,7 +10,6 @@ export default {
       req.headers['x-access-token'];
     if (token) {
       jwt.verify(token, secret, (err, decoded) => {
-        console.log('user', decoded);
         if (err) {
           return res.status(403)
             .send({
@@ -28,7 +27,6 @@ export default {
   },
 
   authorizeAdmin(req, res, next) {
-    console.log('role', req.decoded.data);
     if (req.decoded.data.roleId === 1) {
       next();
     } else {

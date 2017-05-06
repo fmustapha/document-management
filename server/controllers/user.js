@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt-nodejs';
 import db from '../models';
-import Helper from '../helper/Helper';
+// import Helper from '../helper/Helper';
 
 
 const secret = process.env.SECRET || 'samplesecret';
