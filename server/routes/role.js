@@ -1,12 +1,13 @@
 import express from 'express';
 import Role from '../controllers/role';
+import auth from '../middlewares/auth';
 
 const role = express.Router();
 
-role.post('/', Role.createRole);
-role.get('/', Role.listRole);
-role.get('/:id', Role.retrieveRole);
-role.put('/:id', Role.updateRole);
-role.delete('/:id', Role.deleteRole);
+role.post('/', auth.verifyToken, auth.authorizeAdmin, Role.createRole);
+role.get('/', auth.verifyToken, auth.authorizeAdmin, Role.listRole);
+role.get('/:id', auth.verifyToken, auth.authorizeAdmin, Role.retrieveRole);
+role.put('/:id', auth.verifyToken, auth.authorizeAdmin, Role.updateRole);
+role.delete('/:id', auth.verifyToken, auth.authorizeAdmin, Role.deleteRole);
 
 export default role;
