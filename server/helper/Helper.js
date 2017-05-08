@@ -93,19 +93,19 @@ const Helper = {
     return errorArray;
   },
   /**
-   * @param {Object} data document response from the database
+   * @param {Object} document document response from the database
    * Get documents's attributes'
    * @returns {Object} return user's attributes
    */
-  getDocument(data) {
+  getDocument(document) {
     return {
-      id: data.id,
-      title: data.title,
-      content: data.content,
-      access: data.access,
-      ownerId: data.ownerId,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt
+      id: document.id,
+      title: document.title,
+      content: document.content,
+      access: document.access,
+      ownerId: document.ownerId,
+      createdAt: document.createdAt,
+      updatedAt: document.updatedAt
     };
   },
   /**
@@ -163,10 +163,13 @@ const Helper = {
   /**
    * Check for owner
    * @param {Object} req request object
+   * @param {Object} res response object
+   * @param {Object} document document object
    * @returns {Boolean} true or false
    */
-  isOwner(req) {
-    return String(req.decoded.userId) === String(req.params.id);
+  isOwner(req, res, document) {
+    const ownerId = document ? String(document.ownerId) : req.params.id;
+    return String(req.decoded.data.id) === ownerId;
   },
   /**
    * Check if document's access level is public
@@ -175,15 +178,6 @@ const Helper = {
    */
   isPublic(doc) {
     return doc.access === 'public';
-  },
-  /**
-   * Check for document's owner
-   * @param {Object} doc object
-   * @param {Object} req request object
-   * @returns {Boolean} true or false
-   */
-  isOwnerDoc(doc, req) {
-    return doc.ownerId === req.tokenDecode.userId;
   },
   /**
    * Check for document's role permission

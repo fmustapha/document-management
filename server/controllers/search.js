@@ -51,7 +51,7 @@ export default {
         const condition = { user, offset, limit, count: user.length };
         const result = Helpers.pagination(condition);
         return res.status(200).send({
-          user: user, result, pageMeta: meta });
+          user, result, pageMeta: meta });
       })
     .catch(error => res.status(400).send({
       error,

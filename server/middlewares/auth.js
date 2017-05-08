@@ -37,8 +37,6 @@ export default {
   },
 
   authorizeOwner(req, res, next) {
-    // const token = req.headers.authorization;
-    // const decoded = jwt.decode(token);
     if (String(req.decoded.data.id) === req.params.id) {
       next();
     } else {
@@ -46,6 +44,6 @@ export default {
         message: 'Access denied'
       });
     }
-  }
+  },
 };
 

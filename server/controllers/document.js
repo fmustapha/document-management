@@ -20,11 +20,16 @@ export default {
 
   findDocument(req, res) {
     return db.Document.findById(req.params.id)
-      .then(document => res.status(200)
+      .then((document) => {
+        if (!document) {
+          return res.status(404).send({ message: 'Document not found' });
+        }
+        return res.status(200)
         .send({
           message: 'Successful',
           document
-        }))
+        });
+      })
       .catch(error => res.status(400).send({
         error
       }));
@@ -83,17 +88,23 @@ export default {
           id: req.params.id
         },
       })
+
       .then((document) => {
         if (!document) {
           return res.status(404).send({
             message: 'Document Not Found',
           });
         }
-        return document
+        if (Helper.isOwner(req, res, document)
+        || Helper.isAdmin(req, res)) {
+          return document
           .destroy()
           .then(() => res.status(200).send({
-            message: `${document.title}, has been successfully deleted`
+            message: 'Document, has been successfully deleted'
           }));
+        }
+        return (res.status(403)
+               .send({ message: 'Unauthorized Access' }));
       })
       .catch(error => res.status(400).send({
         error,
