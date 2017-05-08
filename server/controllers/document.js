@@ -63,7 +63,6 @@ export default {
                 message: 'Document Not Found',
               });
             }
-            console.log('document', document);
             if (Helper.isAdmin(req, res)
             || Helper.isOwner(req, res, document)) {
               return document
