@@ -72,12 +72,12 @@ export default {
             description: req.body.description || role.descritption
           })
           .then(() => res.status(200).send({
-            role,
-            message: 'Role updated successfully.'
+            message: 'Role updated successfully.',
+            role
           }))
           .catch(error => res.status(400).send({
-            error,
-            message: 'Role did not update successfully.'
+            message: 'Role did not update successfully.',
+            error
           }));
       })
       .catch(error => res.status(400).send({
@@ -102,8 +102,8 @@ export default {
           }));
       })
       .catch(error => res.status(400).send({
-        error,
-        message: 'Error deleting Role.'
+        message: 'Cannot delete role with users assigned to it.',
+        error
       }));
   },
 };

@@ -86,6 +86,7 @@ export default {
               id: newUser.id,
               username: newUser.username,
               email: newUser.email,
+              password: newUser.password,
               roleId: newUser.roleId
             }
           }, secret, {
