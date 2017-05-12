@@ -1,8 +1,9 @@
 import request from 'supertest';
 import chai from 'chai';
+import Logger from 'js-logger';
 import app from '../../config/app';
-import db from '../../app/models';
-import helper from '../../app/helper/Helper';
+import db from '../../models';
+import helper from '../../helper/Helper';
 
 const superRequest = request.agent(app);
 const expect = chai.expect;
@@ -32,11 +33,11 @@ describe('User API', () => {
   });
 
   describe('New Users', () => {
-    console.log('===>>', helper.regularUser);
+    Logger.info('===>>', helper.regularUser);
     describe('Create User', () => {
-      console.log('===>>', helper.regularUser);
+      Logger.info('===>>', helper.regularUser);
       it('should create a user', (done) => {
-        console.log('===>>', helper.regularUser);
+        Logger.info('===>>', helper.regularUser);
         superRequest.post('/users')
           .send(helper.regularUser)
           .end((error, response) => {

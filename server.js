@@ -1,4 +1,3 @@
-import http from 'http';
 import open from 'open';
 import path from 'path';
 import dotenv from 'dotenv';
