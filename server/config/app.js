@@ -10,6 +10,8 @@ import allRoutes from '../routes';
 const app = express();
 const compiler = webpack(config);
 
+app.use(express.static(path.join(__dirname, '../../')));
+
 // Log requests to the console.
 app.use(logger('dev'));
 
