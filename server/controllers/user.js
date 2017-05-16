@@ -137,6 +137,7 @@ export default {
         });
         return res.status(200).send({
           message: 'User authenticated successfully',
+          user: user.username,
           token
         });
       })
