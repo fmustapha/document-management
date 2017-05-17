@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-
 export function signIn(loginDetails) {
   return (dispatch) => axios.post('/users/login', loginDetails)
       .then((response) => {
-        axios.defaults.headers.common.Authorization = response.data.token;
+        window.localStorage.setItem('token', response.data.token);
+        window.localStorage.setItem('id', response.data.id);
+        axios.defaults.headers.common.authorization = response.data.token;
         console.log(response.data);
         dispatch({
           type: 'LOGIN_USER',
@@ -13,8 +14,10 @@ export function signIn(loginDetails) {
         dispatch({
           type: 'CLEAR_ERROR'
         });
+
       })
       .catch((error) => {
+        console.log(error);
         dispatch({
           type: 'VALIDATION_ERROR',
           response: error.response.data.message

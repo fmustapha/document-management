@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
@@ -14,6 +15,12 @@ class LoginPage extends React.Component {
     this.onPasswordChange = this.onPasswordChange.bind(this);
     this.onClickDone = this.onClickDone.bind(this);
     this.boundActionCreators = bindActionCreators(auth, this.props.dispatch);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      browserHistory.push('/');
+    }
   }
 
   onEmailChange(event) {

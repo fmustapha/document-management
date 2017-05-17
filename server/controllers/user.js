@@ -51,12 +51,9 @@ export default {
   },
 
   getUserDocuments(req, res) {
-    return db.User.findOne({
+    return db.Document.findAll({
       where: {
-        id: req.params.id
-      },
-      include: {
-        model: db.Document
+        ownerId: req.params.id
       }
     }).then(documents => res.status(200)
       .json({
@@ -138,6 +135,7 @@ export default {
         return res.status(200).send({
           message: 'User authenticated successfully',
           user: user.username,
+          id: user.id,
           token
         });
       })

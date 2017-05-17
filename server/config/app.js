@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
   app.use('/documents', allRoutes.document);
   app.use('/roles', allRoutes.role);
   app.use('/search', allRoutes.search);
+  res.redirect('/dms/');
 });
 
 export default app;

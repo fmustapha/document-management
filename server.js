@@ -12,7 +12,7 @@ const port = parseInt(process.env.PORT, 10) || 8000;
 
 app.set('port', port);
 
-app.get('*', (req, res) => {
+app.get('/dms/*', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, 'client/index.html'));
 });
 
