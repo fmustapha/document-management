@@ -4,7 +4,8 @@ import auth from './auth';
 
 const rootReducer = combineReducers({
   auth,
-  documents
+  documents,
+ // users
 });
 
 export default rootReducer;

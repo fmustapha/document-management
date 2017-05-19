@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import nodeExternals from 'webpack-node-externals';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 export default {
   debug: true,
@@ -22,14 +23,18 @@ export default {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new ExtractTextPlugin('bundle.css', {
+      allChunks: true
+    })
   ],
   module: {
     loaders: [
       { test: /\.(js|jsx)$/,
         include: path.join(__dirname, 'client'),
         loaders: ['babel-loader'] },
-      { test: /\.css$/, loaders: ['style', 'css'] },
+      { test: /\.css$/, loader: 'style-loader!css-loader?root=.' },
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract('css!sass') },
       { test: /\.jpg|png|jpeg|gif(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
       { test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000' },
@@ -38,6 +43,6 @@ export default {
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx', '.css', '.scss']
   }
 };

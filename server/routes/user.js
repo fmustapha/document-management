@@ -12,6 +12,7 @@ user.post('/', User.createUser);
 user.post('/login', User.login);
 user.post('/logout', User.logout);
 user.put('/:id', auth.verifyToken, auth.authorizeOwner, User.updateUser);
+user.get('/active', auth.verifyToken, User.activeUser);
 user.delete('/:id',
 auth.verifyToken, auth.authorizeAdmin || auth.authorizeOwner, User.deleteUser);
 

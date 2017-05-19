@@ -27,7 +27,8 @@ export default {
   },
 
   authorizeAdmin(req, res, next) {
-    if (req.decoded.data.roleId === 1) {
+    console.log(req.decoded.data);
+    if (req.decoded.data.roleId === 1 || String(req.decoded.data.id) === String(req.params.id)) {
       next();
     } else {
       return res.status(403).send({
@@ -37,7 +38,7 @@ export default {
   },
 
   authorizeOwner(req, res, next) {
-    if (String(req.decoded.data.id) === req.params.id) {
+    if (String(req.decoded.data.id) === String(req.params.id)) {
       next();
     } else {
       return res.status(403).send({

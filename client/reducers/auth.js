@@ -1,19 +1,34 @@
-const initialState = { isAuthenticated: false, loggedInUser: null };
+import lodash from 'lodash';
+import { isAuthenticated, loggedInUser } from './InitialState';
+import types from '../actions/actionTypes';
 
+const initialState = {
+  isAuthenticated,
+  loggedInUser
+};
+
+
+
+/**
+ * 
+ * 
+ * @export
+ * @param {any} [state=initialState] 
+ * @param {any} action 
+ * @returns 
+ */
 export default function authReducer(state = initialState, action) {
   switch (action.type) {
-    case 'LOGIN_USER':
-      return [...state,
-        Object.assign({}, action.response)
-      ];
-    case 'SIGNUP_USER':
-      return [...state,
-        Object.assign({}, action.response)
-      ];
-    case 'LOGOUT_USER':
-      return [...state,
-        Object.assign({}, action.response)
-      ];
+    case types.SIGNUP_USER:
+      return { isAuthenticated: true,
+        loggedInUser: { id: action.response.id, user: action.response.user } };
+    case types.SET_CURRENT_USER:
+      return {
+        isAuthenticated: true,
+        loggedInUser: action.user
+      };
+    case types.LOGOUT_USER:
+      return [...state, Object.assign({}, action.response)];
     default:
       return state;
   }

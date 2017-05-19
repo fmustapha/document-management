@@ -1,64 +1,84 @@
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
+import types from '../actions/actionTypes';
+import setAuthorizationToken from '../utils/setAuthorizationToken';
 
+/**
+ *
+ *
+ * @export
+ * @param {any} user
+ * @returns {Object}
+ */
+export function setCurrentUser(user) {
+  return {
+    type: types.SET_CURRENT_USER,
+    user
+  };
+}
 
-export function signIn(loginDetails) {
-  return (dispatch) => axios.post('/users/login', loginDetails)
+/**
+ *
+ *
+ * @export
+ * @param {Object} loginDetails
+ * @returns {Object}
+ */
+export function login(loginDetails) {
+  return dispatch => axios.post('/users/login', loginDetails)
       .then((response) => {
-        axios.defaults.headers.common.Authorization = response.data.token;
-        console.log(response.data);
-        dispatch({
-          type: 'LOGIN_USER',
-          response: response.data
-        });
-        dispatch({
-          type: 'CLEAR_ERROR'
-        });
+        const token = response.data.token;
+        localStorage.setItem('jwtToken', token);
+        setAuthorizationToken(token);
+        dispatch(setCurrentUser(jwtDecode(token)));
+        console.log(response);
       })
       .catch((error) => {
         dispatch({
-          type: 'VALIDATION_ERROR',
+          type: types.VALIDATION_ERROR,
           response: error.response.data.message
         });
       });
 }
 
+/**
+ * 
+ * 
+ * @export
+ * @param {any} userDetails 
+ * @returns
+ */
 export function signUp(userDetails) {
-  return (dispatch) => axios.post('/users/', userDetails)
+  return dispatch => axios.post('/users/', userDetails)
       .then((response) => {
         axios.defaults.headers.common.Authorization = response.data.token;
         console.log(response.data);
         dispatch({
-          type: 'SIGNUP_USER',
+          type: types.SIGNUP_USER,
           response: response.data
         });
         dispatch({
-          type: 'CLEAR_ERROR'
+          type: types.CLEAR_ERROR
         });
       })
       .catch((error) => {
         dispatch({
-          type: 'VALIDATION_ERROR',
+          type: types.VALIDATION_ERROR,
           response: error.response.data.message
         });
       });
 }
 
-export function logOut(userDetails) {
-  return (dispatch) => axios.post('/users/logout', userDetails)
+export function logout(userDetails) {
+  return dispatch => axios.post('/users/logout')
       .then((response) => {
-        axios.defaults.headers.common.Authorization = response.data.token;
-        console.log(response.data);
-        dispatch({
-          type: 'LOGOUT_USER',
-          response: response.data
-        });
-        dispatch({
-          type: 'CLEAR_ERROR'
-        });
+        localStorage.removeItem('jwtToken');
+        setAuthorizationToken(false);
+        dispatch(setCurrentUser({}));
       })
       .catch((error) => {
         dispatch({
-          type: 'VALIDATION_ERROR',
+          type: types.VALIDATION_ERROR,
           response: error.response.data.message
         });
       });

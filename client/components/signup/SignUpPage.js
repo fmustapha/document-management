@@ -1,126 +1,181 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router';
 import * as auth from '../../actions/auth';
 
+/**
+ *
+ *
+ * @class SignUpPage
+ * @extends {React.Component}
+ */
 class SignUpPage extends React.Component {
+  /**
+   * Creates an instance of SignUpPage.
+   * @returns {void}
+   * @param {any} props
+   * @param {any} context
+   *
+   * @memberof SignUpPage
+   */
   constructor(props, context) {
     super(props, context);
     this.state = {
-      signUp: { userName: '',
-        firstName: '',
-        lastName: '',
+      signUp: {
+        username: '',
+        firstname: '',
+        lastname: '',
         email: '',
         password: '' }
     };
-    this.onUserNameChange = this.onUserNameChange.bind(this);
-    this.onFirstNameChange = this.onFirstNameChange.bind(this);
-    this.onLastNameChange = this.onLastNameChange.bind(this);
-    this.onEmailChange = this.onEmailChange.bind(this);
-    this.onPasswordChange = this.onPasswordChange.bind(this);
-    this.onClickDone = this.onClickDone.bind(this);
-    this.boundActionCreators = bindActionCreators(auth, this.props.dispatch);
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onUserNameChange(event) {
+  /**
+   *
+   * @returns {void}
+   * @param {any} nextProps
+   *
+   * @memberof SignUpPage
+   */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.action.isAuthenticated) {
+      browserHistory.push('/dms/document');
+    }
+  }
+
+  /**
+   *
+   * @returns {void}
+   * @param {any} event
+   *
+   * @memberof SignUpPage
+   */
+  onChange(event) {
     const signUp = this.state.signUp;
-    signUp.email = event.target.value;
-    this.setState({ signUp });
-  }
-  
-  onFirstNameChange(event) {
-    const signUp = this.state.signUp;
-    login.email = event.target.value;
-    this.setState({ login });
-  }
-
-  onLastNameChange(event) {
-    const signUp = this.state.signUp;
-    signUp.email = event.target.value;
-    this.setState({ signUp });
+    const field = event.target.name;
+    signUp[field] = event.target.value;
+    this.setState(
+      {
+        signUp
+      }
+    );
   }
 
-  onEmailChange(event) {
-    const signUp = this.state.signUp;
-    signUp.email = event.target.value;
-    this.setState({ signUp });
+  /**
+   *
+   *
+   * @returns {void}
+   * @memberof SignUpPage
+   */
+  onSubmit() {
+    console.log(this.state.signUp);
+    this.props.actions.signUp(this.state.signUp)
+    .then(() => {
+      this.context.router.push('/dms/');
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
-  onPasswordChange(event) {
-    const signUp = this.state.signUp;
-    signUp.password = event.target.value;
-    this.setState({ signUp });
-  }
-
-  onClickDone() {
-    alert(`Saving ${this.state.signUp.email}
-    and the content`);
-    console.log(this.boundActionCreators);
-    this.boundActionCreators.signUp(this.state.signUp);
-  }
-
+  /**
+   *
+   *
+   * @returns {Object} contains JSX code
+   *
+   * @memberof SignUpPage
+   */
   render() {
-    console.log(this.props);
     return (
-      <div id="page-center-padding">
+      <div id="login-padding">
         <h3>SignUp</h3>
-        <div className="row">
-          <div className="input-field col s6">
-            <i className="material-icons prefix">account_circle</i>
-            <input
-              onChange={this.onUserNameChange}
-              value={this.state.signUp.UserName} type="text" className="col 5 s12" />
-            <label htmlFor="userName">Username</label>
+        <form onSubmit={this.onSubmit} method="post">
+          <div className="row">
+            <div className="input-field col s6">
+              <i className="material-icons prefix">account_circle</i>
+              <input
+                onChange={this.onChange}
+                value={this.state.signUp.Username}
+                name="username"
+                type="text"
+                className="col 5 s12" />
+              <label htmlFor="username">Username</label>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="input-field col s6">
-            <i className="material-icons prefix">account_circle</i>
-            <input
-              onChange={this.onFirstNameChange}
-              value={this.state.signUp.FirstName} type="text" className="col 5 s12" />
-            <label htmlFor="firstName">FirstName</label>
+          <div className="row">
+            <div className="input-field col s6">
+              <i className="material-icons prefix">account_circle</i>
+              <input
+                onChange={this.onChange}
+                value={this.state.signUp.Firstname}
+                name="firstname"
+                type="text"
+                className="col 5 s12" />
+              <label htmlFor="firstname">Firstname</label>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="input-field col s6">
-            <i className="material-icons prefix">account_circle</i>
-            <input
-              onChange={this.onLastNameChange}
-              value={this.state.signUp.LastName} type="text" className="col 5 s12" />
-            <label htmlFor="lastName">LastName</label>
+          <div className="row">
+            <div className="input-field col s6">
+              <i className="material-icons prefix">account_circle</i>
+              <input
+                onChange={this.onChange}
+                value={this.state.signUp.Lastname}
+                name="lastname"
+                type="text"
+                className="col 5 s12" />
+              <label htmlFor="lastname">Lastname</label>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="input-field col s6">
-            <i className="material-icons prefix">email</i>
-            <input
-              onChange={this.onEmailChange}
-              value={this.state.signUp.email} type="text" className="col 5 s12" />
-            <label htmlFor="email">Email</label>
+          <div className="row">
+            <div className="input-field col s6">
+              <i className="material-icons prefix">email</i>
+              <input
+                onChange={this.onChange}
+                value={this.state.signUp.email}
+                type="text"
+                name="email"
+                className="col 5 s12" />
+              <label htmlFor="email">Email</label>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="input-field col s6">
-            <i className="material-icons prefix">lock</i>
-            <input
-              onChange={this.onPasswordChange}
-              value={this.state.signUp.password} type="password" className="col 5 s12" />
-            <label htmlFor="password">Password</label>
+          <div className="row">
+            <div className="input-field col s6">
+              <i className="material-icons prefix">lock</i>
+              <input
+                onChange={this.onChange}
+                value={this.state.signUp.password}
+                type="password"
+                name="password"
+                className="col 5 s12" />
+              <label htmlFor="password">Password</label>
+            </div>
           </div>
-        </div>
-        <input
-        type="submit"
-        value="Done"
-        className="waves-effect waves-light btn"
-        onClick={this.onClickDone} />
+          <input
+          type="submit"
+          value="Done"
+          className="waves-effect waves-light btn"
+          />
+        </form>
       </div>
     );
   }
 }
 
-export default connect(
-  state => ({ auth: state.auth })
-)(SignUpPage);
+/**
+ *
+ *
+ * @param {any} dispatch
+ * @returns {Object} action
+ */
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(auth, dispatch)
+  };
+}
+
+
+export default connect(null,
+  mapDispatchToProps)(SignUpPage);
 

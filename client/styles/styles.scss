@@ -1,0 +1,130 @@
+/* Styles */
+$theme-color : #004d40;
+$grey-color: #bdbdbd;
+$light-grey: #eeeeee ;
+$tab-text: #ffffff;
+
+
+#layout{
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: $theme-color;
+  min-width: 550px;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+#nav-support {
+  background-color: $grey-color;
+  height: 10px; 
+}
+
+a.active{
+color:orange;
+}
+
+#page-padding {
+  margin: 50px;
+}
+
+#login-padding {
+  margin: 50px 0px 50px 450px;
+}
+.card{
+ width: 100%;
+}
+
+.float-icons-left{
+  float: left;
+  font-size: 50px;
+}
+
+.page-center-padding {
+  width: 80%;
+  padding-left: 10px;
+  padding-right:10px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.document-view {
+  width: 80%;
+  padding-left: 10px;
+  padding-right:10px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 20px;
+  text-align: center;
+  background-color: $light-grey;
+}
+
+
+
+.document-title {
+  width: 70%;
+  float: left;
+}
+
+.document-title > i {
+  font-size: 40px;
+}
+
+.action-icons {
+  width: 10%;
+  float: right;
+}
+
+.action-icons > i {
+  margin-left: 30px;
+}
+.action-icons > i:hover {
+  cursor: pointer;
+}
+
+.tab-text{
+  color:$tab-text;
+}
+
+.clear {
+  clear: both;
+}
+
+nav{
+  padding-top: 0px;
+}
+custom{
+  max-width: 50px;
+}
+
+#button-style {
+  margin: 0px 0px 0px 40px;
+}
+
+#body {
+  /*background-color: rgba(0, 0, 0, 0.5);
+  color: black;
+  position: absolute;
+  height: 100%;
+  width: 100%;*/
+}
+
+#bg {
+  background-image: url("./image/bg.jpg");
+  /*background-position: center;
+  background-size:cover;
+  margin: 0;*/
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; 
+}
+
+.footer {
+  position: absolute;
+  width: 100%;
+  height: 60px;
+}
+

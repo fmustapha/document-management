@@ -1,21 +1,35 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Header from './common/Header';
-import Footer from './common/Footer';
+// import Footer from './common/Footer';
 
+/**
+ *
+ *
+ * @class Layout
+ * @extends {React.Component}
+ */
 class Layout extends React.Component {
+  /**
+   *
+   *
+   * @returns  contains JSX code
+   *
+   * @memberof Layout
+   */
   render() {
     return (
       <div className="header">
         <Header />
         {this.props.children}
-        <Footer />
+        {/* <Footer />*/}
       </div>
     );
   }
 }
 
 
-Layout.propTypes = {
-  children: React.PropTypes.object.isRequired
+Layout.contextTypes = {
+  router: PropTypes.object.isRequired
 };
+
 export default Layout;

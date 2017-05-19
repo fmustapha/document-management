@@ -51,12 +51,9 @@ export default {
   },
 
   getUserDocuments(req, res) {
-    return db.User.findOne({
+    db.Document.findAll({
       where: {
-        id: req.params.id
-      },
-      include: {
-        model: db.Document
+        ownerId: req.params.id
       }
     }).then(documents => res.status(200)
       .json({
@@ -95,7 +92,8 @@ export default {
           res.status(200)
             .send({
               token,
-              newUser,
+              newUser: newUser.username,
+              id: newUser.id,
               message: 'User has been successfully created'
             });
         })
@@ -138,6 +136,7 @@ export default {
         return res.status(200).send({
           message: 'User authenticated successfully',
           user: user.username,
+          id: user.id,
           token
         });
       })
@@ -189,6 +188,15 @@ export default {
       .catch(error => res.status(400).send({
         error
       }));
+  },
+
+  activeUser(req, res) {
+    db.User.findById(req.decoded.id)
+    .then(user =>
+    res.status(200).send({ user }))
+    .catch(error => res.status(400).send({
+      error
+    }));
   },
 
   deleteUser(req, res) {
