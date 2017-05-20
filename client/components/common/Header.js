@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { Link, IndexLink } from 'react-router';
 import * as auth from '../../actions/auth';
 
-
 /**
  *
  *
@@ -124,3 +123,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
+

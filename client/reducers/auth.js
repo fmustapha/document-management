@@ -10,12 +10,12 @@ const initialState = {
 
 
 /**
- * 
- * 
+ *
+ *
  * @export
- * @param {any} [state=initialState] 
- * @param {any} action 
- * @returns 
+ * @param {Object} state
+ * @param {Object} action
+ * @returns {Object} containing authentication status and user details
  */
 export default function authReducer(state = initialState, action) {
   switch (action.type) {

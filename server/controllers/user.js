@@ -8,6 +8,14 @@ const secret = process.env.SECRET || 'samplesecret';
 
 export default {
 
+  /**
+   *
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {Object} list of users or error message
+   * if unsuccessful
+   */
   getAllUsers(req, res) {
     return db.User.findAll({})
       .then(users => res.status(200).send({
@@ -19,6 +27,13 @@ export default {
       }));
   },
 
+  /**
+   *
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {Object} containing user details if successful
+   */
   getOneUser(req, res) {
     return db.User.findById(req.params.id)
       .then((user) => {
@@ -37,6 +52,13 @@ export default {
       }));
   },
 
+  /**
+   *
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {Object} containing pagination limit
+   */
   getUserPagination(req, res) {
     return db.User.findAll({
       limit: 10
@@ -50,6 +72,12 @@ export default {
       }));
   },
 
+  /**
+   *
+   * @return {Object} containing a user's documents
+   * @param {any} req
+   * @param {any} res
+   */
   getUserDocuments(req, res) {
     db.Document.findAll({
       where: {
@@ -65,6 +93,13 @@ export default {
       });
   },
 
+  /**
+   *
+   * @returns {Object} containing response status and
+   * a message
+   * @param {any} req
+   * @param {any} res
+   */
   createUser(req, res) {
     db.User.findOne({
       where: {
@@ -104,6 +139,13 @@ export default {
     });
   },
 
+  /**
+   *
+   * @return {Object} containing response status and
+   * a message
+   * @param {any} req
+   * @param {any} res
+   */
   login(req, res) {
     db.User
       .findOne({
@@ -146,12 +188,27 @@ export default {
       }));
   },
 
+  /**
+   *
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {Object} containing response status and
+   * a message
+   */
   logout(req, res) {
     return res.status(200).send({
       message: 'You have successfully logged out'
     });
   },
 
+  /**
+   *
+   * @return {Object} containing response status and
+   * a message
+   * @param {any} req
+   * @param {any} res
+   */
   updateUser(req, res) {
     db.User.findById(req.params.id)
       .then((user) => {
@@ -190,6 +247,13 @@ export default {
       }));
   },
 
+  /**
+   *
+   * @returns {Object} containing response status and
+   * a message
+   * @param {any} req
+   * @param {any} res
+   */
   activeUser(req, res) {
     db.User.findById(req.decoded.id)
     .then(user =>
@@ -199,6 +263,13 @@ export default {
     }));
   },
 
+  /**
+   *
+   * @returns {Object} containing response status and
+   * a message
+   * @param {any} req
+   * @param {any} res
+   */
   deleteUser(req, res) {
     db.User.findById(req.params.id)
       .then((user) => {

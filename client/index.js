@@ -18,7 +18,6 @@ if (localStorage.jwtToken) {
   store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
 }
 
-
 render(
   <Provider store={store}>
     <Router history={browserHistory} routes={routes} />

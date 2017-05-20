@@ -7,6 +7,14 @@ const initialState = {
   userDocuments: []
 };
 
+/**
+ *
+ *
+ * @export
+ * @param {Object} state
+ * @param {Object} action
+ * @returns {Object} containing the new state for the store
+ */
 export default function documentReducer(state = initialState, action) {
   switch (action.type) {
     case types.ADD_DOCUMENT: {

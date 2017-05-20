@@ -4,8 +4,21 @@ import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
 import * as documentActions from '../../actions/documentAction';
 
+/**
+ *
+ *
+ * @class ViewDocumentPage
+ * @extends {React.Component}
+ */
 class ViewDocumentPage
  extends React.Component {
+  /**
+   * Creates an instance of ViewDocumentPage.
+   * @param {Object} props
+   * @param {Object} context
+   *
+   * @memberof ViewDocumentPage
+   */
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -13,25 +26,56 @@ class ViewDocumentPage
     };
   }
 
+  /**
+   *
+   *
+   * @returns {String} Jsx content
+   *
+   * @memberof ViewDocumentPage
+   */
   createMarkup() {
     return { __html: this.props.documents.currentDocument.content };
   }
 
 
+  /**
+   *
+   *
+   * @returns {void}
+   * @memberof ViewDocumentPage
+   */
   componentWillMount() {
     setTimeout(() => this.props.dispatch(documentActions.viewDocument(this.props.params.id)), 3000);
   }
 
+  /**
+   *
+   *
+   * @returns {void}
+   * @memberof ViewDocumentPage
+   */
   onClickEdit() {
     this.props.dispatch(documentActions.createDocument(this.state.document));
   }
 
+  /**
+   *
+   *
+   * @returns {void}
+   * @memberof ViewDocumentPage
+   */
   onClickBack() {
-    window.history.back();
+    this.window.history.back();
   }
 
+  /**
+   *
+   *
+   * @returns Jsx Content
+   *
+   * @memberof ViewDocumentPage
+   */
   render() {
-
     return (this.props.documents.currentDocument) ?
         <div className="document-view">
           <h2>{this.props.documents.currentDocument.title}</h2>
@@ -55,8 +99,13 @@ class ViewDocumentPage
   }
  }
 
+/**
+ *
+ *
+ * @param {Object} state
+ * @returns {Object} object containing document and authourization details
+ */
 function mapStateToProps(state) {
-  console.log(state);
   return {
     documents: state.documents,
     auth: state.auth
@@ -64,5 +113,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(ViewDocumentPage);
-
-

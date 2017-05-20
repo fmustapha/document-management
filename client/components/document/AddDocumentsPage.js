@@ -39,6 +39,12 @@ class AddDocumentsPage
     document.content = event.target.getContent();
     this.setState({ document });
   }
+  
+  onAccessChange(access) {
+    const document = this.state.document;
+    document.access = access;
+    this.setState({ document });
+  }
 
   onAccessChange(access) {
     const document = this.state.document;
