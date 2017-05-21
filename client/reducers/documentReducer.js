@@ -23,6 +23,14 @@ export default function documentReducer(state = initialState, action) {
         isCreating: false
       });
     }
+
+    case types.DELETE_DOCUMENT: {
+      console.log(action);
+      // return Object.assign({}, state, {
+      //   documents: [...state.documents, action.document],
+      //   isCreating: false
+      // });
+    }
     case types.ADDING_DOCUMENT:
       return Object.assign({}, state, { isCreating: true });
 

@@ -125,6 +125,7 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+
 AddDocumentsPage.propTypes = {
   dispatch: React.PropTypes.func.isRequired
 };

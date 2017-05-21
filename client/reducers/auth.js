@@ -28,7 +28,8 @@ export default function authReducer(state = initialState, action) {
         loggedInUser: action.user
       };
     case types.LOGOUT_USER:
-      return [...state, Object.assign({}, action.response)];
+      return { isAuthenticated: false,
+        loggedInUser: null };
     default:
       return state;
   }

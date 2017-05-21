@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link, IndexLink } from 'react-router';
+import { Link, IndexLink, browserHistory } from 'react-router';
 import * as auth from '../../actions/auth';
 
 /**
@@ -35,7 +35,7 @@ class Header extends React.Component {
   logout(event) {
     event.preventDefault();
     this.props.actions.logout();
-    this.context.router.push('/dms/');
+    browserHistory.push('/dms/');
   }
 
   /**
@@ -90,9 +90,9 @@ class Header extends React.Component {
   }
 }
 
-Header.contextTypes = {
-  router: PropTypes.object.isRequired
-};
+// Header.contextTypes = {
+//   router: PropTypes.object.isRequired
+// };
 
 Header.propTypes = {
   actions: React.PropTypes.object.isRequired,

@@ -74,8 +74,18 @@ export function viewDocument(id) {
   // return { type: 'VIEW_DOCUMENT', viewDocument };
 }
 
-export function updateDocument(documentUpdate) {
-  return { type: types.UPDATE_DOCUMENT, documentUpdate };
+export function updateDocument(id) {
+  return (dispatch) => {
+    axios.put(`/documents/${id}`)
+    .then((response) => {
+      console.log('message', response.data);
+      dispatch({ type: types.UPDATE_DOCUMENT, id });
+    }).catch((error) => {
+      console.log(error);
+      dispatch({ type: types.UPDATE_ERROR, error });
+    });
+  };
+  // return { type: types.UPDATE_DOCUMENT, documentUpdate };
 }
 
 export function deleteDocument(id) {
@@ -83,9 +93,9 @@ export function deleteDocument(id) {
     axios.delete(`/documents/${id}`)
     .then((response) => {
       console.log('message', response.data);
+      dispatch({ type: types.DELETE_DOCUMENT, id });
     }).catch((error) => {
       console.log(error);
     });
   };
- // return type: types.DELETE_DOCUMENT, removeDocument 
 }

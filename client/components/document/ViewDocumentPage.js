@@ -2,6 +2,8 @@ import React from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
+import { bindActionCreators } from 'redux';
+import UpdateDocumentPage from './UpdateDocumentPage';
 import * as documentActions from '../../actions/documentAction';
 
 /**
@@ -22,8 +24,11 @@ class ViewDocumentPage
   constructor(props, context) {
     super(props, context);
     this.state = {
-      document: { title: '', access: 'public', content: '' }
+      document: { title: '', access: 'public', content: '' },
+      editing: false
     };
+    this.onClickEdit = this.onClickEdit.bind(this);
+    this.onClickBack = this.onClickBack.bind(this);
   }
 
   /**
@@ -45,7 +50,7 @@ class ViewDocumentPage
    * @memberof ViewDocumentPage
    */
   componentWillMount() {
-    setTimeout(() => this.props.dispatch(documentActions.viewDocument(this.props.params.id)), 3000);
+    this.props.dispatch(documentActions.viewDocument(this.props.params.id));
   }
 
   /**
@@ -55,7 +60,7 @@ class ViewDocumentPage
    * @memberof ViewDocumentPage
    */
   onClickEdit() {
-    this.props.dispatch(documentActions.createDocument(this.state.document));
+    this.setState({ editing: !this.state.editing });
   }
 
   /**
@@ -65,7 +70,7 @@ class ViewDocumentPage
    * @memberof ViewDocumentPage
    */
   onClickBack() {
-    this.window.history.back();
+    browserHistory.goBack();
   }
 
   /**
@@ -76,9 +81,19 @@ class ViewDocumentPage
    * @memberof ViewDocumentPage
    */
   render() {
-    return (this.props.documents.currentDocument) ?
+    const document = this.props.documents.currentDocument;
+    if (this.state.editing) {
+      return <UpdateDocumentPage
+        id={this.props.params.id}
+        title={document.title}
+        content={document.content}
+        access={document.access}
+        endEdit={this.onClickEdit}
+        />
+    }
+    return (document) ?
         <div className="document-view">
-          <h2>{this.props.documents.currentDocument.title}</h2>
+          <h2>{document.title}</h2>
           <p dangerouslySetInnerHTML={this.createMarkup()} />
           <div>
             <input
@@ -111,5 +126,11 @@ function mapStateToProps(state) {
     auth: state.auth
   };
 }
+
+// function mapDispatchProps(dispatch) {
+//   return {
+//     actions: bindActionCreators(auth, dispatch)
+//   };
+// }
 
 export default connect(mapStateToProps)(ViewDocumentPage);

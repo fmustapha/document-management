@@ -75,11 +75,13 @@ export function logout(userDetails) {
       .then((response) => {
         localStorage.removeItem('jwtToken');
         setAuthorizationToken(false);
-        dispatch(setCurrentUser({}));
+        dispatch({
+          type: types.LOGOUT_USER
+        });
       })
       .catch((error) => {
         dispatch({
-          type: types.VALIDATION_ERROR,
+          type: types.LOGOUT_ERROR,
           response: error.response.data.message
         });
       });

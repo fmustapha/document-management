@@ -94,7 +94,7 @@ class SignUpPage extends React.Component {
         <form onSubmit={this.onSubmit} method="post">
           <div className="row">
             <div className="input-field col s6">
-              <i className="material-icons prefix">account_circle</i>
+              <i className="material-icons prefix pad-icons">account_circle</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.Username}
@@ -106,7 +106,7 @@ class SignUpPage extends React.Component {
           </div>
           <div className="row">
             <div className="input-field col s6">
-              <i className="material-icons prefix">account_circle</i>
+              <i className="material-icons prefix pad-icons">account_circle</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.Firstname}
@@ -118,7 +118,7 @@ class SignUpPage extends React.Component {
           </div>
           <div className="row">
             <div className="input-field col s6">
-              <i className="material-icons prefix">account_circle</i>
+              <i className="material-icons prefix pad-icons">account_circle</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.Lastname}
@@ -130,7 +130,7 @@ class SignUpPage extends React.Component {
           </div>
           <div className="row">
             <div className="input-field col s6">
-              <i className="material-icons prefix">email</i>
+              <i className="material-icons prefix pad-icons">email</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.email}
@@ -142,7 +142,7 @@ class SignUpPage extends React.Component {
           </div>
           <div className="row">
             <div className="input-field col s6">
-              <i className="material-icons prefix">lock</i>
+              <i className="material-icons prefix pad-icons">lock</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.password}

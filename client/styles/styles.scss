@@ -3,6 +3,7 @@ $theme-color : #004d40;
 $grey-color: #bdbdbd;
 $light-grey: #eeeeee ;
 $tab-text: #ffffff;
+$padding-left:10px; 
 
 
 #layout{
@@ -22,8 +23,24 @@ a.active{
 color:orange;
 }
 
+.tabs .tab a:hover, .tabs .tab a {
+  color: white !important;
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+  color: orange !important;
+}
+
 #page-padding {
   margin: 50px;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.pad-icons {
+  margin-left: -20px;
+  padding-left: -20px;
 }
 
 #login-padding {
@@ -40,7 +57,7 @@ color:orange;
 
 .page-center-padding {
   width: 80%;
-  padding-left: 10px;
+  padding-left: $padding-left;
   padding-right:10px;
   margin-left: 10%;
   margin-right: 10%;
@@ -50,7 +67,7 @@ color:orange;
 
 .document-view {
   width: 80%;
-  padding-left: 10px;
+  padding-left: $padding-left;
   padding-right:10px;
   margin-left: 10%;
   margin-right: 10%;
@@ -59,19 +76,35 @@ color:orange;
   background-color: $light-grey;
 }
 
+.dashboard-header {
+padding-left: $padding-left;  
+float: left
+}
 
+.welcome-message{
+  padding-right: 10px;
+  float: right
+}
 
 .document-title {
   width: 70%;
   float: left;
 }
 
+.page-header {
+  margin-top: 10px;
+  padding-top: 10px;
+}
 .document-title > i {
   font-size: 40px;
 }
 
+.white-text {
+ color: white;
+}
+
 .action-icons {
-  width: 10%;
+  width: 15%;
   float: right;
 }
 
@@ -80,6 +113,12 @@ color:orange;
 }
 .action-icons > i:hover {
   cursor: pointer;
+}
+
+.create-logo{
+  bottom: 0;
+  right: 0;
+  position: fixed;
 }
 
 .tab-text{
