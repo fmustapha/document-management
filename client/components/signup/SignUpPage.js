@@ -71,7 +71,6 @@ class SignUpPage extends React.Component {
    * @memberof SignUpPage
    */
   onSubmit() {
-    console.log(this.state.signUp);
     this.props.actions.signUp(this.state.signUp)
     .then(() => {
       this.context.router.push('/dms/');
@@ -175,6 +174,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+SignUpPage.propTypes = {
+  actions: React.PropTypes.object.isRequired,
+};
 
 export default connect(null,
   mapDispatchToProps)(SignUpPage);

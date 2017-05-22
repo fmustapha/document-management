@@ -2,9 +2,9 @@ import axios from 'axios';
 import types from './actionTypes';
 
 export function createDocument(document) {
-  console.log(document);
+  console.log(document, 'document in documentAction');
   return (dispatch) => {
-    axios.post('/documents/', document)
+    return axios.post('/documents/', document)
     .then((response) => {
       console.log(response.data);
       dispatch({ type: types.ADD_DOCUMENT, document });

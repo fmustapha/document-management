@@ -1,15 +1,36 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
-import * as documentActions from '../../actions/documentAction';
+import toastr from 'toastr';
+import { bindActionCreators } from 'redux';
+import { addFlashMessage } from '../../actions/flashMessages';
+import { createDocument } from '../../actions/documentAction';
 
+/**
+ *
+ *
+ * @class AddDocumentsPage
+ * @extends {React.Component}
+ */
 class AddDocumentsPage
  extends React.Component {
+  /**
+   * Creates an instance of AddDocumentsPage.
+   * @param {any} props
+   * @param {any} context
+   *
+   * @memberof AddDocumentsPage
+   */
   constructor(props, context) {
     super(props, context);
     this.state = {
-      document: { title: '', access: 'public', content: '' }
+      document:
+      { title: '',
+        access: 'public',
+        content: '',
+        ownerId: this.props.userId
+      }
     };
     this.onTitleChange = this.onTitleChange.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
@@ -18,13 +39,13 @@ class AddDocumentsPage
     this.onAccessChange = this.onAccessChange.bind(this);
   }
 
-  componentDidMount() {
-    this.props.dispatch(documentActions.creatingDocument());
-  }
+  // componentDidMount() {
+  //   this.props.dispatch(documentActions.creatingDocument());
+  // }
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.documents.isCreating) {
-      browserHistory.push('/document');
+      browserHistory.push('/dms/document');
     }
   }
 
@@ -34,28 +55,28 @@ class AddDocumentsPage
     this.setState({ document });
   }
 
-  handleEditorChange(event) {
-    const document = this.state.document;
-    document.content = event.target.getContent();
-    this.setState({ document });
-  }
-  
-  onAccessChange(access) {
-    const document = this.state.document;
-    document.access = access;
-    this.setState({ document });
-  }
+    handleEditorChange(event) {
+      const document = this.state.document;
+      document.content = event.target.getContent();
+      this.setState({ document });
+    }
 
   onAccessChange(access) {
     const document = this.state.document;
-    document.ownerId = this.props.userId;
     document.access = access;
     this.setState({ document });
   }
 
   onClickSave() {
-    console.log(this.state.document);
-    this.props.dispatch(documentActions.createDocument(this.state.document));
+    this.props.createDocumentActions(this.state.document)
+    .then(() => toastr.success('Document successfully created'))
+    .catch(() => {
+      this.props.addFlashMessage({
+        type: 'error',
+        text: 'Unable to create document' });
+      toastr.error(
+        'Unable to create document, kindly contact your Admin');
+    });
   }
 
   onClickCancel() {
@@ -67,16 +88,21 @@ class AddDocumentsPage
       <div id="page-padding">
         <h3>Add Document</h3>
         <div className="row">
-          <div className="input-field col s6">
-            <i className="material-icons prefix">mode_edit</i>
+          <div className="input-field col s6 pad-icons">
+            <div className="pad-icons">
+              <i className="material-icons prefix">mode_edit</i>
+            </div>
             <input
               onChange={this.onTitleChange}
-              value={this.state.document.title} type="text" className="col 5 s12" />
+              value={this.state.document.title}
+              name="title"
+              type="text" className="col 5 s12" />
             <label htmlFor="title">Document Title</label>
           </div>
           <div className="input-field col s12">
             <TinyMCE
-            content="<p>This is the initial content of the editor</p>"
+            content={this.state.document.content}
+            name="content"
             config={{
               plugins: 'link image code',
               toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
@@ -84,7 +110,7 @@ class AddDocumentsPage
             onChange={this.handleEditorChange}
               />
           </div>
-         
+
           <div>
             <p id="access">Select Access Type</p>
             <a className="dropdown-button btn" href="#" data-activates="dropdown1">
@@ -116,18 +142,52 @@ class AddDocumentsPage
   }
 }
 
-function mapStateToProps(state, ownProps) {
+/**
+ *
+ *
+ * @param {any} state
+ * @param {any} ownProps
+ * @returns
+ */
+function mapStateToProps(state) {
   const user = state.auth.loggedInUser;
-  console.log('========', state.auth);
   return {
-    documents: state.documents,
-    userId: user.id
+   // documents: state.documents,
+    userId: user.data.id
   };
 }
 
+/**
+ *
+ *
+ * @param {any} dispatch
+ * @returns
+ */
+// function mapDispatchProps(dispatch) {
+//   return {
+//     createDocumentAction:
+//     bindActionCreators(documentActions.createDocument, dispatch),
+//     addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
+//   };
+// }
 
 AddDocumentsPage.propTypes = {
-  dispatch: React.PropTypes.func.isRequired
+  userId: React.PropTypes.number.isRequired,
+  createDocumentActions: React.PropTypes.object.isRequired,
+  addFlashMessage: React.PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(AddDocumentsPage);
+/**
+ *
+ *
+ * @param {any} dispatch
+ * @returns {Object} containing actions to create document and add flash message
+ */
+function mapDispatchToProps(dispatch) {
+  return {
+    createDocumentActions: bindActionCreators(createDocument, dispatch),
+    addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddDocumentsPage);
