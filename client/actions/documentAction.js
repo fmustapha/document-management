@@ -65,7 +65,6 @@ export function viewDocument(id) {
       console.log('document =>', response.data);
       const document = response.data.document;
       dispatch({ type: types.VIEW_DOCUMENT, document });
-      // dispatch(listUserDocumentSuccess(documents));
     })
     .catch((error) => {
       console.log(error);
@@ -74,12 +73,13 @@ export function viewDocument(id) {
   // return { type: 'VIEW_DOCUMENT', viewDocument };
 }
 
-export function updateDocument(id) {
+export function updateDocument(id, updatedDocument) {
+  console.log(updatedDocument);
   return (dispatch) => {
-    axios.put(`/documents/${id}`)
+    return axios.put(`/documents/${id}`, updatedDocument)
     .then((response) => {
-      console.log('message', response.data);
-      dispatch({ type: types.UPDATE_DOCUMENT, id });
+      console.log('response', response.data);
+      dispatch({ type: types.UPDATE_DOCUMENT, updatedDocument });
     }).catch((error) => {
       console.log(error);
       dispatch({ type: types.UPDATE_ERROR, error });

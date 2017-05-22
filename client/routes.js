@@ -9,7 +9,9 @@ import LoginPage from './components/login/LoginPage';
 import SignUpPage from './components/signup/SignUpPage';
 // import UserListPage from './components/user/UserListPage';
 import ViewDocumentPage from './components/document/ViewDocumentPage';
+import UpdateDocumentPage from './components/document/UpdateDocumentPage';
 // import ViewUserPage from './components/user/ViewUserPage';
+import UserAccountPage from './components/user/UserAccountPage';
 import SearchPage from './components/search/SearchPage';
 
 
@@ -23,6 +25,8 @@ export default (
     <Route path="/dms/document/:id" component={ViewDocumentPage} />
     {/* <Route path="/dms/user" component={UserListPage} />
     <Route path="/dms/user/:id" component={ViewUserPage} />*/}
+    <Route path="/dms/user/account/:id" component={UserAccountPage} />
+    <Route path="/dms/document/update/:id" component={UpdateDocumentPage} />
     <Route path="/dms/search" component={SearchPage} />
     <Route path="/dms/about" component={AboutPage} />
   </Route>

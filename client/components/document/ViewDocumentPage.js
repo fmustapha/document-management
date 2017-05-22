@@ -24,22 +24,15 @@ class ViewDocumentPage
   constructor(props, context) {
     super(props, context);
     this.state = {
-      document: { title: '', access: 'public', content: '' },
+      document: { title: '',
+        access: 'public',
+        content: '',
+        ownerId: this.props.documents.currentDocument.ownerId
+      },
       editing: false
     };
     this.onClickEdit = this.onClickEdit.bind(this);
     this.onClickBack = this.onClickBack.bind(this);
-  }
-
-  /**
-   *
-   *
-   * @returns {String} Jsx content
-   *
-   * @memberof ViewDocumentPage
-   */
-  createMarkup() {
-    return { __html: this.props.documents.currentDocument.content };
   }
 
 
@@ -73,10 +66,21 @@ class ViewDocumentPage
     browserHistory.goBack();
   }
 
+/**
+   *
+   *
+   * @returns {String} Jsx content
+   *
+   * @memberof ViewDocumentPage
+   */
+  createMarkup() {
+    return { __html: this.props.documents.currentDocument.content };
+  }
+  
   /**
    *
    *
-   * @returns Jsx Content
+   * @returns {void} Jsx Content
    *
    * @memberof ViewDocumentPage
    */
@@ -126,6 +130,11 @@ function mapStateToProps(state) {
     auth: state.auth
   };
 }
+
+UpdateDocumentPage.propTypes = {
+  documents: React.PropTypes.object.isRequired,
+  browserHistory: React.PropTypes.func.isRequired
+};
 
 // function mapDispatchProps(dispatch) {
 //   return {

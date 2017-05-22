@@ -4,7 +4,6 @@ import TinyMCE from 'react-tinymce';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
 import * as documentAction from '../../actions/documentAction';
 import { addFlashMessage } from '../../actions/flashMessages';
 
@@ -15,6 +14,13 @@ import { addFlashMessage } from '../../actions/flashMessages';
  * @extends {React.Component}
  */
 class DocumentsListPage extends React.Component {
+  /**
+   * Creates an instance of DocumentsListPage.
+   * @param {Object} props
+   * @param {Object} context
+   * @returns {void}
+   * @memberof DocumentsListPage
+   */
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -23,9 +29,9 @@ class DocumentsListPage extends React.Component {
     this.deleteDocument = this.deleteDocument.bind(this);
   }
   /**
-   * 
-   * 
-   * 
+   *
+   *
+   * @returns {void}
    * @memberof DocumentsListPage
    */
   componentWillMount() {
@@ -34,9 +40,9 @@ class DocumentsListPage extends React.Component {
   }
 
   /**
-   * 
-   * 
-   * 
+   *
+   *
+   * @returns {void}
    * @memberof DocumentsListPage
    */
   componentDidMount() {
@@ -48,12 +54,12 @@ class DocumentsListPage extends React.Component {
   }
 
   /**
-   * 
-   * 
-   * @param {any} document 
-   * @param {any} index 
-   * @returns 
-   * 
+   *
+   *
+   * @param {any} document
+   * @param {any} index
+   * @returns {void}
+   *
    * @memberof DocumentsListPage
    */
   documentRow(document, index) {
@@ -64,7 +70,7 @@ class DocumentsListPage extends React.Component {
    *
    *
    * @param {Number} id
-   * 
+   *
    * @memberof DocumentsListPage
    */
   deleteDocument(id) {
@@ -92,109 +98,118 @@ class DocumentsListPage extends React.Component {
     const user = this.props.auth.loggedInUser.data.username;
     return (
       <div>
-      <div className="page-header">
-            <div className="dashboard-header">
-              <h4>Dashboard</h4>
-            </div>
-            <div className="welcome-message">
-              <h4>Welcome {user}</h4>
-            </div>
+        <div className="page-header">
+          <div className="dashboard-header">
+            <h4>Dashboard</h4>
           </div>
-      <div id="page-padding">
-        <div className="create-logo">
-          <a 
+          <div className="welcome-message">
+            <h4>Welcome {user}</h4>
+          </div>
+        </div>
+        <div id="page-padding">
+          <div className="create-logo">
+            <a
           className="btn btn-floating btn-large pulse create-logo tooltipped"
           data-position="left" data-delay="50"
           data-tooltip="create new document"
            onClick={() => browserHistory.push('/dms/document/create')}>
-            <i className="material-icons">edit</i>
-          </a>
-        </div>
-        <div className="row">
-          <div className="col s12 white-text">
-            <ul className="tabs teal darken-4 tab-text">
-              <li className="tab col s3 white-text">
-                <a
+              <i className="material-icons">edit</i>
+            </a>
+          </div>
+          <div className="row">
+            <div className="col s12 white-text">
+              <ul className="tabs teal darken-4 tab-text">
+                <li className="tab col s3 white-text">
+                  <a
                 className="s"
                href="#allDocuments">All Public Documents
                </a>
-              </li>
-              <li className="tab col s3 white-text">
-                <a
+                </li>
+                <li className="tab col s3 white-text">
+                  <a
                 className="s"
                 href="#myDocuments">My Documents
                 </a>
-              </li>
-            </ul>
-          </div>
-          <div id="allDocuments" className="col s12">
-            <div className="row">
-              {this.props.documents.documents.map((document) => (
-                <div className="col s12 m12" key={document.id}>
-                  <div className="card">
-                    <div className="card-content teal-text lighten-1">
-                      <div className="card-title">
-                        <div className="document-title">
-                          <i
+                </li>
+              </ul>
+            </div>
+            <div id="allDocuments" className="col s12">
+              <div className="row">
+                {this.props.documents.documents.map((document) => (
+                  <div className="col s12 m12" key={document.id}>
+                    <div className="card">
+                      <div className="card-content teal-text lighten-1">
+                        <div className="card-title">
+                          <div className="document-title">
+                            <i
                               id="float-icons-left"
                               className="fa fa-file-text read-file-tooltip"
                               aria-hidden="true"
                               data-position="bottom" data-delay="50"
                               data-tooltip="create new document" />
-                          <Link to={`/dms/document/${document.id}`}>{document.title}</Link>
+                            <Link to={`/dms/document/${document.id}`}>{document.title}</Link>
+                          </div>
+                          <div className="action-icons">
+                            <Link to={`/dms/document/update/${document.id}`}>
+                            <i
+                            id="float-icons-left"
+                            className="fa fa-pencil-square-o"
+                             aria-hidden="true" />
+                            </Link>
+                            <i
+                            id="float-icons-left"
+                            className="fa fa-trash"
+                            aria-hidden="true"
+                            onClick={() => this.deleteDocument(document.id)} />
+                          </div>
+                          <div className="clear" />
                         </div>
-                        <div className="action-icons">
-                          <i id="float-icons-left" className="fa fa-pencil-square-o" aria-hidden="true" />
-                          <i id="float-icons-left" className="fa fa-trash" aria-hidden="true" onClick={() => this.deleteDocument(document.id)} />
-                        </div>
-                        <div className="clear" />
                       </div>
                     </div>
                   </div>
-                </div>
                 ))}
+              </div>
             </div>
-          </div>
-          <div id="myDocuments" className="col s12">
-            <div className="row">
-              {(this.props.documents.userDocuments.length < 1)? 
-                <div className="col s12 m12" key={document.id}>
-                <div className="card">
-                    <div className="card-content teal-text lighten-1">
-                      <div className="card-title">
-                        <div className="document-title">
-                          <p>No Documents yet! CLick create icon below</p>
+            <div id="myDocuments" className="col s12">
+              <div className="row">
+                {(this.props.documents.userDocuments.length < 1) ?
+                  <div className="col s12 m12" key={document.id}>
+                    <div className="card">
+                      <div className="card-content teal-text lighten-1">
+                        <div className="card-title">
+                          <div className="document-title">
+                            <p>No Documents yet! CLick create icon below</p>
+                          </div>
+                          <div className="clear" />
                         </div>
-                        <div className="clear" />
                       </div>
                     </div>
                   </div>
-              </div>
                 :
                 this.props.documents.userDocuments.map((document) => (
                   <div className="col s12 m12" key={document.id}>
-                  <div className="card">
-                    <div className="card-content green-text">
-                      <div className="card-title">
-                        <div className="document-title">
-                          <i id="float-icons-left" className="fa fa-file-text" aria-hidden="true" />
-                          <Link to={`/dms/document/${document.id}`}>{document.title}</Link>
+                    <div className="card">
+                      <div className="card-content green-text">
+                        <div className="card-title">
+                          <div className="document-title">
+                            <i id="float-icons-left" className="fa fa-file-text" aria-hidden="true" />
+                            <Link to={`/dms/document/${document.id}`}>{document.title}</Link>
+                          </div>
+                          <div className="action-icons">
+                            <i id="float-icons-left" className="fa fa-pencil-square-o" aria-hidden="true" />
+                            <i id="float-icons-left" className="fa fa-trash" aria-hidden="true" />
+                          </div>
+                          <div className="clear" />
                         </div>
-                        <div className="action-icons">
-                          <i id="float-icons-left" className="fa fa-pencil-square-o" aria-hidden="true" />
-                          <i id="float-icons-left" className="fa fa-trash" aria-hidden="true" />
-                        </div>
-                        <div className="clear" />
                       </div>
                     </div>
                   </div>
-                </div>
                 ))
-                } 
+                }
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     );
   }
@@ -202,15 +217,16 @@ class DocumentsListPage extends React.Component {
 
 
 DocumentsListPage.PropTypes = {
-  dispatch: PropTypes.func.isRequired,
-  documents: PropTypes.object.isRequired
+  dispatch: React.PropTypes.func.isRequired,
+  auth: React.PropTypes.object.isRequired,
+  documents: React.PropTypes.object.isRequired
 };
 
 /**
- * 
- * 
- * @param {any} state 
- * @returns 
+ *
+ *
+ * @param {Object} state
+ * @returns {Object} contains document and authorization properties
  */
 function mapStateToProps(state) {
   console.log(state);

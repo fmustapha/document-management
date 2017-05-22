@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
@@ -28,10 +28,11 @@ class UpdateDocumentPage
       document:
       { title: props.title,
         access: props.access,
-        content: props.content
+        content: props.content,
+        ownerId: this.props.documents.currentDocument.ownerId,
+        id: this.props.id
       },
     };
-    this.onChange = this.onChange.bind(this);
     this.onClickSave = this.onClickSave.bind(this);
     this.onClickCancel = this.onClickCancel.bind(this);
     this.onTitleChange = this.onTitleChange.bind(this);
@@ -41,46 +42,30 @@ class UpdateDocumentPage
 
   /**
    *
-   * @returns {void}
-   * @param {Object} event
    *
-   * @memberof LoginPage
+   * @param {Object} event
+   * @returns {void}
+   * @memberof UpdateDocumentPage
    */
-  onChange(event) {
-    const document = this.state.document;
-    const field = event.target.name;
-    document[field] = event.target.value;
-    this.setState(
-      {
-        document
-      }
-    );
-  }
-
   onTitleChange(event) {
     const document = this.state.document;
     document.title = event.target.value;
     this.setState({ document });
   }
 
-  handleEditorChange(event) {
+  /**
+   *
+   *
+   * @param {Object} event
+   * @returns {void}
+   * @memberof UpdateDocumentPage
+   */
+  onAccessChange(event) {
     const document = this.state.document;
-    document.content = event.target.getContent();
-    this.setState({ document });
-  }
-  
-  onAccessChange(access) {
-    const document = this.state.document;
-    document.access = access;
+    document.access = event.target.value;
     this.setState({ document });
   }
 
-  onAccessChange(access) {
-    const document = this.state.document;
-    document.ownerId = this.props.id;
-    document.access = access;
-    this.setState({ document });
-  }
   /**
    *
    *
@@ -88,14 +73,14 @@ class UpdateDocumentPage
    * @memberof ViewDocumentPage
    */
   onClickSave() {
-    this.props.updateDocumentAction(this.props.id, this.state.documents)
-    .then(() => toastr.success('Document Successfully Deleted'))
+    this.props.updateDocumentAction(this.props.id, this.state.document)
+    .then(() => toastr.success('Document Successfully Updated'))
     .catch(() => {
       this.props.addFlashMessage({
         type: 'error',
-        text: 'Unable to delete document' });
+        text: 'Unable to update document' });
       toastr.error(
-        'Unable to delete document');
+        'Unable to update document');
     });
     this.props.endEdit();
   }
@@ -107,7 +92,20 @@ class UpdateDocumentPage
    * @memberof ViewDocumentPage
    */
   onClickCancel() {
-    browserHistory.goBack();
+    this.props.browserHistory.goBack();
+  }
+
+  /**
+     *
+     *
+     * @param {Object} event
+     * @returns {void}
+     * @memberof UpdateDocumentPage
+     */
+  handleEditorChange(event) {
+    const document = this.state.document;
+    document.content = event.target.getContent();
+    this.setState({ document });
   }
 
   /**
@@ -128,11 +126,14 @@ class UpdateDocumentPage
             </div>
             <input
               onChange={this.onTitleChange}
-              value={this.props.title} type="text" className="col 5 s12" />
+              value={this.state.document.title}
+              type="text"
+              name="title"
+              className="col 5 s12" />
           </div>
           <div className="input-field col s12">
             <TinyMCE
-            content={this.props.content}
+            content={this.state.document.content}
             config={{
               plugins: 'link image code',
               toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
@@ -140,21 +141,18 @@ class UpdateDocumentPage
             onChange={this.handleEditorChange}
               />
           </div>
-         
-          <div>
-            <p id="access">Select Access Type</p>
-            <a className="dropdown-button btn" href="#" data-activates="dropdown1">
-              {this.props.access}<span className="fa fa-sort-desc"></span>
-            </a>
-            <ul id="dropdown1" className="dropdown-content">
-              <li onClick={() => this.onAccessChange('public')}><a htmlFor="public">public</a></li>
-              <li onClick={() => this.onAccessChange('private')}><a htmlFor="private">private</a></li>
-              <li onClick={() => this.onAccessChange('role')}><a htmlFor="role">role</a></li>
-            </ul>
-          </div>
+        </div>
+        <div className="" id="select">
+          <select value={this.state.document.access} onChange={this.onAccessChange} >
+            <option value="" selected>Select Access Type</option>
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+            <option value="role">Role</option>
+          </select>
+          <label>Select Access type</label>
         </div>
         <span>
-         <input
+          <input
             type="submit"
             value="Save"
             className="waves-effect waves-light btn"
@@ -173,10 +171,22 @@ class UpdateDocumentPage
 /**
  *
  *
- * @param {Object} state
+ * @param {object} state
+ * @returns {Object} document property and values
+ */
+function mapStateToProps(state) {
+  return {
+    documents: state.documents
+  };
+}
+
+/**
+ *
+ *
+ * @param {Object} dispatch
  * @returns {Object} object containing document and authourization details
  */
-function mapDispatchProps(dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     updateDocumentAction:
     bindActionCreators(documentActions.updateDocument, dispatch),
@@ -186,25 +196,15 @@ function mapDispatchProps(dispatch) {
 
 UpdateDocumentPage.propTypes = {
   updateDocumentAction: React.PropTypes.func.isRequired,
-  id: React.PropTypes.string.isRequired,
+  id: React.PropTypes.number.isRequired,
+  ownerId: React.PropTypes.number.isRequired,
   endEdit: React.PropTypes.func.isRequired,
+  documents: React.PropTypes.object.isRequired,
   title: React.PropTypes.string.isRequired,
   content: React.PropTypes.string.isRequired,
   addFlashMessage: React.PropTypes.func.isRequired,
-  access: React.PropTypes.string.isRequired
+  access: React.PropTypes.string.isRequired,
+  browserHistory: React.PropTypes.func.isRequired
 };
 
-export default connect(null, mapDispatchProps)(UpdateDocumentPage);
-
-
-/* <input
-            type="submit"
-            value="Save"
-            className="waves-effect waves-light btn"
-            onClick={this.onClickSave} />
-          <input
-            type="submit"
-            value="Cancel"
-            className="waves-effect waves-light btn"
-            onClick={this.onClickCancel} />
-*/
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateDocumentPage);

@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react';
-import { Link, browserHistory } from 'react-router';
+import React from 'react';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
 import toastr from 'toastr';
@@ -44,7 +44,7 @@ class AddDocumentsPage
   // }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.documents.isCreating) {
+    if (nextProps.documents.isCreating ==='false') {
       browserHistory.push('/dms/document');
     }
   }
@@ -173,7 +173,7 @@ function mapStateToProps(state) {
 
 AddDocumentsPage.propTypes = {
   userId: React.PropTypes.number.isRequired,
-  createDocumentActions: React.PropTypes.object.isRequired,
+  createDocumentActions: React.PropTypes.func.isRequired,
   addFlashMessage: React.PropTypes.func.isRequired,
 };
 

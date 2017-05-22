@@ -38,6 +38,12 @@ color:orange;
   margin-right: 10%;
 }
 
+select {
+    display: block !important ;
+    width: 50%;
+    margin-top: 30%;
+}
+
 .pad-icons {
   margin-left: -20px;
   padding-left: -20px;
@@ -46,6 +52,21 @@ color:orange;
 #login-padding {
   margin: 50px 0px 50px 450px;
 }
+
+#account {
+  margin: 50px 0px 10px 100px;
+}
+
+.account-side {
+  background-image: url("./image/doc6.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  // position: absolute;
+  // width: 100vw;
+  // height: 100vh;
+  // z-index: -1; 
+}
+
 .card{
  width: 100%;
 }
