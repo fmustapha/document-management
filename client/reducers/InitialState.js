@@ -6,6 +6,7 @@ const InitialState = {
   userDocuments: [],
   documents: [],
   isCreating: false,
+  search: { user: null, document: null },
   currentDocument: null
 };
 

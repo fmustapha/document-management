@@ -66,6 +66,7 @@
     "react-addons-test-utils": "15.0.2",
     "react-dom": "15.0.2",
     "react-froala-wysiwyg": "^2.5.1",
+    "react-materialize": "^0.18.4",
     "react-paginate": "^4.4.2",
     "react-redux": "4.4.5",
     "react-redux-sweetalert": "^1.0.0",

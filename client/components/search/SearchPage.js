@@ -1,213 +1,201 @@
-/* eslint class-methods-use-this: "off"*/
-import React, { PropTypes } from 'react';
+import React from 'react';
+import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
+import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import toastr from 'toastr';
-import ReactPaginate from 'react-paginate';
-import * as documentActions from '../../actions/documentActions';
+import { addFlashMessage } from '../../actions/flashMessages';
 import * as searchAction from '../../actions/searchAction';
 
-class SearchPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showResult: false,
-      value: '',
-      limit: 10,
-      offset: 0
-    };
-    this.onChange = this.onChange.bind(this);
-    this.renderModal = this.renderModal.bind(this);
-    this.searchDocumentsClick = this.searchDocumentsClick.bind(this);
-    this.handlePageClick = this.handlePageClick.bind(this);
-  }
-  componentDidMount() {
-    $('.modal').modal();
-  }
-
-
+/**
+ *
+ *
+ * @class ViewDocumentPage
+ * @extends {React.Component}
+ */
+class SearchPage
+ extends React.Component {
   /**
-   * 
-   * 
-   * @param {any} event 
-   * 
+   * Creates an instance of ViewDocumentPage.
+   * @param {Object} props
+   * @param {Object} context
+   *
    * @memberof SearchPage
    */
-  onChange(event) {
-    event.preventDefault();
-    this.setState({ value: event.target.value });
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      term: '',
+      type: '',
+    };
+    this.onTypeChange = this.onTypeChange.bind(this);
+    this.onTermChange = this.onTermChange.bind(this);
   }
+
+ onTermChange(event) {
+   const term = event.target.value;
+   console.log(term);
+   this.setState({ term });
+ }
   /**
    *
    *
    * @param {Object} event
-   *
-   * @memberof SearchPage
+   * @returns {void}
+   * @memberof UpdateDocumentPage
    */
-  searchDocumentsClick(event) {
-    event.preventDefault();
-    const value = this.state.value;
-    if (value.trim() !== '') {
-      this.props.searchAction.searchDocuments(value, 10, 0).then(() => {
-        this.setState({ value, showResult: true });
-      }).catch(() => {
-        toastr.error(
-          'Document not found');
-      });
+  onTypeChange(event) {
+    const type = event.target.value;
+    console.log(type, 'term is', this.state.term);
+    if (type === 'user') {
+      this.props.searchAction.searchUser(this.state.term);
     } else {
-      toastr.error(
-        'search text field is empty, please enter a search term');
+      this.props.searchAction.searchDocument(this.state.term);
     }
   }
 
-  /**
-   *
-   * @returns {void}
-   * @param {Object} event
-   *
-   * @memberof SearchPage
-   */
-  renderModal(event) {
-    event.preventDefault();
-    const documentId = event.target.id;
-    this.props.actions.setCurrentDocument(documentId);
-    $('#modal2').modal('close');
-    $('#modal1').modal('open');
-  }
-
-  /**
-   *
-   * @returns {void}
-   * @param {Object} data
-   *
-   * @memberof SearchPage
-   */
-  handlePageClick(data) {
-    const selected = data.selected;
-    const offset = Math.ceil(selected * this.state.limit);
-
-    this.setState({ offset }, () => {
-      this.props.searchAction.searchUser(
-        this.state.value, this.state.limit, offset);
-    });
-  }
-
-  /**
-   *
-   *
-   * @returns
-   *
-   * @memberof SearchPage
-   */
   render() {
+    console.log(this.props.search.document);
+    const allUsers = this.props.search.user ?
+     this.props.search.user.user : null;
     return (
-      <div>
-        <div id="modal2" className="modal">
-          <div>
-            <a
-            href="#"
-            className="btn-floating pink closeModal modal-close">
-              <i className="material-icons">close</i></a>
-          </div>
-          <div className="modal-content">
-            <div className="row">
-              <form className="col s12">
-                <div className="row">
-                  <div className="input-field col s9">
-                    <i className="material-icons prefix">search</i>
-                    <input
-                      id="search"
-                      type="text"
-                      className="validate"
-                      onChange={this.onChange}
-                       />
-                    <label htmlFor="search" className="active">search</label>
-                  </div>
-                  <div className="input-field col s3">
-                    <input
-                      type="submit"
-                      value="Search"
-                      className="btn waves-effect waves-light pink darken-1"
-                      onClick={this.searchDocumentsClick}/>
-                  </div>
-                </div>
-              </form>
-              <div id="result" className="col s12">
-                <div className="row">
-                  <div className="col s6 offset-s3">
-                    {this.state.showResult ?
-                      <h6 id="searchResult">
-                      Result for "{this.state.value}"</h6>
-                     : ''}
-                    {this.props.searchedDocuments.map(document =>
-                      <div
-                      id="card-alert" className="card white"
-                      key={document.id}>
-                        <div className="card-content pink-text">
-                          <a
-                          className="pointer" id={document.id}
-                            onClick={this.renderModal}>
-                          Title: {document.title}
-                          </a>
-                        </div>
-                      </div>)}
-                    <ReactPaginate
-                      previousLabel={'previous'}
-                                     nextLabel={'next'}
-                                     breakLabel={<a href="">...</a>}
-                                     breakClassName={'break-me'}
-                                     pageCount={this.props.pagination}
-                                     marginPagesDisplayed={2}
-                                     pageRangeDisplayed={5}
-                                     onPageChange={this.handlePageClick}
-                                     containerClassName={'pagination'}
-                                     subContainerClassName={'pages pagination'}
-                                     pageClassName={'waves-effect'}
-                                     activeClassName={'active'} />
-                  </div>
-                </div>
+      <div className="body search_style">
+        <div>
+          <h2>SEARCH</h2>
+          <i>Type in the box below to search</i>
+        </div>
+        <nav className="search_nav">
+          <div className="nav-wrapper">
+            <form>
+              <div className="input-field">
+                <input id="search" type="search" required value={this.state.term} onChange={this.onTermChange}/>
+                <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                <i className="material-icons">close</i>
               </div>
-            </div>
+            </form>
           </div>
+        </nav>
+        <div
+          className="search_type"
+           id="select">
+          <select
+              value="select role"
+                onChange={this.onTypeChange}>
+            <option value="" selected>Select what to search</option>
+            <option value="user">User</option>
+            <option value="document">Document</option>
+          </select>
+        </div>
+        <div><h5>documents</h5>
+        <div id="allDocuments" className="col s12">
+              <div className="row">
+                {(!this.props.search.document) ?
+                  <div className="col s12 m12" key={document.id}>
+                    <div className="card">
+                      <div className="card-content teal-text lighten-1">
+                        <div className="card-title">
+                          <div className="document-title">
+                            <p>No Documents yet! CLick create icon below</p>
+                          </div>
+                          <div className="clear" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                :
+                this.props.search.document.document.map((document) => (
+                  <div className="col s12 m12" key={document.id}>
+                    <div className="card">
+                      <div className="card-content green-text">
+                        <div className="card-title">
+                          <div className="document-title">
+                            <i id="float-icons-left" className="fa fa-file-text" aria-hidden="true" />
+                            <Link to={`/dms/document/${document.id}`}>{document.title}</Link>
+                          </div>
+                          <div className="action-icons">
+                            <i id="float-icons-left" className="fa fa-pencil-square-o" aria-hidden="true" />
+                            <i id="float-icons-left" className="fa fa-trash" aria-hidden="true" />
+                          </div>
+                          <div className="clear" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+                }
+        </div>
+        </div>
+        <div><h5>Users</h5>
+        <div>
+          <table id="page-padding" className="striped">
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <th>UserName</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Change Role</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allUsers ? allUsers.map((user, index) => (
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>{user.username}</td>
+                  <td>{user.firstname}</td>
+                  <td>{user.lastname}</td>
+                  <td>{user.email}</td>
+                  <td>{(user.roleId === 1) ? 'Admin' : 'Regular'}</td>
+                  <td>{user.createdAt}</td>
+                  <td>{user.updatedAt}</td>
+                  <td>{(user.id === 1) ?
+                     'Super Admin' : <div className="" id="select">
+                       <select
+                       value="select role"
+                       onChange={event => this.onRoleChange(event, user.id)}>
+                         <option value="" selected>Select Access Type</option>
+                         <option value={1} >Admin</option>
+                         <option value={2} >Regular</option>
+                       </select>
+                     </div>
+                    }
+                  </td>
+                  <td>
+                    <i
+                      id="float-icons-left"
+                      className="fa fa-trash"
+                      aria-hidden="true"
+                      onClick={() => this.onClickDelete(user.id)} />
+                  </td>
+                </tr>
+                )) : <span />}
+            </tbody>
+          </table>
         </div>
       </div>
+    </div>
+    </div>
     );
   }
 }
 
-SearchPage.propTypes = {
-  searchedDocuments: PropTypes.array.isRequired,
-  pagination: PropTypes.number.isRequired,
-  auth: PropTypes.object.isRequired,
-  actions: React.PropTypes.object.isRequired,
-  searchAction: React.PropTypes.object.isRequired,
-};
-
-/**
- * [mapStateToProps description]
- * @param  {object} state [description]
- * @return {object}  state     [description]
- */
-const mapStateToProps = (state) => {
-  let searchResult = [];
-  searchResult = state.manageSearch.searchedDocuments;
+function mapStateToProps(state) {
+  console.log('state', state)
   return {
-    auth: state.auth,
-    searchedDocuments: searchResult,
-    pagination: state.manageSearch.searchedPageCount
+    search: state.search
   };
-};
-/**
- *
- *
- * @param {func} dispatch
- * @returns {Object} containing actions and searchAction value key pairs
- */
-const mapDispatchToProps = (dispatch) => {
+}
+
+function MapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(documentActions, dispatch),
     searchAction: bindActionCreators(searchAction, dispatch)
   };
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);
+
+export default connect(mapStateToProps, MapDispatchToProps)(SearchPage);

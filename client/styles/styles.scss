@@ -93,6 +93,21 @@ select {
   text-align: center;
 }
 
+.search_style{
+  width: 80%;
+  margin: 0 10%;
+  text-align: center;
+}
+
+.search_type{
+  width:40%;
+}
+
+.search_nav {
+  background-color: $tab-text;
+  color: #000000;
+}
+
 .document-view {
   width: 80%;
   padding-left: $padding-left;

@@ -1,10 +1,39 @@
 import axios from 'axios';
-import * as types from './actionTypes';
+import types from './actionTypes';
 
-export function searchUsers() {
-  return { type: types.SEARCH_USER };
+export function searchUserSuccess(result) {
+  return { type: types.SEARCH_USER, result };
 }
 
-export function searchDocument(user) {
-  return { type: types.SEARCH_DOCUMENT, user };
+export function searchDocumentSuccess(result) {
+  return { type: types.SEARCH_DOCUMENT, result };
 }
+
+export function searchUser(term) {
+  console.log(types.SEARCH_USER_ERROR);
+  return (dispatch) => {
+    return axios.get(`/search/users/?term=${term}`)
+    .then((response) => {
+      console.log(response.data);
+      dispatch(searchUserSuccess(response.data));
+    })
+    .catch((error) => {
+      dispatch({ type: types.SEARCH_USER_ERROR, error });
+    });
+  };
+}
+
+export function searchDocument(term) {
+  console.log(types);
+  return (dispatch) => {
+    return axios.get(`/search/documents/?term=${term}`)
+    .then((response) => {
+      console.log(response.data);
+      dispatch(searchDocumentSuccess(response.data));
+    })
+    .catch((error) => {
+      dispatch({ type: types.SEARCH_DOCUMENT_ERROR, error });
+    });
+  };
+}
+
