@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
-import TinyMCE from 'react-tinymce';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -103,7 +102,7 @@ class DocumentsListPage extends React.Component {
             <h4>Dashboard</h4>
           </div>
           <div className="welcome-message">
-            <h4>Welcome {user}</h4>
+            <h7>Welcome {user}</h7>
           </div>
         </div>
         <div id="page-padding">

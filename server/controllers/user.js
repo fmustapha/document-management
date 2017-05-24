@@ -1,38 +1,69 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt-nodejs';
 import db from '../models';
-// import Helper from '../helper/Helper';
+import auth from '../middlewares/auth';
+import Helper from '../helper/Helper';
 
 
 const secret = process.env.SECRET || 'samplesecret';
 
 export default {
 
+  // /**
+  //  *
+  //  *
+  //  * @param {any} req
+  //  * @param {any} res
+  //  * @returns {Object} list of users or error message
+  //  * if unsuccessful
+  //  */
+  // getAllUsers(req, res) {
+  //   return db.User.findAll({})
+  //     .then(users => res.status(200).send({
+  //       message: 'Successfull',
+  //       users
+  //     }))
+  //     .catch(error => res.status(400).send({
+  //       error
+  //     }));
+  // },
+
   /**
-   *
-   *
-   * @param {any} req
-   * @param {any} res
-   * @returns {Object} list of users or error message
-   * if unsuccessful
-   */
+    * Get all users
+    * Route: GET: /users
+    * @param {Object} req request object
+    * @param {Object} res response object
+    * @returns {void} no returns
+    */
   getAllUsers(req, res) {
-    return db.User.findAll({})
-      .then(users => res.status(200).send({
-        message: 'Successfull',
-        users
-      }))
-      .catch(error => res.status(400).send({
-        error
-      }));
+    console.log(req.odmsFilter, 'odmsFilter')
+    return db.User
+      .findAndCountAll(req.odmsFilter)
+      .then((users) => {
+        if (users) {
+          const condition = {
+            count: users.count,
+            limit: req.odmsFilter.limit,
+            offset: req.odmsFilter.offset
+          };
+          delete users.count;
+          const pagination = Helper.pagination(condition);
+          res.status(200)
+            .send({
+              message: 'Successfull',
+              users,
+              pagination
+            });
+        }
+      });
   },
 
   /**
-   *
-   *
-   * @param {any} req
-   * @param {any} res
-   * @returns {Object} containing user details if successful
+   * Get one user by id
+   * Route: GET: /users/:id
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {void|Response} containing user details if successful
    */
   getOneUser(req, res) {
     return db.User.findById(req.params.id)
@@ -73,11 +104,12 @@ export default {
   },
 
   /**
-   *
-   * @return {Object} containing a user's documents
-   * @param {any} req
-   * @param {any} res
-   */
+    * Get all user's documents by user id
+    * Route: GET: /users/:id/documents
+    * @param {Object} req request object
+    * @param {Object} res response object
+    * @returns {void} no returns
+    */
   getUserDocuments(req, res) {
     db.Document.findAll({
       where: {
@@ -94,11 +126,12 @@ export default {
   },
 
   /**
-   *
-   * @returns {Object} containing response status and
+   * Create a new user
+   * Route: POST: /users
+   * @returns {void|Response} response object or void
    * a message
-   * @param {any} req
-   * @param {any} res
+   * @param {Object} req
+   * @param {Object} res
    */
   createUser(req, res) {
     db.User.findOne({
@@ -140,11 +173,12 @@ export default {
   },
 
   /**
-   *
-   * @return {Object} containing response status and
+   * login
+   * Route: POST: /users/login
+   * @return {void|Response} response object or void
    * a message
-   * @param {any} req
-   * @param {any} res
+   * @param {Object} req
+   * @param {Object} res
    */
   login(req, res) {
     db.User
@@ -189,13 +223,12 @@ export default {
   },
 
   /**
-   *
-   *
-   * @param {any} req
-   * @param {any} res
-   * @returns {Object} containing response status and
-   * a message
-   */
+    * logout
+    * Route: POST: /users/logout
+    * @param {Object} req request object
+    * @param {Object} res response object
+    * @returns {void} no returns
+    */
   logout(req, res) {
     return res.status(200).send({
       message: 'You have successfully logged out'
@@ -203,12 +236,12 @@ export default {
   },
 
   /**
-   *
-   * @return {Object} containing response status and
-   * a message
-   * @param {any} req
-   * @param {any} res
-   */
+    * Update user attribute
+    * Route: PUT: /users/:id
+    * @param {Object} req request object
+    * @param {Object} res response object
+    * @returns {void|Response} response object or void
+    */
   updateUser(req, res) {
     db.User.findById(req.params.id)
       .then((user) => {
@@ -264,12 +297,12 @@ export default {
   },
 
   /**
-   *
-   * @returns {Object} containing response status and
-   * a message
-   * @param {any} req
-   * @param {any} res
-   */
+    * Delete a user by id
+    * Route: DELETE: /users/:id
+    * @param {Object} req request object
+    * @param {Object} res response object
+    * @returns {void} no returns
+    */
   deleteUser(req, res) {
     db.User.findById(req.params.id)
       .then((user) => {
@@ -278,7 +311,6 @@ export default {
             message: 'User does not exist'
           });
         }
-
         return user.destroy().then(res.status(200)
           .send({
             message: 'User successfully deleted'

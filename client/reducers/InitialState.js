@@ -1,11 +1,12 @@
-
 const InitialState = {
   isAuthenticated: false,
   loggedInUser: null,
-  users: [],
+  users: {},
   isListing: false,
-  currentDocuments: null,
-  userDocuments: []
+  userDocuments: [],
+  documents: [],
+  isCreating: false,
+  currentDocument: null
 };
 
 export default InitialState;

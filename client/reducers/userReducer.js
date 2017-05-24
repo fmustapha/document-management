@@ -1,21 +1,44 @@
 import types from '../actions/actionTypes';
 import initialState from '../reducers/InitialState';
 
+/**
+ *
+ *
+ * @export
+ * @param {Object} [state=initialState.users]
+ * @param {Object} action
+ * @returns {Object} store's state
+ */
 export default function userReducer(state = initialState.users, action) {
-  console.log(initialState.users, 'hello');
   switch (action.type) {
     case types.LIST_USERS:
-      return action.users;
+      return Object.assign({}, state, { users: action.users });
 
     case types.UPDATE_USER:
       return Object.assign({}, state, {
-        users: [...state.users, action.users],
-        isListing: false
+        users: {
+          ...state.users,
+          rows: [...state.users.rows].map((user) => {
+            if (user.id === action.userUpdate.id) {
+              return { ...user, roleId: parseInt(action.userUpdate.roleId, 10) };
+            }
+            return user;
+          }) },
+        isListing: true
       });
 
 
-    // case types.DELETE_USER:
-    //   return Object.assign({}, state, {action.user});
+    case types.DELETE_USER:
+      return Object.assign({}, state, {
+        users: {
+          ...state.users,
+          rows: [...state.users.rows].filter((user) => {
+            if (user.id !== action.id) {
+              return user;
+            }
+          })
+        },
+      });
 
     default:
       return state;

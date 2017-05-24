@@ -8,7 +8,6 @@ import types from './actionTypes';
  * @returns {any} message
  */
 export function addFlashMessage(message) {
-  console.log(message, 'message');
   return {
     type: types.ADD_FLASH_MESSAGE,
     message

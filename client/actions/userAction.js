@@ -6,8 +6,8 @@ import types from './actionTypes';
 export const listUsersSuccess = users => ({
   type: types.LIST_USERS, users });
 
-export const deleteUserSuccess = user => ({
-  type: types.DELETE_USER, user
+export const deleteUserSuccess = id => ({
+  type: types.DELETE_USER, id
 });
 
 export const UpdateUserSuccess = user => ({
@@ -46,8 +46,8 @@ export function updateUser(id, userUpdate) {
   return (dispatch) => {
     return axios.put(`/users/${id}`, userUpdate)
     .then((response) => {
-      console.log(response.data, 'response');
-      dispatch({ type: types.UPDATE_USER, userUpdate });
+      console.log(response.data, 'update response');
+      dispatch({ type: types.UPDATE_USER, userUpdate: { id, ...response.data.updatedUser } });
     }).catch((error) => {
       console.log(error);
       dispatch({ type: types.UPDATE_ERROR, error });
@@ -55,21 +55,10 @@ export function updateUser(id, userUpdate) {
   };
 }
 
-export function adminUpdateUser(id, userRoleUpdate) {
-  return (dispatch) => {
-    return axios.put(`/users/${id}`, userRoleUpdate)
-    .then(response => dispatch(adminUpdateUserSuccess(response.data.users))
-    )
-    .catch((error) => {
-      console.log('Error', error);
-    });
-  };
-}
-
 export function deleteUser(id) {
   return (dispatch) => {
-    axios.delete(`/users/${id}`)
-    .then(response => dispatch(deleteUserSuccess(response.data.users))
+    return axios.delete(`/users/${id}`)
+    .then(() => dispatch(deleteUserSuccess(id))
     )
     .catch((error) => {
       console.log('Error', error);
