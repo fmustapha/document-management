@@ -51,6 +51,7 @@ class Header extends React.Component {
       <ul id="nav-mobile" className="right hide-on-med-and-down">
         <li><Link to="/dms/document" activeClassName="active">Dashboard</Link></li>
         <li><Link to="/dms/user/account/:id" activeClassName="active">My Account</Link></li>
+        <li><Link to="/dms/users" activeClassName="active">Users</Link></li>
         <li><a href="" onClick={this.logout} activeClassName="active">Logout</a></li>
         <li><Link to="/dms/search" activeClassName="active">Search</Link></li>
         <Link to="/dms/about" className="waves-effect waves-light btn">Learn More</Link>

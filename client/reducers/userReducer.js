@@ -1,33 +1,24 @@
-import * as types from '../actions/actionTypes';
+import types from '../actions/actionTypes';
+import initialState from '../reducers/InitialState';
 
-const initialState = {
-  users: [],
-  isListing: false,
-  currentDocuments: null,
-  userDocuments: []
-};
-
-export default function userReducer(state = initialState, action) {
+export default function userReducer(state = initialState.users, action) {
+  console.log(initialState.users, 'hello');
   switch (action.type) {
-    case types.LIST_USERS: {
+    case types.LIST_USERS:
+      return action.users;
+
+    case types.UPDATE_USER:
       return Object.assign({}, state, {
         users: [...state.users, action.users],
         isListing: false
       });
-    }
 
-    case types.UPDATE_USER: {
-      return Object.assign({}, state, {
-        users: [...state.users, action.users],
-        isListing: false
-      });
-    }
 
-    case types.DELETE_USER: {
-      console.log(Object.assign({}, state, { users: action.users }));
-      return Object.assign({}, state, { isListing: false });
-    }
+    // case types.DELETE_USER:
+    //   return Object.assign({}, state, {action.user});
+
     default:
       return state;
   }
 }
+

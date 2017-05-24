@@ -3,25 +3,45 @@ import axios from 'axios';
 import types from './actionTypes';
 
 
-export function listUsersSuccess(users) {
-  return { type: types.LIST_USER, users };
-}
+export const listUsersSuccess = users => ({
+  type: types.LIST_USERS, users });
 
+export const deleteUserSuccess = user => ({
+  type: types.DELETE_USER, user
+});
+
+export const UpdateUserSuccess = user => ({
+  type: types.UPDATE_USER, user
+});
+
+export const adminUpdateUserSuccess = user => ({
+  type: types.UPDATE_USER, user
+});
+
+
+/**
+ *
+ *
+ * @export
+ * @returns {Object} containing users and user details
+ */
 export function listUsers() {
-  return (dispatch) => {
-    return axios.get('/users')
-    .then((response) => {
-      console.log(response.data.user);
-      const users = response.data.user;
-      dispatch(listUsersSuccess(users));
-    })
+  return dispatch => axios.get('/users/')
+    .then(response => dispatch(listUsersSuccess(response.data.users))
+    )
     .catch((error) => {
-      console.log(error);
+      console.log('Error', error);
     });
-  };
-  // return { type: types.LIST_USERS };
 }
 
+/**
+ *
+ *
+ * @export
+ * @param {Number} id
+ * @param {Object} userUpdate
+ * @returns {Object} containing successful message or error message
+ */
 export function updateUser(id, userUpdate) {
   return (dispatch) => {
     return axios.put(`/users/${id}`, userUpdate)
@@ -35,14 +55,25 @@ export function updateUser(id, userUpdate) {
   };
 }
 
-export function deleteUser(id) {
+export function adminUpdateUser(id, userRoleUpdate) {
   return (dispatch) => {
-    axios.delete(`/users/${id}`)
-    .then((response) => {
-      console.log('response', response.data);
-      dispatch({ type: types.DELETE_USER, id });
-    }).catch((error) => {
-      console.log(error);
+    return axios.put(`/users/${id}`, userRoleUpdate)
+    .then(response => dispatch(adminUpdateUserSuccess(response.data.users))
+    )
+    .catch((error) => {
+      console.log('Error', error);
     });
   };
 }
+
+export function deleteUser(id) {
+  return (dispatch) => {
+    axios.delete(`/users/${id}`)
+    .then(response => dispatch(deleteUserSuccess(response.data.users))
+    )
+    .catch((error) => {
+      console.log('Error', error);
+    });
+  };
+}
+

@@ -92,8 +92,8 @@ userUpdateAction
       <div className="">
       <div id="account">
         <h3>My Account</h3>
-        <form onSubmit={this.onClickEdit} method="post">
-          <div className="row" >
+        <form onSubmit={this.onClickEdit} method="post" id="form">
+          <div className="" >
             <div className="input-field col s6">
               <i className="material-icons prefix pad-icons">account_circle</i>
               <input
@@ -105,7 +105,7 @@ userUpdateAction
               <label htmlFor="username">Username</label>
             </div>
           </div>
-          <div className="row">
+          <div className="">
             <div className="input-field col s6">
               <i className="material-icons prefix pad-icons">account_circle</i>
               <input
@@ -117,7 +117,7 @@ userUpdateAction
               <label htmlFor="firstname">Firstname</label>
             </div>
           </div>
-          <div className="row">
+          <div className="">
             <div className="input-field col s6">
               <i className="material-icons prefix pad-icons">account_circle</i>
               <input
@@ -129,7 +129,7 @@ userUpdateAction
               <label htmlFor="lastname">Lastname</label>
             </div>
           </div>
-          <div className="row">
+          <div className="">
             <div className="input-field col s6">
               <i className="material-icons prefix pad-icons">email</i>
               <input
@@ -141,7 +141,7 @@ userUpdateAction
               <label htmlFor="email">Email</label>
             </div>
           </div>
-          <div className="row">
+          <div className="">
             <div className="input-field col s6">
               <i className="material-icons prefix pad-icons">lock</i>
               <input
