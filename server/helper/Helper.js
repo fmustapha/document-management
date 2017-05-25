@@ -118,11 +118,10 @@ const Helper = {
       $or:
       [
        { access: 'public' },
-        { ownerId: req.tokenDecode.userId },
+        { ownerId: req.decoded.userId },
         {
           $and: [
            { access: 'role' },
-            { ownerRoleId: req.tokenDecode.roleId }
           ]
         }
       ]

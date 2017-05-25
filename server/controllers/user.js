@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt-nodejs';
 import db from '../models';
-import auth from '../middlewares/auth';
 import Helper from '../helper/Helper';
 
 
