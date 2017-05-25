@@ -4,17 +4,27 @@ import Helper from '../helper/Helper';
 export default {
 
   createDocument(req, res) {
+    console.log(req.body, 'requests body');
+    if (!req.body.ownerId) {
+      req.body.ownerId = req.decoded.id || req.decoded.data.id;
+    }
+    if (!req.body.access || ['private', 'public', 'role'].indexOf(req.body.access) === -1) {
+      return res.status(400).json({ error: {
+        message: 'Access type can only be public, private or role'
+      } });
+    }
+    console.log(req.body, 'requests body');
     return db.Document.create(req.body)
       .then(((newDocument) => {
         res.status(200)
-          .send({
+          .json({
             newDocument,
             message: 'Document has been successfully created'
           });
       }))
       .catch((error) => {
         res.status(400)
-          .send(error);
+          .json({ error });
       });
   },
 
