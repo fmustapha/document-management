@@ -28,7 +28,6 @@ export default {
   },
 
   authorizeAdmin(req, res, next) {
-    console.log(req.decoded.data);
     if (req.decoded.data.roleId === 1 || String(req.decoded.data.id) === String(req.params.id)) {
       next();
     } else {

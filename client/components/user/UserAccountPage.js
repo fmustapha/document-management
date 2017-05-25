@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
 import { bindActionCreators } from 'redux';
 import * as userAction from '../../actions/userAction';
-
+import * as auth from '../../actions/auth';
 import { addFlashMessage } from '../../actions/flashMessages';
 
 /**
@@ -26,16 +26,20 @@ class UserAccountPage extends React.Component {
     super(props, context);
     this.state = {
       account: {
-        username: props.username,
-        firstname: props.firstname,
-        lastname: props.lastname,
-        email: props.email,
-        password: props.password
+        username: props.user.username,
+        firstname: props.user.firstname,
+        lastname: props.user.lastname,
+        email: props.user.email,
+        password: ''
       },
     };
     this.onClickEdit = this.onClickEdit.bind(this);
     this.onClickBack = this.onClickBack.bind(this);
     this.onChange = this.onChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
   }
 
   /**
@@ -67,18 +71,27 @@ class UserAccountPage extends React.Component {
     this.context.router.push('/dms/');
   }
 
-onClickEdit() {
-    this.props.userUpdateAction(this.props.id, this.state.account)
-    .then(() => toastr.success('User Successfully Updated'))
+onClickEdit(event) {
+  event.preventDefault();
+  console.log(this.state.account, 'state.account');
+    if (this.state.account.password.length < 1) {
+      delete this.state.account.password;
+    }
+    this.props.userUpdateAction(this.props.params.id, this.state.account)
+    .then(() => {
+      toastr.success('User Successfully Updated')
+      // this.props.actions.logout();
+      // this.context.router.push('/dms/');
+    })
     .catch(() => {
-      this.props.addFlashMessage({
+       this.props.addFlashMessage({
         type: 'error',
-        text: 'Unable to update user' });
+        text: 'Unable to create document' });
       toastr.error(
-        'Unable to update user');
+        'Unable to create document, kindly contact your Admin');
     });
-    this.props.endEdit();
   }
+
 userUpdateAction
   /**
    *
@@ -88,6 +101,7 @@ userUpdateAction
    * @memberof UserAccountPage
    */
   render() {
+    console.log(this.props.user)
     return (
       <div className="">
       <div id="account">
@@ -102,7 +116,6 @@ userUpdateAction
                 name="username"
                 type="text"
                 className="col 5 s12" />
-              <label htmlFor="username">Username</label>
             </div>
           </div>
           <div className="">
@@ -114,7 +127,6 @@ userUpdateAction
                 name="firstname"
                 type="text"
                 className="col 5 s12" />
-              <label htmlFor="firstname">Firstname</label>
             </div>
           </div>
           <div className="">
@@ -126,7 +138,6 @@ userUpdateAction
                 name="lastname"
                 type="text"
                 className="col 5 s12" />
-              <label htmlFor="lastname">Lastname</label>
             </div>
           </div>
           <div className="">
@@ -138,7 +149,6 @@ userUpdateAction
                 type="text"
                 name="email"
                 className="col 5 s12" />
-              <label htmlFor="email">Email</label>
             </div>
           </div>
           <div className="">
@@ -150,7 +160,7 @@ userUpdateAction
                 type="password"
                 name="password"
                 className="col 5 s12" />
-              <label htmlFor="password">Password</label>
+                <label htmlFor="password">Enter new password here</label>
             </div>
           </div>
           <input
@@ -180,6 +190,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    actions: bindActionCreators(auth, dispatch),
     userUpdateAction: bindActionCreators(userAction.updateUser, dispatch)
   };
 }

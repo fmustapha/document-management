@@ -70,7 +70,8 @@ class SignUpPage extends React.Component {
    * @returns {void}
    * @memberof SignUpPage
    */
-  onSubmit() {
+  onSubmit(event) {
+    event.preventDefault();
     this.props.actions.signUp(this.state.signUp)
     .then(() => {
       this.context.router.push('/dms/');

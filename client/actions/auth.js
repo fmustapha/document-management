@@ -11,6 +11,7 @@ import setAuthorizationToken from '../utils/setAuthorizationToken';
  * @returns {Object}
  */
 export function setCurrentUser(user) {
+  console.log(user, ' reached the login action');
   return {
     type: types.SET_CURRENT_USER,
     user

@@ -46,12 +46,17 @@ class Header extends React.Component {
    * @memberof Header
    */
   render() {
+    // const { id, roleId } = (this.props.auth.loggedInUser) ?
+    //   this.props.auth.loggedInUser.data : null;
+    const id = (this.props.auth.loggedInUser) ?
+      this.props.auth.loggedInUser.data.id : null;
+    const roleId = (this.props.auth.loggedInUser) ?
+      this.props.auth.loggedInUser.data.roleId : null;
     const { isAuthenticated } = this.props.auth;
     const userLinks = (
       <ul id="nav-mobile" className="right hide-on-med-and-down">
         <li><Link to="/dms/document" activeClassName="active">Dashboard</Link></li>
-        <li><Link to="/dms/user/account/:id" activeClassName="active">My Account</Link></li>
-        <li><Link to="/dms/users" activeClassName="active">Users</Link></li>
+        <li><Link to={`/dms/user/account/${id}`} activeClassName="active">My Account</Link></li>
         <li><a href="" onClick={this.logout} activeClassName="active">Logout</a></li>
         <li><Link to="/dms/search" activeClassName="active">Search</Link></li>
         <Link to="/dms/about" className="waves-effect waves-light btn">Learn More</Link>
@@ -69,12 +74,20 @@ class Header extends React.Component {
       <ul id="nav-mobile" className="right hide-on-med-and-down">
         <li><Link to="/dms/document" activeClassName="active">Dashboard</Link></li>
         <li><Link to="/dms/user" activeClassName="active">Manage Users</Link></li>
-        <li><Link to="/dms/userUpdate" activeClassName="active">My Account</Link></li>
+        <li><Link to={`/dms/user/account/${id}`} activeClassName="active">My Account</Link></li>
         <li><Link to="/dms/search" activeClassName="active">Search</Link></li>
         <li><a href="" onClick={this.logout} activeClassName="active">Logout</a></li>
       </ul>
     );
 
+    let link = guestLinks;
+    if (!isAuthenticated) {
+      link = guestLinks;
+    } else if (parseInt(roleId, 10) === 1) {
+      link = adminLinks;
+    } else if (parseInt(roleId, 10) === 2) {
+      link = userLinks;
+    }
     return (
       <div>
         <div id="nav-support">.</div>
@@ -82,7 +95,7 @@ class Header extends React.Component {
           <div className="nav-wrapper teal darken-4">
             <IndexLink page-padding to="/dms/" className="brand-logo">ODAHI DMS</IndexLink>         
           <div id="nav-mobile" className="right hide-on-med-and-down">
-            { isAuthenticated ? userLinks : guestLinks }
+            {link}
           </div>
           </div>
         </nav>

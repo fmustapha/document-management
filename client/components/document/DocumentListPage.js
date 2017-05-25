@@ -94,7 +94,7 @@ class DocumentsListPage extends React.Component {
    */
   render() {
     console.log(this.props.documents, 'documents');
-    const user = this.props.auth.loggedInUser.data.username;
+    const user = this.props.auth.loggedInUser? this.props.auth.loggedInUser.data.username : null;
     return (
       <div>
         <div className="page-header">

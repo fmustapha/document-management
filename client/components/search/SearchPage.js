@@ -112,10 +112,6 @@ class SearchPage
                             <i id="float-icons-left" className="fa fa-file-text" aria-hidden="true" />
                             <Link to={`/dms/document/${document.id}`}>{document.title}</Link>
                           </div>
-                          <div className="action-icons">
-                            <i id="float-icons-left" className="fa fa-pencil-square-o" aria-hidden="true" />
-                            <i id="float-icons-left" className="fa fa-trash" aria-hidden="true" />
-                          </div>
                           <div className="clear" />
                         </div>
                       </div>
@@ -138,8 +134,6 @@ class SearchPage
                 <th>Role</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
-                <th>Change Role</th>
-                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -153,25 +147,6 @@ class SearchPage
                   <td>{(user.roleId === 1) ? 'Admin' : 'Regular'}</td>
                   <td>{user.createdAt}</td>
                   <td>{user.updatedAt}</td>
-                  <td>{(user.id === 1) ?
-                     'Super Admin' : <div className="" id="select">
-                       <select
-                       value="select role"
-                       onChange={event => this.onRoleChange(event, user.id)}>
-                         <option value="" selected>Select Access Type</option>
-                         <option value={1} >Admin</option>
-                         <option value={2} >Regular</option>
-                       </select>
-                     </div>
-                    }
-                  </td>
-                  <td>
-                    <i
-                      id="float-icons-left"
-                      className="fa fa-trash"
-                      aria-hidden="true"
-                      onClick={() => this.onClickDelete(user.id)} />
-                  </td>
                 </tr>
                 )) : <span />}
             </tbody>

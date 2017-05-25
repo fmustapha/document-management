@@ -36,7 +36,6 @@ export default {
     * @returns {void} no returns
     */
   getAllUsers(req, res) {
-    console.log(req.odmsFilter, 'odmsFilter')
     return db.User
       .findAndCountAll(req.odmsFilter)
       .then((users) => {
@@ -203,6 +202,8 @@ export default {
           data: {
             id: user.id,
             username: user.username,
+            firstname: user.firstname,
+            lastname: user.lastname,
             email: user.email,
             roleId: user.roleId
           }
@@ -212,6 +213,9 @@ export default {
         return res.status(200).send({
           message: 'User authenticated successfully',
           user: user.username,
+          username: user.username,
+          firstname: user.firstname,
+          lastname: user.lastname,
           id: user.id,
           token
         });
