@@ -41,7 +41,7 @@ class SignUpPage extends React.Component {
    * @memberof SignUpPage
    */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.action.isAuthenticated) {
+    if (nextProps.auth.isAuthenticated) {
       browserHistory.push('/dms/document');
     }
   }
@@ -175,10 +175,16 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+function mapStateToProps(state) {
+  return {
+    auth: state.auth
+  }
+}
+
 SignUpPage.propTypes = {
   actions: React.PropTypes.object.isRequired,
 };
 
-export default connect(null,
+export default connect(mapStateToProps,
   mapDispatchToProps)(SignUpPage);
 

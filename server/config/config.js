@@ -1,8 +1,8 @@
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 
 dotenv.config();
 
-export default {
+module.exports = {
   development: {
     dialect: 'postgres',
     url: process.env.DB_URL
