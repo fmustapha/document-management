@@ -12,10 +12,7 @@ export default {
     url: process.env.TEST_DB_URL
   },
   production: {
-    username: 'andeladeveloper',
-    password: null,
-    database: 'documentdb_production',
-    host: '127.0.0.1',
+    url: process.env.DB_URL,
     dialect: 'postgres'
   }
 };
