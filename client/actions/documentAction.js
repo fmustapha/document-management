@@ -26,7 +26,8 @@ export function listDocument() {
   return (dispatch) => {
     axios.get('/documents')
     .then((response) => {
-      const documents = response.data.document;
+      console.log(response.data);
+      const documents = response.data.documents;
       dispatch(listDocumentSuccess(documents));
     })
     .catch((error) => {
@@ -36,9 +37,11 @@ export function listDocument() {
 }
 
 export function listUserDocument(id) {
+  console.log('right here');
   return (dispatch) => {
-    axios.get(`/users/${id}/documents`)
+    return axios.get(`/users/${id}/documents`)
     .then((response) => {
+      console.log(response, 'response action')
       const documents = response.data.documents;
       dispatch(listUserDocumentSuccess(documents));
     })

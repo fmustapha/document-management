@@ -28,7 +28,8 @@ export default {
   },
 
   authorizeAdmin(req, res, next) {
-    if (req.decoded.data.roleId === 1 || String(req.decoded.data.id) === String(req.params.id)) {
+    console.log(parseInt(req.decoded.data.roleId, 10), String(req.decoded.data.id), String(req.params.id));
+    if (parseInt(req.decoded.data.roleId, 10) === 1 || String(req.decoded.data.id) === String(req.params.id)) {
       next();
     } else {
       return res.status(403).send({

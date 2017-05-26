@@ -1,11 +1,5 @@
 import types from '../actions/actionTypes';
-
-const initialState = {
-  documents: [],
-  isCreating: false,
-  currentDocument: null,
-  userDocuments: []
-};
+import initialState from '../reducers/InitialState';
 
 
 /**
@@ -16,7 +10,7 @@ const initialState = {
  * @param {Object} action
  * @returns {Object} containing the new state for the store
  */
-export default function documentReducer(state = initialState, action) {
+export default function documentReducer(state = initialState.documents, action) {
   switch (action.type) {
     case types.ADD_DOCUMENT:
       return Object.assign({}, state, {
@@ -38,9 +32,12 @@ export default function documentReducer(state = initialState, action) {
       return Object.assign({}, state, { currentDocument: action.document });
 
     case types.LIST_DOCUMENT:
+      // return Object.assign({}, state, { documents: action.documents });
+      console.log(action, 'redddddddu');
       return Object.assign({}, state, { documents: action.documents });
 
     case types.LIST_USER_DOCUMENT:
+    console.log('here ', action)
       return Object.assign({}, state, { userDocuments:
          action.documents });
 

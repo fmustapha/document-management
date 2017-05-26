@@ -35,7 +35,7 @@ class DocumentsListPage extends React.Component {
    */
   componentWillMount() {
     this.props.dispatch(documentAction.listDocument());
-    this.props.dispatch(documentAction.listUserDocument(localStorage.getItem('id')));
+    this.props.dispatch(documentAction.listUserDocument(this.props.auth.loggedInUser.data.id));
   }
 
   /**
@@ -55,9 +55,9 @@ class DocumentsListPage extends React.Component {
   /**
    *
    *
-   * @param {any} document
-   * @param {any} index
-   * @returns {void}
+   * @param {Object} document
+   * @param {Number} index
+   * @returns {void} JSX content
    *
    * @memberof DocumentsListPage
    */
@@ -67,7 +67,7 @@ class DocumentsListPage extends React.Component {
 
   /**
    *
-   *
+   * @return {void}
    * @param {Number} id
    *
    * @memberof DocumentsListPage
@@ -93,7 +93,7 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   render() {
-    console.log(this.props.documents, 'documents');
+    console.log(this.props.documents.userDocuments, 'document==s');
     const user = this.props.auth.loggedInUser? this.props.auth.loggedInUser.data.username : null;
     return (
       <div>
@@ -134,7 +134,7 @@ class DocumentsListPage extends React.Component {
             </div>
             <div id="allDocuments" className="col s12">
               <div className="row">
-                {this.props.documents.documents.map((document) => (
+                {this.props.documents.documents ? this.props.documents.documents.rows.map((document) => (
                   <div className="col s12 m12" key={document.id}>
                     <div className="card">
                       <div className="card-content teal-text lighten-1">
@@ -166,12 +166,12 @@ class DocumentsListPage extends React.Component {
                       </div>
                     </div>
                   </div>
-                ))}
+                )) : '' }
               </div>
             </div>
             <div id="myDocuments" className="col s12">
               <div className="row">
-                {(this.props.documents.userDocuments.length < 1) ?
+                {(!this.props.documents.userDocuments || this.props.documents.userDocuments.length < 1) ?
                   <div className="col s12 m12" key={document.id}>
                     <div className="card">
                       <div className="card-content teal-text lighten-1">
@@ -228,7 +228,7 @@ DocumentsListPage.PropTypes = {
  * @returns {Object} contains document and authorization properties
  */
 function mapStateToProps(state) {
-  console.log(state);
+  console.log(state, 'state');
   return {
     documents: state.documents,
     auth: state.auth
