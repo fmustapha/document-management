@@ -19,7 +19,7 @@ module.exports = {
   target: 'web',
   output: {
     path: `${__dirname}/client`, // Note: Physical files are only output by the production build task `npm run build`.
-    publicPath: '/dist/',
+    publicPath: '/',
     filename: 'bundle.js'
   },
   devServer: {
