@@ -1,9 +1,13 @@
-import webpack from 'webpack';
-import path from 'path';
-import nodeExternals from 'webpack-node-externals';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+// import webpack from 'webpack';
+// import path from 'path';
+// import nodeExternals from 'webpack-node-externals';
+// import ExtractTextPlugin from 'extract-text-webpack-plugin';
+const webpack = require('webpack');
+const path = require('path');
+const nodeExternals = require('webpack-node-externals');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-export default {
+module.exports = {
   debug: true,
   devtool: 'inline-source-map',
   noInfo: false,
@@ -14,7 +18,7 @@ export default {
   ],
   target: 'web',
   output: {
-    path: `${__dirname}/dist`, // Note: Physical files are only output by the production build task `npm run build`.
+    path: `${__dirname}/client/dist`, // Note: Physical files are only output by the production build task `npm run build`.
     publicPath: '/dist/',
     filename: 'bundle.js'
   },
