@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { render } from 'react-dom';
+import ReactDom from 'react-dom';
 import jwtDecode from 'jwt-decode';
 import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
@@ -18,7 +18,7 @@ if (localStorage.jwtToken) {
   store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
 }
 
-render(
+ReactDom.render(
   <Provider store={store}>
     <Router history={browserHistory} routes={routes} />
   </Provider>,
