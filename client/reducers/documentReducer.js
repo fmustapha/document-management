@@ -32,12 +32,9 @@ export default function documentReducer(state = initialState.documents, action) 
       return Object.assign({}, state, { currentDocument: action.document });
 
     case types.LIST_DOCUMENT:
-      // return Object.assign({}, state, { documents: action.documents });
-      console.log(action, 'redddddddu');
       return Object.assign({}, state, { documents: action.documents });
 
     case types.LIST_USER_DOCUMENT:
-    console.log('here ', action)
       return Object.assign({}, state, { userDocuments:
          action.documents });
 

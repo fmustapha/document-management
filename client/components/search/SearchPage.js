@@ -32,6 +32,13 @@ class SearchPage
     this.onTermChange = this.onTermChange.bind(this);
   }
 
+ /**
+  *
+  * @returns {void}
+  * @param {Object} event
+  *
+  * @memberof SearchPage
+  */
  onTermChange(event) {
    const term = event.target.value;
    console.log(term);
@@ -46,7 +53,6 @@ class SearchPage
    */
   onTypeChange(event) {
     const type = event.target.value;
-    console.log(type, 'term is', this.state.term);
     if (type === 'user') {
       this.props.searchAction.searchUser(this.state.term);
     } else {
@@ -55,7 +61,6 @@ class SearchPage
   }
 
   render() {
-    console.log(this.props.search.document);
     const allUsers = this.props.search.user ?
      this.props.search.user.user : null;
     return (
@@ -103,7 +108,7 @@ class SearchPage
                     </div>
                   </div>
                 :
-                this.props.search.document.document.map((document) => (
+                this.props.search.document.documents.rows.map((document) => (
                   <div className="col s12 m12" key={document.id}>
                     <div className="card">
                       <div className="card-content green-text">
@@ -137,7 +142,7 @@ class SearchPage
               </tr>
             </thead>
             <tbody>
-              {allUsers ? allUsers.map((user, index) => (
+              {allUsers ? allUsers.rows.map((user, index) => (
                 <tr>
                   <td>{index + 1}</td>
                   <td>{user.username}</td>

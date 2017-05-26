@@ -1,7 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router';
 
+/**
+ *
+ *
+ * @class AboutPage
+ * @extends {React.Component}
+ */
 class AboutPage extends React.Component {
+  /**
+   *
+   *
+   * @returns {void} JSX content
+   *
+   * @memberof AboutPage
+   */
   render() {
     return (
       <div className="about">

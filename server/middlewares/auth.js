@@ -28,8 +28,8 @@ export default {
   },
 
   authorizeAdmin(req, res, next) {
-    console.log(parseInt(req.decoded.data.roleId, 10), String(req.decoded.data.id), String(req.params.id));
-    if (parseInt(req.decoded.data.roleId, 10) === 1 || String(req.decoded.data.id) === String(req.params.id)) {
+    if (parseInt(req.decoded.data.roleId, 10) === 1 ||
+     String(req.decoded.data.id) === String(req.params.id)) {
       next();
     } else {
       return res.status(403).send({
@@ -107,7 +107,6 @@ export default {
       };
     }
     if (`${req.baseUrl}${req.route.path}` === '/users/') {
-      console.log(req, 'req')
       query.where = {};
     }
     if (`${req.baseUrl}${req.route.path}` === '/documents/search') {
