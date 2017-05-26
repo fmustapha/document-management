@@ -38,10 +38,6 @@ class UserAccountPage extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-  }
-
   /**
    *
    *
@@ -73,7 +69,6 @@ class UserAccountPage extends React.Component {
 
 onClickEdit(event) {
   event.preventDefault();
-  console.log(this.state.account, 'state.account');
     if (this.state.account.password.length < 1) {
       delete this.state.account.password;
     }
@@ -101,7 +96,6 @@ userUpdateAction
    * @memberof UserAccountPage
    */
   render() {
-    console.log(this.props.user)
     return (
       <div className="">
       <div id="account">

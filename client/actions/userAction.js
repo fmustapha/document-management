@@ -30,7 +30,6 @@ export function listUsers() {
     .then(response => dispatch(listUsersSuccess(response.data.users))
     )
     .catch((error) => {
-      console.log('Error', error);
     });
 }
 
@@ -46,10 +45,8 @@ export function updateUser(id, userUpdate) {
   return (dispatch) => {
     return axios.put(`/users/${id}`, userUpdate)
     .then((response) => {
-      console.log(response.data, 'update response');
       dispatch({ type: types.UPDATE_USER, userUpdate: { id, ...response.data.updatedUser } });
     }).catch((error) => {
-      console.log(error);
       dispatch({ type: types.UPDATE_ERROR, error });
     });
   };
@@ -61,7 +58,6 @@ export function deleteUser(id) {
     .then(() => dispatch(deleteUserSuccess(id))
     )
     .catch((error) => {
-      console.log(error);
     });
   };
 }

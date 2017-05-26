@@ -26,7 +26,6 @@ export function listDocument() {
   return (dispatch) => {
     axios.get('/documents')
     .then((response) => {
-      console.log(response.data);
       const documents = response.data.documents;
       dispatch(listDocumentSuccess(documents));
     })
@@ -37,11 +36,9 @@ export function listDocument() {
 }
 
 export function listUserDocument(id) {
-  console.log('right here');
   return (dispatch) => {
     return axios.get(`/users/${id}/documents`)
     .then((response) => {
-      console.log(response, 'response action')
       const documents = response.data.documents;
       dispatch(listUserDocumentSuccess(documents));
     })
@@ -79,7 +76,6 @@ export function deleteDocument(id) {
   return (dispatch) => {
     axios.delete(`/documents/${id}`)
     .then((response) => {
-      console.log('message', response.data);
       dispatch({ type: types.DELETE_DOCUMENT, id });
     }).catch((error) => {
       dispatch({ type: types.DELETE_ERROR, error });

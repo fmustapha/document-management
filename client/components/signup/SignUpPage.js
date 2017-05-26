@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
+import toastr from 'toastr';
 import * as auth from '../../actions/auth';
 
 /**
@@ -41,7 +42,7 @@ class SignUpPage extends React.Component {
    * @memberof SignUpPage
    */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
+    if (nextProps.auth.loggedInUser.data) {
       browserHistory.push('/dms/document');
     }
   }
@@ -74,9 +75,14 @@ class SignUpPage extends React.Component {
     event.preventDefault();
     this.props.actions.signUp(this.state.signUp)
     .then(() => {
-      this.context.router.push('/dms/');
-    }).catch((error) => {
-      console.log(error);
+      if (this.props.auth.error) {
+        toastr.success('error signed up');
+      } else {
+        toastr.success('successfully signed up');
+      }
+    })
+    .catch(() => {
+      toastr.error('Oops. Error occured during your sign up. Try again :)');
     });
   }
 

@@ -82,7 +82,6 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   render() {
-    console.log(this.props.documents.userDocuments, 'document==s');
     const user = this.props.auth.loggedInUser ?
      this.props.auth.loggedInUser.data.username : null;
     return (

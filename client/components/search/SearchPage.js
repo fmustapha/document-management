@@ -41,7 +41,6 @@ class SearchPage
   */
  onTermChange(event) {
    const term = event.target.value;
-   console.log(term);
    this.setState({ term });
  }
   /**
@@ -165,7 +164,6 @@ class SearchPage
 }
 
 function mapStateToProps(state) {
-  console.log('state', state)
   return {
     search: state.search
   };

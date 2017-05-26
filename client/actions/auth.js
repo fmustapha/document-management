@@ -1,5 +1,6 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import toastr from 'toastr';
 import types from '../actions/actionTypes';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 
@@ -11,7 +12,6 @@ import setAuthorizationToken from '../utils/setAuthorizationToken';
  * @returns {Object}
  */
 export function setCurrentUser(user) {
-  console.log(user, ' reached the login action');
   return {
     type: types.SET_CURRENT_USER,
     user
@@ -29,14 +29,11 @@ export function login(loginDetails) {
   return dispatch => axios.post('/users/login', loginDetails)
       .then((response) => {
         const token = response.data.token;
-        console.log(response.data.token, 'responseTokenData');
         localStorage.setItem('jwtToken', token);
         setAuthorizationToken(token);
         dispatch(setCurrentUser(jwtDecode(token)));
-        console.log(response);
       })
       .catch((error) => {
-        console.log(error);
         dispatch({
           type: types.VALIDATION_ERROR,
           response: error.response.data.message
@@ -45,8 +42,8 @@ export function login(loginDetails) {
 }
 
 /**
- * 
- * 
+ *
+ *
  * @export
  * @param {any} userDetails 
  * @returns
@@ -54,12 +51,14 @@ export function login(loginDetails) {
 export function signUp(userDetails) {
   return dispatch => axios.post('/users/', userDetails)
       .then((response) => {
-        axios.defaults.headers.common.Authorization = response.data.token;
-        console.log(response.data);
+        const token = response.data.token;
+        localStorage.setItem('jwtToken', token);
+        setAuthorizationToken(token);
         dispatch({
           type: types.SIGNUP_USER,
           response: response.data
         });
+        dispatch(setCurrentUser(jwtDecode(token)));
         dispatch({
           type: types.CLEAR_ERROR
         });
@@ -67,8 +66,9 @@ export function signUp(userDetails) {
       .catch((error) => {
         dispatch({
           type: types.VALIDATION_ERROR,
-          response: error.response.data.message
+          error: error.response.data.message
         });
+        toastr.error('Unable to sign up');
       });
 }
 
