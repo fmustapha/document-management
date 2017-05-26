@@ -8,11 +8,8 @@ export default {
     url: process.env.DB_URL
   },
   test: {
-    username: 'andeladeveloper',
-    password: null,
-    database: 'documentdb_test',
-    host: '127.0.0.1',
-    dialect: 'postgres'
+    dialect: 'postgres',
+    url: process.env.TEST_DB_URL
   },
   production: {
     username: 'andeladeveloper',

@@ -118,11 +118,10 @@ const Helper = {
       $or:
       [
        { access: 'public' },
-        { ownerId: req.tokenDecode.userId },
+        { ownerId: req.decoded.userId },
         {
           $and: [
            { access: 'role' },
-            { ownerRoleId: req.tokenDecode.roleId }
           ]
         }
       ]
@@ -187,7 +186,7 @@ const Helper = {
    */
   hasRoleAccess(doc, req) {
     return (doc.access === 'role'
-      && doc.ownerRoleId === req.tokenDecode.roleId);
+      && doc.ownerRoleId === req.decoded.roleId);
   },
 
 };

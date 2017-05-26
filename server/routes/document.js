@@ -8,7 +8,7 @@ document
 .post('/', auth.verifyToken, Documents.createDocument);
 
 document
-.get('/', auth.verifyToken, Documents.listDocuments);
+.get('/', auth.verifyToken, auth.validateSearch, Documents.listDocuments);
 
 document
 .get('/:id', auth.verifyToken, Documents.findDocument);

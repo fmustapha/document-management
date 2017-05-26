@@ -12,19 +12,23 @@ const port = parseInt(process.env.PORT, 10) || 8000;
 
 app.set('port', port);
 
-app.get('*', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../../client/index.html'));
+app.get('/dms/*', (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, 'client/index.html'));
 });
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV !== 'test') {
+  database.sequelize.sync().then(
+  app.listen(port, (err) => {
+    if (err) {
+      Logger.error(err);
+    } else {
+      open(`http://localhost:${port}`);
+    }
+  })
+  ).catch(error => Logger.error(error));
+}
 
-database.sequelize.sync().then(
-app.listen(port, (err) => {
-  if (err) {
-    Logger.error(err);
-  } else {
-    open(`http://localhost:${port}`);
-  }
-})
-).catch(error => Logger.error(error));
+module.exports = app;
 
 // const server = http.createServer(app);
 // const server = http.createServer(app);

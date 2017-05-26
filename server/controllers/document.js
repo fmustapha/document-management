@@ -4,17 +4,27 @@ import Helper from '../helper/Helper';
 export default {
 
   createDocument(req, res) {
+    console.log(req.body, 'requests body');
+    if (!req.body.ownerId) {
+      req.body.ownerId = req.decoded.id || req.decoded.data.id;
+    }
+    if (!req.body.access || ['private', 'public', 'role'].indexOf(req.body.access) === -1) {
+      return res.status(400).json({ error: {
+        message: 'Access type can only be public, private or role'
+      } });
+    }
+    console.log(req.body, 'requests body');
     return db.Document.create(req.body)
       .then(((newDocument) => {
         res.status(200)
-          .send({
+          .json({
             newDocument,
             message: 'Document has been successfully created'
           });
       }))
       .catch((error) => {
         res.status(400)
-          .send(error);
+          .json({ error });
       });
   },
 
@@ -35,22 +45,51 @@ export default {
       }));
   },
 
+  // listDocuments(req, res) {
+  //   return db.Document.findAll({
+  //     offset: req.query.offset || 0,
+  //     limit: req.query.limit || 20,
+  //     include: [db.User],
+  //     order: [
+  //       ['updatedAt', 'DESC']
+  //     ]
+  //   })
+  //   .then(document => res.status(200)
+  //   .send({ message: 'Successfull', document }))
+  //   .catch(error => res.status(400).send({
+  //     error,
+  //     message: 'Error retrieving documents'
+  //   }));
+  // },
+
+/**
+    * Get all document
+    * Route: GET: /documents/
+    * @param {Object} req request object
+    * @param {Object} res response object
+    * @returns {void} response object or void
+    */
   listDocuments(req, res) {
-    return db.Document.findAll({
-      offset: req.query.offset || 0,
-      limit: req.query.limit || 20,
-      include: [db.User],
-      order: [
-        ['updatedAt', 'DESC']
-      ]
-    })
-    .then(document => res.status(200)
-    .send({ message: 'Successfull', document }))
-    .catch(error => res.status(400).send({
-      error,
-      message: 'Error retrieving documents'
-    }));
+    req.odmsFilter.attributes = Helper.getDocAttribute();
+    db.Document
+      .findAndCountAll(req.odmsFilter)
+      .then((documents) => {
+        const condition = {
+          count: documents.count,
+          limit: req.odmsFilter.limit,
+          offset: req.odmsFilter.offset
+        };
+        delete documents.count;
+        const pagination = Helper.pagination(condition);
+        res.status(200)
+          .send({
+            message: 'You have successfully retrieved all documents',
+            documents,
+            pagination
+          });
+      });
   },
+
 
   modifyDocument(req, res) {
     db.Role.findById(req.decoded.data.roleId)

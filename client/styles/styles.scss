@@ -1,0 +1,211 @@
+/* Styles */
+$theme-color : #004d40;
+$grey-color: #bdbdbd;
+$light-grey: #eeeeee ;
+$tab-text: #ffffff;
+$padding-left:10px; 
+
+
+#layout{
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: $theme-color;
+  min-width: 550px;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+#nav-support {
+  background-color: $grey-color;
+  height: 10px; 
+}
+
+a.active{
+color:orange;
+}
+
+.tabs .tab a:hover, .tabs .tab a {
+  color: white !important;
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+  color: orange !important;
+}
+
+#page-padding {
+  margin: 50px;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+select {
+    display: block !important ;
+    width: 50%;
+    margin-top: 30%;
+}
+
+.pad-icons {
+  margin-left: -20px;
+  padding-left: -20px;
+}
+
+#login-padding {
+  margin: 50px 0px 50px 450px;
+}
+
+#account {
+  padding: 0 100px;
+}
+
+.account-side {
+  background-image: url("./image/doc6.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  display: inline-block;
+  width: 45%;
+  height: 50%;
+  // z-index: -1; 
+}
+
+#form {
+  display: inline-block;
+  width: 50%;
+  margin-right: 20px;
+}
+
+.card{
+ width: 100%;
+}
+
+.float-icons-left{
+  float: left;
+  font-size: 50px;
+}
+
+.page-center-padding {
+  width: 80%;
+  padding-left: $padding-left;
+  padding-right:10px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.search_style{
+  width: 80%;
+  margin: 0 10%;
+  text-align: center;
+}
+
+.search_type{
+  width:40%;
+}
+
+.search_nav {
+  background-color: $tab-text;
+  color: #000000;
+}
+
+.document-view {
+  width: 80%;
+  padding-left: $padding-left;
+  padding-right:10px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 20px;
+  text-align: center;
+  background-color: $light-grey;
+}
+
+.dashboard-header {
+padding-left: $padding-left;  
+float: left
+}
+
+.welcome-message{
+  padding-left: 70px;
+  //  float: right
+}
+
+.document-title {
+  width: 70%;
+  float: left;
+}
+
+.page-header {
+  margin-top: 10px;
+  padding-top: 10px;
+}
+.document-title > i {
+  font-size: 40px;
+}
+
+.white-text {
+ color: white;
+}
+
+.action-icons {
+  width: 15%;
+  float: right;
+}
+
+.action-icons > i {
+  margin-left: 30px;
+}
+.action-icons > i:hover {
+  cursor: pointer;
+}
+
+.create-logo{
+  bottom: 0;
+  right: 0;
+  position: fixed;
+}
+
+.tab-text{
+  color:$tab-text;
+}
+
+.clear {
+  clear: both;
+}
+
+nav{
+  padding-top: 0px;
+}
+custom{
+  max-width: 50px;
+}
+
+#button-style {
+  margin: 0px 0px 0px 40px;
+}
+
+#body {
+  /*background-color: rgba(0, 0, 0, 0.5);
+  color: black;
+  position: absolute;
+  height: 100%;
+  width: 100%;*/
+}
+
+#bg {
+  background-image: url("./image/bg.jpg");
+  /*background-position: center;
+  background-size:cover;
+  margin: 0;*/
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; 
+}
+
+.footer {
+  position: absolute;
+  width: 100%;
+  height: 60px;
+}
