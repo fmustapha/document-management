@@ -69,12 +69,14 @@ class LoginPage extends React.Component {
    */
   onSubmit(event) {
     event.preventDefault();
-    this.props.actions.login(this.state.login)
-    .then(() => {
-      this.context.router.push('/dms/document');
-    }).catch((error) => {
-      console.log(error);
-    });
+    if (!this.state.email && !this.state.password) {
+      this.props.actions.login(this.state.login)
+        .then(() => {
+          this.context.router.push('/dms/document');
+        }).catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   /**
@@ -88,7 +90,7 @@ class LoginPage extends React.Component {
     return (
       <div id="login-padding">
         <h3>login</h3>
-        <form onSubmit={this.onSubmit} method="post">
+        <form action="#" onSubmit={this.onSubmit} method="post">
           <i className="material-icons prefix">email
               </i>
           <div className="row">

@@ -99,7 +99,7 @@ class UserListPage extends React.Component {
     return (
       <div>
         <div className="welcome-message"><h4>Welcome Admin</h4><h6>No of Users:
-          {allUsers && allUsers.length}{allUsers.lenght}</h6></div>
+          {(allUsers && allUsers.length) ? allUsers.length : ''}</h6></div>
         <div>
           <table id="page-padding" className="striped">
             <thead>
@@ -157,9 +157,9 @@ class UserListPage extends React.Component {
 }
 
 UserListPage.propTypes = {
-  actions: React.PropTypes.object.isRequired,
-  users: React.PropTypes.array.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired
+  actions: PropTypes.object.isRequired,
+  users: PropTypes.object.isRequired,
+  addFlashMessage: PropTypes.func.isRequired
 };
 
 /**

@@ -73,7 +73,7 @@ class Header extends React.Component {
     const adminLinks = (
       <ul id="nav-mobile" className="right hide-on-med-and-down">
         <li><Link to="/dms/document" activeClassName="active">Dashboard</Link></li>
-        <li><Link to="/dms/user" activeClassName="active">Manage Users</Link></li>
+        <li><Link to="/dms/users" activeClassName="active">Manage Users</Link></li>
         <li><Link to={`/dms/user/account/${id}`} activeClassName="active">My Account</Link></li>
         <li><Link to="/dms/search" activeClassName="active">Search</Link></li>
         <li><a href="" onClick={this.logout} activeClassName="active">Logout</a></li>
