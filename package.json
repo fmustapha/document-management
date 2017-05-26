@@ -40,6 +40,7 @@
     "axios": "^0.16.1",
     "babel-polyfill": "^6.23.0",
     "babel-register": "^6.24.1",
+    "babel-watch": "^2.0.6",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
     "classnames": "^2.2.5",
