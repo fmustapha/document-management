@@ -18,9 +18,9 @@ module.exports = {
   ],
   target: 'web',
   output: {
-    path: `${__dirname}/client`, // Note: Physical files are only output by the production build task `npm run build`.
+    filename: 'bundle.js',
     publicPath: '/',
-    filename: 'bundle.js'
+    path: `${__dirname}/client`, // Note: Physical files are only output by the production build task `npm run build`.
   },
   devServer: {
     contentBase: path.resolve(__dirname, '/client')

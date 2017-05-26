@@ -21,8 +21,6 @@ if (process.env.NODE_ENV !== 'test') {
   app.listen(port, (err) => {
     if (err) {
       Logger.error(err);
-    } else {
-      open(`http://localhost:${port}`);
     }
   })
   ).catch(error => Logger.error(error));
