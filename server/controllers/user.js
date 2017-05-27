@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt-nodejs';
+import omit from 'lodash/omit';
 import db from '../models';
 import Helper from '../helper/Helper';
+
 
 
 const secret = process.env.SECRET || 'samplesecret';
@@ -144,22 +146,20 @@ export default {
       }
       db.User.create(req.body)
         .then((newUser) => {
+          const userDetails = omit(newUser.dataValues, [
+            'password',
+            'createdAt',
+            'updatedAt'
+          ]);
           const token = jwt.sign({
-            data: {
-              id: newUser.id,
-              username: newUser.username,
-              email: newUser.email,
-              password: newUser.password,
-              roleId: newUser.roleId
-            }
+            data: userDetails
           }, secret, {
             expiresIn: '24h' // expires in 24 hours
           });
           res.status(200)
             .send({
               token,
-              newUser: newUser.username,
-              id: newUser.id,
+              newUser: userDetails,
               message: 'User has been successfully created'
             });
         })
@@ -197,25 +197,19 @@ export default {
             message: 'Authentication Failed. Wrong password.'
           });
         }
+        const userDetails = omit(user.dataValues, [
+          'password',
+          'createdAt',
+          'updatedAt'
+        ]);
         const token = jwt.sign({
-          data: {
-            id: user.id,
-            username: user.username,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            email: user.email,
-            roleId: user.roleId
-          }
+          data: userDetails
         }, secret, {
           expiresIn: '24h' // expires in 24 hours
         });
         return res.status(200).send({
           message: 'User authenticated successfully',
-          user: user.username,
-          username: user.username,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          id: user.id,
+          user: userDetails,
           token
         });
       })

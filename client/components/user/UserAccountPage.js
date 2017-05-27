@@ -75,8 +75,6 @@ onClickEdit(event) {
     this.props.userUpdateAction(this.props.params.id, this.state.account)
     .then(() => {
       toastr.success('User Successfully Updated')
-      // this.props.actions.logout();
-      // this.context.router.push('/dms/');
     })
     .catch(() => {
        this.props.addFlashMessage({
@@ -96,6 +94,7 @@ userUpdateAction
    * @memberof UserAccountPage
    */
   render() {
+    console.log(this.props.user, 'user');
     return (
       <div className="">
       <div id="account">

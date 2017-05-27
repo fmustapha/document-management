@@ -99,8 +99,8 @@ class LoginPage extends React.Component {
                 onChange={this.onChange}
                 value={this.state.login.email}
                 name="email"
-                type="text"
-                className="col 5 s12" />
+                type="email"
+                className="col 5 s12" required />
               <label htmlFor="email">Email</label>
             </div>
           </div>
@@ -112,7 +112,7 @@ class LoginPage extends React.Component {
                 value={this.state.login.password}
                 name="password"
                 type="password"
-                className="col 5 s12" />
+                className="col 5 s12" required />
               <label htmlFor="password">Password</label>
             </div>
           </div>

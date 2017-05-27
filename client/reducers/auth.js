@@ -7,8 +7,6 @@ const initialState = {
   loggedInUser
 };
 
-
-
 /**
  *
  *

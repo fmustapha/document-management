@@ -32,6 +32,7 @@ export function login(loginDetails) {
         localStorage.setItem('jwtToken', token);
         setAuthorizationToken(token);
         dispatch(setCurrentUser(jwtDecode(token)));
+        console.log(jwtDecode(token));
       })
       .catch((error) => {
         dispatch({
@@ -56,7 +57,7 @@ export function signUp(userDetails) {
         setAuthorizationToken(token);
         dispatch({
           type: types.SIGNUP_USER,
-          response: response.data
+          response: response.data.newUser
         });
         dispatch(setCurrentUser(jwtDecode(token)));
         dispatch({

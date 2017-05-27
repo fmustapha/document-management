@@ -106,7 +106,7 @@ class SignUpPage extends React.Component {
                 value={this.state.signUp.Username}
                 name="username"
                 type="text"
-                className="col 5 s12" />
+                className="col 5 s12" required />
               <label htmlFor="username">Username</label>
             </div>
           </div>
@@ -118,7 +118,7 @@ class SignUpPage extends React.Component {
                 value={this.state.signUp.Firstname}
                 name="firstname"
                 type="text"
-                className="col 5 s12" />
+                className="col 5 s12" required />
               <label htmlFor="firstname">Firstname</label>
             </div>
           </div>
@@ -130,7 +130,7 @@ class SignUpPage extends React.Component {
                 value={this.state.signUp.Lastname}
                 name="lastname"
                 type="text"
-                className="col 5 s12" />
+                className="col 5 s12" required />
               <label htmlFor="lastname">Lastname</label>
             </div>
           </div>
@@ -140,7 +140,7 @@ class SignUpPage extends React.Component {
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.email}
-                type="text"
+                type="email"
                 name="email"
                 className="col 5 s12" />
               <label htmlFor="email">Email</label>
@@ -154,7 +154,7 @@ class SignUpPage extends React.Component {
                 value={this.state.signUp.password}
                 type="password"
                 name="password"
-                className="col 5 s12" />
+                className="col 5 s12" required />
               <label htmlFor="password">Password</label>
             </div>
           </div>
