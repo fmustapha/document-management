@@ -14,6 +14,18 @@ $padding-left:10px;
   margin: 0 auto;
 }
 
+body {
+  font-family: Courgette;
+}
+
+h1 {
+    color: white;
+    text-shadow: 1px 1px 2px black, 0 0 25px green, 0 0 5px $theme-color;
+}
+
+button {
+  margin: 20px;
+}
 #nav-support {
   background-color: $grey-color;
   height: 10px; 
@@ -58,13 +70,13 @@ select {
 }
 
 .account-side {
-  background-image: url("./image/doc6.jpg");
+  background-image: url("./image/doc_4.png");
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
   display: inline-block;
   width: 45%;
-  height: 50%;
+  height: 70%;
   // z-index: -1; 
 }
 
@@ -212,6 +224,7 @@ custom{
   background-size:cover;
   margin: 0;*/
   background-size: cover;
+  padding-left: 10px;
   background-repeat: no-repeat;
   position: absolute;
   width: 100vw;

@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import ReactDom from 'react-dom';
 import jwtDecode from 'jwt-decode';
 import { Router, browserHistory } from 'react-router';

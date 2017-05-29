@@ -46,8 +46,6 @@ class Header extends React.Component {
    * @memberof Header
    */
   render() {
-    // const { id, roleId } = (this.props.auth.loggedInUser) ?
-    //   this.props.auth.loggedInUser.data : null;
     const id = (this.props.auth.loggedInUser) ?
       this.props.auth.loggedInUser.data.id : null;
     const roleId = (this.props.auth.loggedInUser) ?
@@ -55,10 +53,19 @@ class Header extends React.Component {
     const { isAuthenticated } = this.props.auth;
     const userLinks = (
       <ul id="nav-mobile" className="right hide-on-med-and-down">
-        <li><Link to="/dms/document" activeClassName="active">Dashboard</Link></li>
-        <li><Link to={`/dms/user/account/${id}`} activeClassName="active">My Account</Link></li>
-        <li><a href="" onClick={this.logout} activeClassName="active">Logout</a></li>
-        <li><Link to="/dms/search" activeClassName="active">Search</Link></li>
+        <li><Link to="/dms/document" activeClassName="active">
+          <i
+         className="fa fa-tachometer" aria-hidden="true" />
+         Dashboard</Link></li>
+        <li><Link to={`/dms/user/account/${id}`} activeClassName="active">
+          <i className="fa fa-user-circle-o" aria-hidden="true" />
+          My Account</Link></li>
+        <li><a href="" onClick={this.logout} activeClassName="active">
+          <i className="fa fa-sign-out" aria-hidden="true" />
+          Logout</a></li>
+        <li><Link to="/dms/search" activeClassName="active">
+          <i className="fa fa-search" aria-hidden="true" />
+        Search</Link></li>
         <Link to="/dms/about" className="waves-effect waves-light btn">Learn More</Link>
       </ul>
       );
@@ -73,10 +80,18 @@ class Header extends React.Component {
     const adminLinks = (
       <ul id="nav-mobile" className="right hide-on-med-and-down">
         <li><Link to="/dms/document" activeClassName="active">Dashboard</Link></li>
-        <li><Link to="/dms/users" activeClassName="active">Manage Users</Link></li>
-        <li><Link to={`/dms/user/account/${id}`} activeClassName="active">My Account</Link></li>
-        <li><Link to="/dms/search" activeClassName="active">Search</Link></li>
-        <li><a href="" onClick={this.logout} activeClassName="active">Logout</a></li>
+        <li><Link to="/dms/users" activeClassName="active">
+          <i className="fa fa-users" aria-hidden="true" />
+        Manage Users</Link></li>
+        <li><Link to={`/dms/user/account/${id}`} activeClassName="active">
+          <i className="fa fa-user-circle-o" aria-hidden="true" />
+        My Account</Link></li>
+        <li><Link to="/dms/search" activeClassName="active">
+          <i className="fa fa-search" aria-hidden="true" />
+        Search</Link></li>
+        <li><a href="" onClick={this.logout} activeClassName="active">
+          <i className="fa fa-sign-out" aria-hidden="true" />
+        Logout</a></li>
       </ul>
     );
 
@@ -93,10 +108,12 @@ class Header extends React.Component {
         <div id="nav-support">.</div>
         <nav>
           <div className="nav-wrapper teal darken-4">
-            <IndexLink page-padding to="/dms/" className="brand-logo">ODAHI DMS</IndexLink>         
-          <div id="nav-mobile" className="right hide-on-med-and-down">
-            {link}
-          </div>
+            <IndexLink page-padding to="/dms/" className="brand-logo">
+              <i className="fa fa-crosshairs" aria-hidden="true"></i>
+            ODAHI DMS</IndexLink>
+            <div id="nav-mobile" className="right hide-on-med-and-down">
+              {link}
+            </div>
           </div>
         </nav>
         <div id="nav-support">.</div>
