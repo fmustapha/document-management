@@ -34,10 +34,9 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   componentWillMount() {
-    this.props.dispatch(documentAction.listDocument());
-    this.props
-    .dispatch(documentAction
-    .listUserDocument(this.props.auth.loggedInUser.data.id));
+    const loggedInUser = this.props.auth.loggedInUser.data.id;
+    this.props.actions.listDocument();
+    this.props.actions.listUserDocument(loggedInUser);
   }
 
   /**
@@ -51,7 +50,6 @@ class DocumentsListPage extends React.Component {
     $('ul.tabs').tabs();
     $('ul.tabs').tabs('select_tab', 'allDocuments');
     $('.tooltipped').tooltip({ delay: 50 });
-    $('.read-file-tooltip').tooltip({ delay: 50 });
   }
 
   /**
@@ -62,14 +60,14 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   deleteDocument(id) {
-    this.props.dispatch(documentAction.deleteDocument(id))
+    this.props.actions.deleteDocument(id)
     .then(() => toastr.success('Document Successfully Deleted'))
     .catch(() => {
-      this.props.dispatch(addFlashMessage({
+      this.props.addFlashMessage({
         type: 'error',
-        text: 'Unable to delete document' }));
+        text: 'Unable to delete user' });
       toastr.error(
-        'Unable to delete document');
+        'Unable to delete user');
     });
     this.setState({ id: 0 });
   }
@@ -84,6 +82,10 @@ class DocumentsListPage extends React.Component {
   render() {
     const user = this.props.auth.loggedInUser ?
      this.props.auth.loggedInUser.data.username : null;
+    const allDocuments = this.props.documents.documents ?
+      this.props.documents.documents.rows : null;
+    const userDocuments = this.props.documents.userDocuments ?
+      this.props.documents.userDocuments : null;
     return (
       <div>
         <div className="page-header">
@@ -123,47 +125,46 @@ class DocumentsListPage extends React.Component {
             </div>
             <div id="allDocuments" className="col s12">
               <div className="row">
-                {this.props.documents.documents ?
-                 this.props.documents.documents.rows.map((document) => (
-                   <div className="col s12 m12" key={document.id}>
-                     <div className="card">
-                       <div className="card-content teal-text lighten-1">
-                         <div className="card-title">
-                           <div className="document-title">
-                             <i
+                {allDocuments ? allDocuments.map(document => (
+                  <div className="col s12 m12" key={document.id}>
+                    <div className="card">
+                      <div className="card-content teal-text lighten-1">
+                        <div className="card-title">
+                          <div className="document-icon">
+                            <i
                               id="float-icons-left"
-                              className="fa fa-file-text read-file-tooltip"
+                              className="fa fa-file-text tooltipped"
                               aria-hidden="true"
-                              data-position="bottom" data-delay="50"
-                              data-tooltip="create new document" />
-                             <Link to={`/dms/document/${document.id}`}>
-                               {document.title}</Link>
-                           </div>
-                           <div className="action-icons">
-                             <Link to={`/dms/document/update/${document.id}`}>
-                               <i
+                              data-position="bottom"
+                              data-delay="50"
+                              data-tooltip="click to view/edit document" />
+                          </div>
+                          <div className="document-title">
+                            <Link to={`/dms/document/${document.id}`}>
+                              {document.title}</Link>
+                          </div>
+                          <div className="action-icons">
+                            <i
                             id="float-icons-left"
-                            className="fa fa-pencil-square-o"
-                             aria-hidden="true" />
-                             </Link>
-                             <i
-                            id="float-icons-left"
-                            className="fa fa-trash"
-                            aria-hidden="true"
+                            className="fa fa-trash tooltipped"
+                              aria-hidden="true"
+                              data-position="bottom"
+                              data-delay="50"
+                              data-tooltip="delete document"
                             onClick={() => this.deleteDocument(document.id)} />
-                           </div>
-                           <div className="clear" />
-                         </div>
-                       </div>
-                     </div>
-                   </div>
+                          </div>
+                          <div className="clear" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 )) : '' }
               </div>
             </div>
             <div id="myDocuments" className="col s12">
               <div className="row">
-                {(!this.props.documents.userDocuments
-                || this.props.documents.userDocuments.length < 1) ?
+                {(!userDocuments
+                || userDocuments.length < 1) ?
                   <div className="col s12 m12" key={document.id}>
                     <div className="card">
                       <div className="card-content teal-text lighten-1">
@@ -177,15 +178,21 @@ class DocumentsListPage extends React.Component {
                     </div>
                   </div>
                 :
-                this.props.documents.userDocuments.map((document) => (
+                userDocuments.map(document => (
                   <div className="col s12 m12" key={document.id}>
                     <div className="card">
                       <div className="card-content green-text">
                         <div className="card-title">
-                          <div className="document-title">
+                          <div className="document-icon">
                             <i
-                            id="float-icons-left" className="fa fa-file-text"
-                             aria-hidden="true" />
+                              id="float-icons-left"
+                              className="fa fa-file-text tooltipped"
+                              aria-hidden="true"
+                              data-position="bottom"
+                              data-delay="50"
+                              data-tooltip="click to view/edit document" />
+                          </div>
+                          <div className="document-title">
                             <Link to={`/dms/document/${document.id}`}>
                               {document.title}</Link>
                           </div>
@@ -196,7 +203,8 @@ class DocumentsListPage extends React.Component {
                              aria-hidden="true" />
                             <i
                             id="float-icons-left"
-                             className="fa fa-trash" aria-hidden="true" />
+                            className="fa fa-trash"
+                            aria-hidden="true" />
                           </div>
                           <div className="clear" />
                         </div>
@@ -214,12 +222,25 @@ class DocumentsListPage extends React.Component {
   }
 }
 
-
-DocumentsListPage.PropTypes = {
-  dispatch: React.PropTypes.func.isRequired,
+DocumentsListPage.propTypes = {
+  actions: PropTypes.object.isRequired,
   auth: React.PropTypes.object.isRequired,
-  documents: React.PropTypes.object.isRequired
+  documents: React.PropTypes.object.isRequired,
+  addFlashMessage: PropTypes.func.isRequired
 };
+
+/**
+ *
+ *
+ * @param {func} dispatch
+ * @returns {Object} containing the action property
+ */
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(documentAction, dispatch),
+    addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
+  };
+}
 
 /**
  *
@@ -234,4 +255,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(DocumentsListPage);
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentsListPage);

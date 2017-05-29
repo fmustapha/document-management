@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
@@ -27,7 +27,7 @@ class ViewDocumentPage
       document: { title: '',
         access: 'public',
         content: '',
-        ownerId: this.props.documents.currentDocument.ownerId
+        ownerId: ''
       },
       editing: false
     };
@@ -43,7 +43,7 @@ class ViewDocumentPage
    * @memberof ViewDocumentPage
    */
   componentWillMount() {
-    this.props.dispatch(documentActions.viewDocument(this.props.params.id));
+    this.props.actions.viewDocument(this.props.params.id);
   }
 
   /**
@@ -74,9 +74,9 @@ class ViewDocumentPage
    * @memberof ViewDocumentPage
    */
   createMarkup() {
-    return { __html: this.props.documents.currentDocument.content };
+    const currentDocument = this.props.documents.currentDocument;
+    return { __html: currentDocument.content };
   }
-  
   /**
    *
    *
@@ -92,31 +92,50 @@ class ViewDocumentPage
         title={document.title}
         content={document.content}
         access={document.access}
+        ownerId={document.ownerId}
         endEdit={this.onClickEdit}
         />
     }
     return (document) ?
-        <div className="document-view">
-          <h2>{document.title}</h2>
-          <p dangerouslySetInnerHTML={this.createMarkup()} />
-          <div>
-            <input
+      <div className="document-view">
+        <h2>{document.title}</h2>
+        <p dangerouslySetInnerHTML={this.createMarkup()} />
+        <div>
+          <input
           type="submit"
           value="Edit"
           className="waves-effect waves-light btn"
           onClick={this.onClickEdit} />
-            <input
+          <input
           type="submit"
           value="Back"
           className="waves-effect waves-light btn"
-          onClick={this.onClickBack}>
-            </input>
-          </div>
+          onClick={this.onClickBack} />
         </div>
+      </div>
         :
-        <div className="page-center-padding">Please Wait...</div>;
+      <div className="page-center-padding">Please Wait...</div>;
   }
  }
+
+UpdateDocumentPage.propTypes = {
+  actions: PropTypes.object.isRequired,
+  documents: React.PropTypes.object.isRequired,
+  params: React.PropTypes.object.isRequired,
+  browserHistory: React.PropTypes.func.isRequired
+};
+
+/**
+ *
+ *
+ * @param {func} dispatch
+ * @returns {Object} containing the action property
+ */
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(documentActions, dispatch),
+  };
+}
 
 /**
  *
@@ -131,15 +150,4 @@ function mapStateToProps(state) {
   };
 }
 
-UpdateDocumentPage.propTypes = {
-  documents: React.PropTypes.object.isRequired,
-  browserHistory: React.PropTypes.func.isRequired
-};
-
-// function mapDispatchProps(dispatch) {
-//   return {
-//     actions: bindActionCreators(auth, dispatch)
-//   };
-// }
-
-export default connect(mapStateToProps)(ViewDocumentPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewDocumentPage);

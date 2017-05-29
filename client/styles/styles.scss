@@ -78,6 +78,16 @@ select {
  width: 100%;
 }
 
+.table {
+tr:hover {background-color: $grey-color }
+}
+
+.table-div {
+border: 1px;
+border-style: dashed;
+border-color: $theme-color;
+}
+
 .float-icons-left{
   float: left;
   font-size: 50px;
@@ -127,6 +137,11 @@ float: left
 .welcome-message{
   padding-left: 70px;
   //  float: right
+}
+
+.document-icon {
+  float: left;
+  padding-right: 5px;
 }
 
 .document-title {

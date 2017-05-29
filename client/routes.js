@@ -25,7 +25,6 @@ export default (
     <Route path="/dms/document" component={DocumentsListPage} />
     <Route path="/dms/document/:id" component={ViewDocumentPage} />
     <Route path="/dms/users" component={UserListPage} />
-    {/*<Route path="/dms/user/:id" component={ViewUserPage} />*/}
     <Route path="/dms/user/account/:id" component={UserAccountPage} />
     <Route path="/dms/document/update/:id" component={UpdateDocumentPage} />
     <Route path="/dms/search" component={SearchPage} />

@@ -1,6 +1,13 @@
 import axios from 'axios';
 import types from './actionTypes';
 
+/**
+ *
+ *
+ * @export
+ * @param {object} document
+ * @returns {func} containing an action type and a payload
+ */
 export function createDocument(document) {
   return (dispatch) => {
     return axios.post('/documents/', document)
@@ -10,18 +17,44 @@ export function createDocument(document) {
   };
 }
 
+/**
+ *
+ *
+ * @export
+ * @returns {object} containing an action type
+ */
 export function creatingDocument() {
   return { type: types.ADDING_DOCUMENT };
 }
 
+/**
+ *
+ *
+ * @export
+ * @param {any} documents
+ * @returns {object} containing an action type a payload
+ */
 export function listDocumentSuccess(documents) {
   return { type: types.LIST_DOCUMENT, documents };
 }
 
+/**
+ *
+ *
+ * @export
+ * @param {any} documents
+ * @returns {object} containing action type and payload properties
+ */
 export function listUserDocumentSuccess(documents) {
   return { type: types.LIST_USER_DOCUMENT, documents };
 }
 
+/**
+ *
+ *
+ * @export
+ * @returns {func} containing a payload
+ */
 export function listDocument() {
   return (dispatch) => {
     axios.get('/documents')
@@ -35,6 +68,13 @@ export function listDocument() {
   };
 }
 
+/**
+ *
+ *
+ * @export
+ * @param {Number} id
+ * @returns {func} containing a payload
+ */
 export function listUserDocument(id) {
   return (dispatch) => {
     return axios.get(`/users/${id}/documents`)
@@ -48,7 +88,15 @@ export function listUserDocument(id) {
   };
 }
 
+/**
+ *
+ *
+ * @export
+ * @param {Number} id
+ * @returns {func} containing a payload and an action type
+ */
 export function viewDocument(id) {
+  console.log('I got here!');
   return (dispatch) => {
     axios.get(`/documents/${id}`)
     .then((response) => {
@@ -61,6 +109,14 @@ export function viewDocument(id) {
   };
 }
 
+/**
+ *
+ *
+ * @export
+ * @param {Number} id
+ * @param {Object} updatedDocument
+ * @returns {func} containing a payload and an action type
+ */
 export function updateDocument(id, updatedDocument) {
   return (dispatch) => {
     return axios.put(`/documents/${id}`, updatedDocument)
@@ -72,6 +128,13 @@ export function updateDocument(id, updatedDocument) {
   };
 }
 
+/**
+ *
+ *
+ * @export
+ * @param {Number} id
+ * @returns {func} containing a payload and an action type
+ */
 export function deleteDocument(id) {
   return (dispatch) => {
     axios.delete(`/documents/${id}`)

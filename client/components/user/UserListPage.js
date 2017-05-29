@@ -3,7 +3,7 @@ import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addFlashMessage } from '../../actions/flashMessages';
-import * as listUser from '../../actions/userAction';
+import * as listUsers from '../../actions/userAction';
 
 /**
  *
@@ -14,8 +14,8 @@ import * as listUser from '../../actions/userAction';
 class UserListPage extends React.Component {
   /**
    * Creates an instance of UserListPage.
-   * @param {any} props
-   * @param {any} context
+   * @param {Object} props
+   * @param {Object} context
    *
    * @memberof UserListPage
    */
@@ -100,8 +100,8 @@ class UserListPage extends React.Component {
       <div>
         <div className="welcome-message"><h4>Welcome Admin</h4><h6>No of Users:
           {(allUsers && allUsers.length) ? allUsers.length : ''}</h6></div>
-        <div>
-          <table id="page-padding" className="striped">
+        <div className= "table-div">
+          <table id="page-padding" className="striped table">
             <thead>
               <tr>
                 <th>S/N</th>
@@ -170,7 +170,7 @@ UserListPage.propTypes = {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(listUser, dispatch),
+    actions: bindActionCreators(listUsers, dispatch),
     addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
   };
 }

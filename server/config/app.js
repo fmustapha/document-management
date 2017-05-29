@@ -27,7 +27,7 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(require('webpack-hot-middleware')(compiler));
-console.log('got here though');
+
 app.get('/', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../../client/index.html'));
   res.redirect('/dms/');

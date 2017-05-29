@@ -34,7 +34,7 @@ class UpdateDocumentPage
       },
     };
     this.onClickSave = this.onClickSave.bind(this);
-    this.onClickCancel = this.onClickCancel.bind(this);
+    this.onClickBack = this.onClickBack.bind(this);
     this.onTitleChange = this.onTitleChange.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.onAccessChange = this.onAccessChange.bind(this);
@@ -91,7 +91,7 @@ class UpdateDocumentPage
    * @returns {void}
    * @memberof ViewDocumentPage
    */
-  onClickCancel() {
+  onClickBack() {
     this.props.browserHistory.goBack();
   }
 
@@ -111,7 +111,7 @@ class UpdateDocumentPage
   /**
    *
    *
-   * @returns Jsx Content
+   * @returns {void} Jsx Content
    *
    * @memberof ViewDocumentPage
    */
@@ -159,9 +159,9 @@ class UpdateDocumentPage
             onClick={this.onClickSave} />
           <input
             type="submit"
-            value="Cancel"
+            value="Back"
             className="waves-effect waves-light btn"
-            onClick={this.onClickCancel} />
+            onClick={this.onClickBack} />
         </span>
       </div>
     );

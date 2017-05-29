@@ -15,7 +15,7 @@ app.set('port', port);
 app.get('/dms/*', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, 'client/index.html'));
 });
-console.log(process.env.NODE_ENV);
+
 if (process.env.NODE_ENV !== 'test') {
   database.sequelize.sync().then(
   app.listen(port, (err) => {
@@ -27,16 +27,4 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 module.exports = app;
-
-// const server = http.createServer(app);
-// const server = http.createServer(app);
-
-// server.on('listening', () => {
-//   Logger.info('ok, server is running');
-// });
-
-// database.sequelize.sync().then(db => (db ? server
-// .listen(port) : Logger.info('could not connect to database')))
-// .then(() => Logger.info('server connected'))
-// .catch(error => Logger.error(error));
 

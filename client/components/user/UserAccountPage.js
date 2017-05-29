@@ -94,7 +94,6 @@ userUpdateAction
    * @memberof UserAccountPage
    */
   render() {
-    console.log(this.props.user, 'user');
     return (
       <div className="">
       <div id="account">

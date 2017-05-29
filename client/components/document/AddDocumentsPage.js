@@ -27,7 +27,7 @@ class AddDocumentsPage
     this.state = {
       document:
       { title: '',
-        access: 'public',
+        access: '',
         content: '',
         ownerId: this.props.userId
       }
@@ -35,7 +35,7 @@ class AddDocumentsPage
     this.onTitleChange = this.onTitleChange.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.onClickSave = this.onClickSave.bind(this);
-    this.onClickCancel = this.onClickCancel.bind(this);
+    this.onClickBack = this.onClickBack.bind(this);
     this.onAccessChange = this.onAccessChange.bind(this);
   }
 
@@ -43,31 +43,53 @@ class AddDocumentsPage
   //   this.props.dispatch(documentActions.creatingDocument());
   // }
 
+  /**
+   *
+   * @returns {void}
+   * @param {Object} nextProps
+   *
+   * @memberof AddDocumentsPage
+   */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.documents.isCreating ==='false') {
+    if (nextProps.documents.isCreating === 'false') {
       browserHistory.push('/dms/document');
     }
   }
 
+  /**
+   *
+   *
+   * @param {Object} event
+   * @returns {void}
+   * @memberof AddDocumentsPage
+   */
   onTitleChange(event) {
     const document = this.state.document;
     document.title = event.target.value;
     this.setState({ document });
   }
 
-    handleEditorChange(event) {
-      const document = this.state.document;
-      document.content = event.target.getContent();
-      this.setState({ document });
-    }
-
-  onAccessChange(access) {
+ /**
+   *
+   *
+   * @param {Object} event
+   * @returns {void}
+   * @memberof AddDocumentsPage
+   */
+  onAccessChange(event) {
     const document = this.state.document;
-    document.access = access;
+    document.access = event.target.value;
     this.setState({ document });
   }
 
+  /**
+   *
+   *
+   * @returns {void}
+   * @memberof AddDocumentsPage
+   */
   onClickSave() {
+    console.log(this.state.document, 'values');
     this.props.createDocumentActions(this.state.document)
     .then(() => toastr.success('Document successfully created'))
     .catch(() => {
@@ -75,14 +97,41 @@ class AddDocumentsPage
         type: 'error',
         text: 'Unable to create document' });
       toastr.error(
-        'Unable to create document, kindly contact your Admin');
+        'Unable to create document, kindly complete all fields');
     });
+    this.props.endEdit();
   }
 
-  onClickCancel() {
-    this.props.dispatch();
+/**
+   *
+   *
+   * @returns {void}
+   * @memberof VAddDocumentsPage
+   */
+  onClickBack() {
+    this.context.router.push('/dms/document');
   }
 
+   /**
+     *
+     *
+     * @param {Object} event
+     * @returns {void}
+     * @memberof AddDocumentsPage
+     */
+  handleEditorChange(event) {
+    const document = this.state.document;
+    document.content = event.target.getContent();
+    this.setState({ document });
+  }
+
+  /**
+   *
+   *
+   * @returns {void} Jsx Content
+   *
+   * @memberof AddDocumentsPage
+   */
   render() {
     return (
       <div id="page-padding">
@@ -96,10 +145,10 @@ class AddDocumentsPage
               onChange={this.onTitleChange}
               value={this.state.document.title}
               name="title"
-              type="text" className="col 5 s12" />
+              type="text" className="col 5 s12" required />
             <label htmlFor="title">Document Title</label>
           </div>
-          <div className="input-field col s12">
+          <div className="input-field col s12" >
             <TinyMCE
             content={this.state.document.content}
             name="content"
@@ -108,19 +157,16 @@ class AddDocumentsPage
               toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
             }}
             onChange={this.handleEditorChange}
-              />
+            className="wysiwyg"
+            required />
           </div>
-
-          <div>
-            <p id="access">Select Access Type</p>
-            <a className="dropdown-button btn" href="#" data-activates="dropdown1">
-              {this.state.document.access}<span className="fa fa-sort-desc"></span>
-            </a>
-            <ul id="dropdown1" className="dropdown-content">
-              <li onClick={() => this.onAccessChange('public')}><a htmlFor="public">public</a></li>
-              <li onClick={() => this.onAccessChange('private')}><a htmlFor="private">private</a></li>
-              <li onClick={() => this.onAccessChange('role')}><a htmlFor="role">role</a></li>
-            </ul>
+          <div className="" id="select">
+            <select onChange={this.onAccessChange} >
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+              <option value="role">Role</option>
+            </select>
+            <label>Select Access type</label>
           </div>
         </div>
         <span>
@@ -133,21 +179,28 @@ class AddDocumentsPage
         <span>
           <input
         type="submit"
-        value="Cancel"
+        value="Back"
         className="waves-effect waves-light btn"
-        onClick={this.onClickCancel} />
+        onClick={this.onClickBack} />
         </span>
       </div>
     );
   }
 }
 
+AddDocumentsPage.propTypes = {
+  userId: React.PropTypes.number.isRequired,
+  createDocumentActions: React.PropTypes.func.isRequired,
+  addFlashMessage: React.PropTypes.func.isRequired,
+  browserHistory: React.PropTypes.func.isRequired,
+  endEdit: React.PropTypes.func.isRequired,
+};
+
 /**
  *
  *
- * @param {any} state
- * @param {any} ownProps
- * @returns
+ * @param {Object} state
+ * @returns {Object} containing userId property and value
  */
 function mapStateToProps(state) {
   const user = state.auth.loggedInUser;
@@ -156,26 +209,6 @@ function mapStateToProps(state) {
     userId: user.data.id
   };
 }
-
-/**
- *
- *
- * @param {any} dispatch
- * @returns
- */
-// function mapDispatchProps(dispatch) {
-//   return {
-//     createDocumentAction:
-//     bindActionCreators(documentActions.createDocument, dispatch),
-//     addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
-//   };
-// }
-
-AddDocumentsPage.propTypes = {
-  userId: React.PropTypes.number.isRequired,
-  createDocumentActions: React.PropTypes.func.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired,
-};
 
 /**
  *
