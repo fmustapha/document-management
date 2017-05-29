@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
+import toastr from 'toastr';
 import { connect } from 'react-redux';
 import * as auth from '../../actions/auth';
 
@@ -38,8 +39,10 @@ class LoginPage extends React.Component {
    * @memberof LoginPage
    */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.action.isAuthenticated) {
+    if (nextProps.auth.isAuthenticated) {
       browserHistory.push('/dms/document');
+    } else if (nextProps.auth.error) {
+      toastr.error(nextProps.auth.error);
     }
   }
 
@@ -71,11 +74,11 @@ class LoginPage extends React.Component {
     event.preventDefault();
     if (!this.state.email && !this.state.password) {
       this.props.actions.login(this.state.login)
-        .then(() => {
-          this.context.router.push('/dms/document');
-        }).catch((error) => {
-          console.log(error);
-        });
+        // .then(() => {
+        //   this.context.router.push('/dms/document');
+        // }).catch((error) => {
+        //   console.log(error);
+        // });
     }
   }
 
@@ -128,7 +131,8 @@ class LoginPage extends React.Component {
 }
 
 LoginPage.contextTypes = {
-  router: PropTypes.object.isRequired
+  router: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 /**
@@ -143,5 +147,11 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null,
+function matchStateToProps(state) {
+  return {
+    auth: state.auth
+  };
+}
+
+export default connect(matchStateToProps,
  mapDispatchToProps)(LoginPage);

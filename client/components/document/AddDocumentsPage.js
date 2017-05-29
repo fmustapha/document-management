@@ -89,7 +89,6 @@ class AddDocumentsPage
    * @memberof AddDocumentsPage
    */
   onClickSave() {
-    console.log(this.state.document, 'values');
     this.props.createDocumentActions(this.state.document)
     .then(() => toastr.success('Document successfully created'))
     .catch(() => {

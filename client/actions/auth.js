@@ -8,7 +8,7 @@ import setAuthorizationToken from '../utils/setAuthorizationToken';
  *
  *
  * @export
- * @param {any} user
+ * @param {Object} user
  * @returns {Object}
  */
 export function setCurrentUser(user) {
@@ -35,6 +35,7 @@ export function login(loginDetails) {
         console.log(jwtDecode(token));
       })
       .catch((error) => {
+        console.log(error.response.data);
         dispatch({
           type: types.VALIDATION_ERROR,
           response: error.response.data.message
@@ -46,7 +47,7 @@ export function login(loginDetails) {
  *
  *
  * @export
- * @param {any} userDetails 
+ * @param {any} userDetails
  * @returns
  */
 export function signUp(userDetails) {

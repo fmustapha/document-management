@@ -11,18 +11,13 @@ export default {
     return db.User
       .findAndCountAll({
         where: {
-          $or: [
-            { email: {
-              $iLike: `%${req.query.term}%`
-            },
-              username: {
-                $iLike: `%${req.query.term}%`
-              } }
-          ]
+          username: {
+            $iLike: `%${req.query.term}%`
+          }
         }
       })
       .then((user) => {
-        if (user.length <= 0) {
+        if (user.rows.length <= 0) {
           return res.status(404)
             .send({
               message: 'User Not Found',

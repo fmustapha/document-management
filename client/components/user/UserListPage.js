@@ -100,7 +100,7 @@ class UserListPage extends React.Component {
       <div>
         <div className="welcome-message"><h4>Welcome Admin</h4><h6>No of Users:
           {(allUsers && allUsers.length) ? allUsers.length : ''}</h6></div>
-        <div className= "table-div">
+        <div className="table-div">
           <table id="page-padding" className="striped table">
             <thead>
               <tr>
