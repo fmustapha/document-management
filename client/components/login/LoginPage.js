@@ -73,12 +73,7 @@ class LoginPage extends React.Component {
   onSubmit(event) {
     event.preventDefault();
     if (!this.state.email && !this.state.password) {
-      this.props.actions.login(this.state.login)
-        // .then(() => {
-        //   this.context.router.push('/dms/document');
-        // }).catch((error) => {
-        //   console.log(error);
-        // });
+      this.props.actions.login(this.state.login);
     }
   }
 

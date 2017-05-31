@@ -68,9 +68,9 @@ export function signUp(userDetails) {
       .catch((error) => {
         dispatch({
           type: types.VALIDATION_ERROR,
-          error: error.response.data.message
+          response: error.response.data.message
         });
-        toastr.error('Unable to sign up');
+        // toastr.error('Unable to sign up');
       });
 }
 

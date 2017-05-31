@@ -42,8 +42,10 @@ class SignUpPage extends React.Component {
    * @memberof SignUpPage
    */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.loggedInUser.data) {
+    if (nextProps.auth.isAuthenticated) {
       browserHistory.push('/dms/document');
+    } else if (nextProps.auth.error) {
+      toastr.error(nextProps.auth.error);
     }
   }
 
@@ -73,17 +75,17 @@ class SignUpPage extends React.Component {
    */
   onSubmit(event) {
     event.preventDefault();
-    this.props.actions.signUp(this.state.signUp)
-    .then(() => {
-      if (this.props.auth.error) {
-        toastr.success('error signed up');
-      } else {
-        toastr.success('successfully signed up');
-      }
-    })
-    .catch(() => {
-      toastr.error('Oops. Error occured during your sign up. Try again :)');
-    });
+    this.props.actions.signUp(this.state.signUp);
+    // .then(() => {
+    //   if (this.props.auth.error) {
+    //     toastr.success('error signed up');
+    //   } else {
+    //     toastr.success('successfully signed up');
+    //   }
+    // })
+    // .catch(() => {
+    //   toastr.error('Oops. Error occured during your sign up. Try again :)');
+    // });
   }
 
   /**
