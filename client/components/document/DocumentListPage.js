@@ -22,9 +22,7 @@ class DocumentsListPage extends React.Component {
    */
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      id: 0
-    };
+    this.state = { id: 0 };
     this.deleteDocument = this.deleteDocument.bind(this);
   }
   /**
@@ -52,6 +50,10 @@ class DocumentsListPage extends React.Component {
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
+  componentWillUnmount() {
+    $('.tooltipped').tooltip('remove');
+  }
+
   /**
    *
    * @return {void}
@@ -61,7 +63,10 @@ class DocumentsListPage extends React.Component {
    */
   deleteDocument(id) {
     this.props.actions.deleteDocument(id)
-    .then(() => toastr.success('Document Successfully Deleted'))
+    .then(() => {
+      toastr.success('Document Successfully Deleted');
+      browserHistory.push('/dms/documents');
+    })
     .catch(() => {
       this.props.addFlashMessage({
         type: 'error',
@@ -170,7 +175,7 @@ class DocumentsListPage extends React.Component {
                       <div className="card-content teal-text lighten-1">
                         <div className="card-title">
                           <div className="document-title">
-                            <p>No Documents yet! CLick create icon below</p>
+                            <p>No Documents yet! Click create icon below</p>
                           </div>
                           <div className="clear" />
                         </div>

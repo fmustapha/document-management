@@ -1,6 +1,10 @@
 import axios from 'axios';
 import types from './actionTypes';
 
+
+export const createDocumentSuccess = users => ({
+  type: types.LIST_USERS, users });
+
 /**
  *
  *
@@ -13,6 +17,12 @@ export function createDocument(document) {
     return axios.post('/documents/', document)
     .then(() => {
       dispatch({ type: types.ADD_DOCUMENT, document });
+    }).catch((error) => {
+      console.log(error, 'Action error');
+      // dispatch({
+      //   type: types.ADD_DOCUMENT_ERROR,
+      //   error: error.response.data.message
+      // });
     });
   };
 }

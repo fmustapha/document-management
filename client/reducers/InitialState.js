@@ -4,8 +4,10 @@ const InitialState = {
   users: {},
   isListing: false,
   userDocuments: [],
-  documents: [],
-  isCreating: false,
+  documents: {
+    documents: [],
+    isCreating: false,
+  },
   search: { user: null, document: null },
   currentDocument: null
 };

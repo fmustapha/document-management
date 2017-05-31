@@ -2,9 +2,7 @@ import db from '../models';
 import Helper from '../helper/Helper';
 
 export default {
-
   createDocument(req, res) {
-    console.log(req.body, 'requests body');
     if (!req.body.ownerId) {
       req.body.ownerId = req.decoded.id || req.decoded.data.id;
     }
@@ -13,7 +11,6 @@ export default {
         message: 'Access type can only be public, private or role'
       } });
     }
-    console.log(req.body, 'requests body');
     return db.Document.create(req.body)
       .then(((newDocument) => {
         res.status(200)
@@ -27,41 +24,28 @@ export default {
           .json({ error });
       });
   },
-
   findDocument(req, res) {
     return db.Document.findById(req.params.id)
       .then((document) => {
         if (!document) {
           return res.status(404).send({ message: 'Document not found' });
         }
-        return res.status(200)
-        .send({
-          message: 'Successful',
-          document
-        });
+        const roleId = req.decoded.roleId || req.decoded.data.roleId;
+        
+        if ((Helper.isOwner(req, res, document) || Helper.isAdmin(parseInt(roleId, 10))
+          || document.access !== 'private')) {
+          return res.status(200)
+            .send({
+              message: 'Successful',
+              document
+            });
+        }
+        return res.status(403).send({ message: 'Unauthorized access' });
       })
       .catch(error => res.status(400).send({
         error
       }));
   },
-
-  // listDocuments(req, res) {
-  //   return db.Document.findAll({
-  //     offset: req.query.offset || 0,
-  //     limit: req.query.limit || 20,
-  //     include: [db.User],
-  //     order: [
-  //       ['updatedAt', 'DESC']
-  //     ]
-  //   })
-  //   .then(document => res.status(200)
-  //   .send({ message: 'Successfull', document }))
-  //   .catch(error => res.status(400).send({
-  //     error,
-  //     message: 'Error retrieving documents'
-  //   }));
-  // },
-
 /**
     * Get all document
     * Route: GET: /documents/
@@ -89,27 +73,24 @@ export default {
           });
       });
   },
-
-
   modifyDocument(req, res) {
-    db.Role.findById(req.decoded.data.roleId)
+    const roleId = req.decoded.roleId || req.decoded.data.roleId;
+    db.Role.findById(roleId)
     .then(() => db.Document
-        .find({ where: {
-          id: req.params.id } })
+        .findById(req.params.id)
           .then((document) => {
             if (!document) {
               return res.status(404).send({
                 message: 'Document Not Found',
               });
             }
-            if (Helper.isAdmin(req, res)
+            if (Helper.isAdmin(roleId)
             || Helper.isOwner(req, res, document)) {
-              return document
-              .update(req.body)
-              .then(updatedDoc => res.status(200).send({
-                updatedDoc,
-                message: 'Document updated successfully'
-              }));
+              return document.update(req.body)
+                .then(updatedDoc => res.status(200).send({
+                  updatedDoc,
+                  message: 'Document updated successfully'
+                }));
             }
             return (res.status(403)
                .send({ message: 'Unauthorized Access' }));
@@ -119,15 +100,14 @@ export default {
             message: 'Error updating document'
           })));
   },
-
   deleteDocument(req, res) {
+    const roleId = req.decoded.roleId || req.decoded.data.roleId;
     db.Document
       .find({
         where: {
           id: req.params.id
         },
       })
-
       .then((document) => {
         if (!document) {
           return res.status(404).send({
@@ -135,7 +115,7 @@ export default {
           });
         }
         if (Helper.isOwner(req, res, document)
-        || Helper.isAdmin(req, res)) {
+        || Helper.isAdmin(roleId)) {
           return document
           .destroy()
           .then(() => res.status(200).send({

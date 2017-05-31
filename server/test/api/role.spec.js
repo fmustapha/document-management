@@ -60,26 +60,26 @@ describe('Role API', () => {
           done();
         });
     });
-  
 
-  it('should return all roles to an admin user', (done) => {
-    request.get('/roles/')
+
+    it('should return all roles to an admin user', (done) => {
+      request.get('/roles/')
         .set({ Authorization: token })
         .end((err, res) => {
           if (err) return err;
           expect(res.status).to.equal(200);
           done();
         });
-  });
+    });
 
-  it('should not create a new role if title fields is missing', () => {
-    request.post('/roles/')
+    it('should not create a new role if title fields is missing', () => {
+      request.post('/roles/')
       .set({ Authorization: token })
       .send({})
       .end((err, response) => {
         expect(response.status).to.equal(403);
       });
-  });
+    });
 
     it('should not create a role that already exists', () => {
       request.post('/roles/')

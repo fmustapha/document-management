@@ -2,7 +2,6 @@
   * Controller's' helper
   */
 const Helper = {
-
   /**
    * Get user's profile'
    * @param {Object} data object containing user's details
@@ -167,8 +166,10 @@ const Helper = {
    * @returns {Boolean} true or false
    */
   isOwner(req, res, document) {
+    const id = req.decoded.id || req.decoded.data.id;
     const ownerId = document ? String(document.ownerId) : req.params.id;
-    return String(req.decoded.data.id) === ownerId;
+    console.log('ownwe', id, ownerId);
+    return parseInt(id, 10) === parseInt(ownerId, 10);
   },
   /**
    * Check if document's access level is public
@@ -188,7 +189,5 @@ const Helper = {
     return (doc.access === 'role'
       && doc.ownerRoleId === req.decoded.roleId);
   },
-
 };
-
 export default Helper;

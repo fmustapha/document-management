@@ -27,7 +27,7 @@ class AddDocumentsPage
     this.state = {
       document:
       { title: '',
-        access: '',
+        access: 'public',
         content: '',
         ownerId: this.props.userId
       }
@@ -51,7 +51,11 @@ class AddDocumentsPage
    * @memberof AddDocumentsPage
    */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.documents.isCreating === 'false') {
+    alert(JSON.stringify(nextProps));
+    if (!nextProps.documents.error && nextProps.documents.isCreating === 'false') {
+      browserHistory.push('/dms/document');
+    } else if (nextProps.documents.error) {
+      toastr.error(nextProps.documents.error);
       browserHistory.push('/dms/document');
     }
   }
@@ -89,16 +93,8 @@ class AddDocumentsPage
    * @memberof AddDocumentsPage
    */
   onClickSave() {
-    this.props.createDocumentActions(this.state.document)
-    .then(() => toastr.success('Document successfully created'))
-    .catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to create document' });
-      toastr.error(
-        'Unable to create document, kindly complete all fields');
-    });
-    this.props.endEdit();
+    console.log(this.state.document);
+    this.props.createDocumentActions(this.state.document);
   }
 
 /**
@@ -107,8 +103,8 @@ class AddDocumentsPage
    * @returns {void}
    * @memberof VAddDocumentsPage
    */
-  onClickBack() {
-    this.context.router.push('/dms/document');
+  onClickBack() { //eslint-disable-line
+    browserHistory.goBack();
   }
 
    /**
@@ -191,8 +187,7 @@ AddDocumentsPage.propTypes = {
   userId: React.PropTypes.number.isRequired,
   createDocumentActions: React.PropTypes.func.isRequired,
   addFlashMessage: React.PropTypes.func.isRequired,
-  browserHistory: React.PropTypes.func.isRequired,
-  endEdit: React.PropTypes.func.isRequired,
+  documents: React.PropTypes.object.isRequired
 };
 
 /**

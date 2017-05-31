@@ -67,6 +67,13 @@ class UserAccountPage extends React.Component {
     this.context.router.push('/dms/');
   }
 
+/**
+ * 
+ * 
+ * @param {Object} event 
+ * 
+ * @memberof UserAccountPage
+ */
 onClickEdit(event) {
   event.preventDefault();
     if (this.state.account.password.length < 1) {
