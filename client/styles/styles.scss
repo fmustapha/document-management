@@ -56,6 +56,8 @@ select {
     margin-top: 30%;
 }
 
+
+
 .pad-icons {
   margin-left: -20px;
   padding-left: -20px;
@@ -146,9 +148,19 @@ padding-left: $padding-left;
 float: left
 }
 
+.dashboard-welcome {
+  font-size: 20px;
+  font-style: bold;
+}
+
 .welcome-message{
   padding-left: 70px;
   //  float: right
+}
+
+.dashboard-title {
+  font-size: 2.28rem;
+  line-height: 100%;
 }
 
 .document-icon {

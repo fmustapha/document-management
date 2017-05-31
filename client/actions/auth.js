@@ -66,6 +66,7 @@ export function signUp(userDetails) {
         });
       })
       .catch((error) => {
+        console.log('error======>', error);
         dispatch({
           type: types.VALIDATION_ERROR,
           response: error.response.data.message

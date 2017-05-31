@@ -252,8 +252,9 @@ export default {
           lastname: req.body.lastname || user.lastname,
           username: req.body.username || user.username,
           email: req.body.email || user.email,
-          password: bcrypt.hashSync(req.body.password,
-                bcrypt.genSaltSync(10)) || user.password,
+          password: req.body.password ?
+           bcrypt.hashSync(req.body.password,
+           bcrypt.genSaltSync(10)) : user.password,
           roleId: req.body.roleId || user.roleId
         })
           .then((updatedUser) => {

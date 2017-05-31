@@ -93,15 +93,15 @@ class DocumentsListPage extends React.Component {
       this.props.documents.userDocuments : null;
     return (
       <div>
-        <div className="page-header">
-          <div className="dashboard-header">
-            <h4>Dashboard</h4>
+        <div id="page-padding">
+          <div className="row">
+          <div className="col s6">
+            <div className="dashboard-title">Dashboard</div>
           </div>
-          <div className="welcome-message">
-            <h7>Welcome {user}</h7>
+          <div className="col s6 right-align dashboard-welcome">
+            Welcome { user }
           </div>
         </div>
-        <div id="page-padding">
           <div className="create-logo">
             <a
           className="btn btn-floating btn-large pulse create-logo tooltipped"

@@ -19,7 +19,8 @@ export default function authReducer(state = initialState, action) {
   switch (action.type) {
     case types.SIGNUP_USER:
       return { isAuthenticated: true,
-        loggedInUser: { id: action.response.id, user: action.response.user } };
+        loggedInUser: {
+          data: { id: action.response.id, user: action.response.user } } };
     case types.SET_CURRENT_USER:
       return {
         isAuthenticated: true,

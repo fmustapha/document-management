@@ -46,6 +46,7 @@ class Header extends React.Component {
    * @memberof Header
    */
   render() {
+    console.log("props======>", this.props);
     const id = (this.props.auth.loggedInUser) ?
       this.props.auth.loggedInUser.data.id : null;
     const roleId = (this.props.auth.loggedInUser) ?
@@ -97,6 +98,7 @@ class Header extends React.Component {
 
     let link = guestLinks;
     if (!isAuthenticated) {
+      console.log("isauth=======>", isAuthenticated);
       link = guestLinks;
     } else if (parseInt(roleId, 10) === 1) {
       link = adminLinks;
@@ -148,6 +150,7 @@ function mapDispatchToProps(dispatch) {
  * @returns {Object} auth
  */
 function mapStateToProps(state) {
+  console.log('state =====>',state);
   return {
     auth: state.auth
   };
