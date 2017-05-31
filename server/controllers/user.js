@@ -156,7 +156,7 @@ export default {
           }, secret, {
             expiresIn: '24h' // expires in 24 hours
           });
-          res.status(200)
+          res.status(201)
             .send({
               token,
               newUser: userDetails,
@@ -188,7 +188,7 @@ export default {
       .then((user) => {
         if (!user) {
           return res.status(401).send({
-            message: 'Authentication Failed. User not found.',
+            message: 'Authentication Failed. Invalid credentials',
           });
         }
         // check if password matches

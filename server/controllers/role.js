@@ -1,11 +1,15 @@
 import db from '../models/';
 
+const allRoles = ['admin', 'regular'];
 const Roles = db.Role;
 const Users = db.User;
 
 export default {
   createRole(req, res) {
-    return Roles
+    if (allRoles.indexOf(req.body.title) === -1) {
+      return res.status(403).json({ message: 'Invalid role title' });
+    }
+    Roles
       .create(
         req.body
       )
@@ -13,10 +17,13 @@ export default {
         role,
         message: 'Role created succesfully'
       }))
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error creating new role'
-      }));
+      .catch((error) => {
+        console.log(error, '[line 17]');
+        res.status(400).send({
+          error,
+          message: 'Error creating new role'
+        });
+      });
   },
 
   listRole(req, res) {
@@ -67,10 +74,7 @@ export default {
           });
         }
         return role
-          .update({
-            title: req.body.title || role.title,
-            description: req.body.description || role.descritption
-          })
+          .update(req.body)
           .then(() => res.status(200).send({
             message: 'Role updated successfully.',
             role

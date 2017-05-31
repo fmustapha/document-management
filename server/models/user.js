@@ -84,7 +84,7 @@ module.exports = (sequelize, DataTypes) => {
         User.hasMany(models.Document, { foreignKey: 'ownerId' });
         User.belongsTo(models.Role, {
           foreignKey: 'roleId',
-          onDelete: 'CASCADE'
+          onDelete: 'SET NULL'
         });
       }
     },

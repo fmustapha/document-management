@@ -16,7 +16,7 @@ app.get('/dms/*', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, 'client/index.html'));
 });
 
-if (process.env.NODE_ENV !== 'test') {
+// if (process.env.NODE_ENV !== 'test') {
   database.sequelize.sync().then(
   app.listen(port, (err) => {
     if (err) {
@@ -24,7 +24,7 @@ if (process.env.NODE_ENV !== 'test') {
     }
   })
   ).catch(error => Logger.error(error));
-}
+// }
 
 module.exports = app;
 

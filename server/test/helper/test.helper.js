@@ -11,31 +11,43 @@ const helper = {
     title: 'regular',
     description: 'Ordinary user who can access only docs they created'
   },
+  allRoles: [
+    {
+      id: 1,
+      title: 'admin',
+      description: 'Super user who can access all documents and assign roles'
+    },
+    {
+      id: 2,
+      title: 'regular',
+      description: 'Ordinary user who can access only docs they created'
+    }
+  ],
   guestRole1: {
     id: 3,
     title: 'guest',
-    description: 'guest'
+    description: 'Guest who can do what regular users do'
   },
   guestRole2: {
     id: 4,
     title: 'guest111',
-    description: 'guest'
+    description: 'Guest who can do what regular users do'
   },
   guestRole3: {
     id: 5,
     title: 'guest2',
-    description: 'guest'
+    description: 'Guest who can do what regular users do'
   },
   sampleRole: {
     id: 6,
     title: 'guestSample',
-    description: 'guest'
+    description: 'Guest who can do what regular users do'
   },
   adminUser: {
-    username: faker.internet.userName(),
-    firstname: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    email: faker.internet.email(),
+    username: 'Ade',
+    firstname: 'Ade',
+    lastname: 'Bisola',
+    email: 'ade@gmail.com',
     password: faker.internet.password()
   },
   adminUser1: {
@@ -46,24 +58,26 @@ const helper = {
     password: faker.internet.password()
   },
   regularUser: {
-    username: faker.internet.userName(),
-    firstname: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
+    username: 'Estelle48',
+    firstname: 'Paris',
+    lastname: 'Bode',
+    email: 'Jovani27@yahoo.com',
+    password: '94vJWpS_l9V1LPV'
   },
   regularUser2: {
     username: faker.internet.userName(),
     firstname: faker.name.firstName(),
     lastname: faker.name.lastName(),
     email: faker.internet.email(),
-    password: faker.internet.password()
+    password: faker.internet.password(),
+    roleId: 2
   },
-  firstUser: {
+  newUser: {
     username: faker.internet.userName(),
     firstname: faker.name.firstName(),
     lastname: faker.name.lastName(),
     email: faker.internet.email(),
+    roleId: 2,
     password: faker.internet.password()
   },
   secondUser: {
@@ -106,6 +120,13 @@ const helper = {
     lastname: faker.name.lastName(),
     email: faker.internet.email(),
     password: 'ola'
+  },
+  badUser: {
+    username: '',
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: ''
   },
   publicDocument: {
     title: faker.company.catchPhrase(),
