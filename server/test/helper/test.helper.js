@@ -48,7 +48,7 @@ const helper = {
     firstname: 'Ade',
     lastname: 'Bisola',
     email: 'ade@gmail.com',
-    password: faker.internet.password()
+    password: 'password'
   },
   adminUser1: {
     username: faker.internet.userName(),

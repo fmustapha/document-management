@@ -27,7 +27,9 @@ export const adminUpdateUserSuccess = user => ({
  */
 export function listUsers() {
   return dispatch => axios.get('/users/')
-    .then(response => dispatch(listUsersSuccess(response.data.users))
+    .then(response => dispatch(listUsersSuccess({ users: response.data.users,
+      totalUsers: response.data.totalUsers
+    }))
     )
     .catch((error) => {
     });

@@ -25,8 +25,6 @@ describe('DOCUMENT API', () => {
   let document, updateDoc;
 
   beforeEach((done) => {
-    console.log('this');
-    
       db.Role.destroy({ where: {} })
         .then(() => {
           db.Role.bulkCreate([helper.adminRole, helper.regularRole])

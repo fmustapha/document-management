@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import toastr from 'toastr';
+// import 'jquery-validation';
 import * as auth from '../../actions/auth';
 
 /**
@@ -47,6 +48,11 @@ class SignUpPage extends React.Component {
     } else if (nextProps.auth.error) {
       toastr.error(nextProps.auth.error);
     }
+//     $('form').validate();
+
+//     define(["jquery", "jquery.validate"], function( $ ) {
+//     $("form").validate();
+// });
   }
 
   /**

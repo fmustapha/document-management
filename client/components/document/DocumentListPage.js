@@ -156,7 +156,7 @@ class DocumentsListPage extends React.Component {
                               data-position="bottom"
                               data-delay="50"
                               data-tooltip="delete document"
-                            onClick={() => this.deleteDocument(document.id)} />
+                            onClick={() => console.log(document.id)} />
                           </div>
                           <div className="clear" />
                         </div>
@@ -209,6 +209,7 @@ class DocumentsListPage extends React.Component {
                             <i
                             id="float-icons-left"
                             className="fa fa-trash"
+                            onClick={() => this.deleteDocument(document.id)}
                             aria-hidden="true" />
                           </div>
                           <div className="clear" />

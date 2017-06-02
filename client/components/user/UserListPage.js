@@ -99,7 +99,7 @@ class UserListPage extends React.Component {
     return (
       <div>
         <div className="welcome-message"><h4>Welcome Admin</h4><h6>No of Users:
-          {(allUsers && allUsers.length) ? allUsers.length : ''}</h6></div>
+          {` ${this.props.users.totalUsers} `}</h6></div>
         <div className="table-div">
           <table id="page-padding" className="striped table">
             <thead>
@@ -176,7 +176,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  users: state.users
+  users: state.users,
+  totalUsers: state.totalUsers
 });
 
 

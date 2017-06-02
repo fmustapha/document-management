@@ -12,7 +12,8 @@ import initialState from '../reducers/InitialState';
 export default function userReducer(state = initialState.users, action) {
   switch (action.type) {
     case types.LIST_USERS:
-      return Object.assign({}, state, { users: action.users });
+      return Object.assign({}, state, { users: action.users.users,
+        totalUsers: action.users.totalUsers });
 
     case types.UPDATE_USER:
       return Object.assign({}, state, {
@@ -29,6 +30,7 @@ export default function userReducer(state = initialState.users, action) {
 
 
     case types.DELETE_USER:
+      console.log(state);
       return Object.assign({}, state, {
         users: {
           ...state.users,
@@ -38,6 +40,7 @@ export default function userReducer(state = initialState.users, action) {
             }
           })
         },
+        totalUsers: state.totalUsers - 1
       });
 
     default:

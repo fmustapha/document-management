@@ -162,7 +162,7 @@ describe('User API', () => {
         'should return User Not found for a user that does not exist',
         (done) => {
           request.get('/users/20')
-            .set('authorization', adminUserToken )
+            .set('authorization', adminUserToken)
             .end((err, res) => {
               expect(res.status).to.equal(404);
               expect(res.body.message).to.equal(

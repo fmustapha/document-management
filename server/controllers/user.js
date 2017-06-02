@@ -46,13 +46,14 @@ export default {
             limit: req.odmsFilter.limit,
             offset: req.odmsFilter.offset
           };
-          delete users.count;
+          // delete users.count;
           const pagination = Helper.pagination(condition);
           res.status(200)
             .send({
-              message: 'Successfull',
-              users,
-              pagination
+              message: 'This is Successfull',
+              users: { rows: users.rows },
+              pagination,
+              totalUsers: users.count
             });
         }
       });

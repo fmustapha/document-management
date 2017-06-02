@@ -46,9 +46,12 @@ export default {
         error
       }));
   },
+
 /**
-    * Get all document
+
+    * list all documents
     * Route: GET: /documents/
+    *
     * @param {Object} req request object
     * @param {Object} res response object
     * @returns {void} response object or void
@@ -73,6 +76,16 @@ export default {
           });
       });
   },
+
+
+  /**
+   * Get all document
+   * Route: PUT: /documents/
+   *
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {void} response object or void
+   */
   modifyDocument(req, res) {
     const roleId = req.decoded.roleId || req.decoded.data.roleId;
     db.Role.findById(roleId)
