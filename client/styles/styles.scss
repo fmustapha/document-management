@@ -64,7 +64,13 @@ select {
 }
 
 #login-padding {
-  margin: 50px 0px 50px 450px;
+  padding: 30px;
+  text-align: center;
+  width: 40%;
+  margin: 100px 0px 60px 370px;
+  border: 1px;
+  border-style: dashed;
+  border-color: $theme-color
 }
 
 #account {
@@ -188,6 +194,10 @@ float: left
 .action-icons {
   width: 15%;
   float: right;
+}
+
+.button-right {
+  padding-left: 340px;
 }
 
 .action-icons > i {

@@ -72,7 +72,7 @@ class Header extends React.Component {
       );
     const guestLinks = (
       <ul className="nav navbar-nav navbar-right">
-        <li><Link to="/dms/login" activeClassName="active">Login</Link></li>
+        <li><Link to="/dms/login" activeClassName="active">LogIn</Link></li>
         <li><Link to="/dms/signup" activeClassName="active">SignUp</Link></li>
         <li><a href="https://github.com/andela-fmustapha/document-management">GitHub</a></li>
         <Link to="/dms/about" className="waves-effect waves-light btn">Learn More</Link>
@@ -98,7 +98,6 @@ class Header extends React.Component {
 
     let link = guestLinks;
     if (!isAuthenticated) {
-      console.log("isauth=======>", isAuthenticated);
       link = guestLinks;
     } else if (parseInt(roleId, 10) === 1) {
       link = adminLinks;

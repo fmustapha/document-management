@@ -87,12 +87,11 @@ class LoginPage extends React.Component {
   render() {
     return (
       <div id="login-padding">
-        <h3>login</h3>
+        <h3>Log In</h3>
         <form action="#" onSubmit={this.onSubmit} method="post">
-          <i className="material-icons prefix">email
-              </i>
-          <div className="row">
+          <div className="">
             <div className="input-field col s6">
+              <i className="material-icons prefix">email</i>
               <input
                 onChange={this.onChange}
                 value={this.state.login.email}
@@ -102,9 +101,9 @@ class LoginPage extends React.Component {
               <label htmlFor="email">Email</label>
             </div>
           </div>
-          <i className="material-icons prefix">lock</i>
-          <div className="row">
+          <div className="">
             <div className="input-field col s6">
+              <i className="material-icons prefix">lock</i>
               <input
                 onChange={this.onChange}
                 value={this.state.login.password}
@@ -114,11 +113,13 @@ class LoginPage extends React.Component {
               <label htmlFor="password">Password</label>
             </div>
           </div>
+          <div className="button-right">
           <input
           type="submit"
           value="Done"
           className="waves-effect waves-light btn"
           />
+          </div>
         </form>
       </div>
     );

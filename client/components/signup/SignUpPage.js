@@ -104,11 +104,11 @@ class SignUpPage extends React.Component {
   render() {
     return (
       <div id="login-padding">
-        <h3>SignUp</h3>
+        <h3>Sign Up</h3>
         <form onSubmit={this.onSubmit} method="post">
-          <div className="row">
+          <div>
             <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">account_circle</i>
+              <i className="material-icons prefix">account_circle</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.Username}
@@ -118,9 +118,9 @@ class SignUpPage extends React.Component {
               <label htmlFor="username">Username</label>
             </div>
           </div>
-          <div className="row">
+          <div>
             <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">account_circle</i>
+              <i className="material-icons prefix">account_circle</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.Firstname}
@@ -130,9 +130,9 @@ class SignUpPage extends React.Component {
               <label htmlFor="firstname">Firstname</label>
             </div>
           </div>
-          <div className="row">
+          <div>
             <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">account_circle</i>
+              <i className="material-icons prefix">account_circle</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.Lastname}
@@ -142,9 +142,9 @@ class SignUpPage extends React.Component {
               <label htmlFor="lastname">Lastname</label>
             </div>
           </div>
-          <div className="row">
+          <div>
             <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">email</i>
+              <i className="material-icons prefix">email</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.email}
@@ -154,9 +154,9 @@ class SignUpPage extends React.Component {
               <label htmlFor="email">Email</label>
             </div>
           </div>
-          <div className="row">
+          <div>
             <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">lock</i>
+              <i className="material-icons prefix">lock</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.password}
@@ -166,11 +166,13 @@ class SignUpPage extends React.Component {
               <label htmlFor="password">Password</label>
             </div>
           </div>
+          <div className="button-right">
           <input
           type="submit"
           value="Done"
-          className="waves-effect waves-light btn"
+          className="waves-effect waves-light btn "
           />
+          </div>
         </form>
       </div>
     );
