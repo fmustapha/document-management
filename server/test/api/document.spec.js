@@ -25,7 +25,7 @@ describe('DOCUMENT API', () => {
   let document, updateDoc;
 
   beforeEach((done) => {
-      db.Role.destroy({ where: {} })
+    db.Role.destroy({ where: {} })
         .then(() => {
           db.Role.bulkCreate([helper.adminRole, helper.regularRole])
             .then((roles) => {
@@ -60,7 +60,7 @@ describe('DOCUMENT API', () => {
         });
   });
   afterEach((done) => {
-        db.User.destroy({ where: {} })
+    db.User.destroy({ where: {} })
           .then(() => {
             db.Document.destroy({ where: {} })
               .then(() => {
@@ -139,7 +139,6 @@ describe('DOCUMENT API', () => {
   });
 
   describe('Update Document /documents/:id', () => {
-    
     it('should update document when user is the owner', (done) => {
       updateDoc = { title: 'andela' };
       superRequest.put(`/documents/${createdDoc.id}`)

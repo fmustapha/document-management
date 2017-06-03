@@ -8,6 +8,7 @@ export default {
   },
 
   userSearch(req, res) {
+    console.log('user search');
     return db.User
       .findAndCountAll({
         where: {
@@ -54,10 +55,10 @@ export default {
        }
      }, req.odmsFilter)
       .then((documents) => {
-        if (documents.length <= 0) {
+        if (documents.rows.length <= 0) {
           return res.status(404)
             .send({
-              message: 'Documents Not Found',
+              message: 'Document(s) Not Found',
             });
         }
         const condition = {

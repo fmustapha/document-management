@@ -129,7 +129,7 @@ describe('User API', () => {
           });
       });
 
-    describe('Logout User', () =>{
+    describe('Logout User', () => {
       it('should log out a user successfully', (done) => {
         request.post('/users/logout')
         .send({})

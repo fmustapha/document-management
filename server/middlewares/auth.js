@@ -6,6 +6,7 @@ const secret = process.env.SECRET || 'samplesecret';
 export default {
 
   verifyToken(req, res, next) {
+    console.log('verify token');
     const token =
       req.headers.authorization ||
       req.headers['x-access-token'];
@@ -28,8 +29,11 @@ export default {
   },
 
   authorizeAdmin(req, res, next) {
-    if (parseInt(req.decoded.data.roleId, 10) === 1 ||
-     String(req.decoded.data.id) === String(req.params.id)) {
+    const roleId = req.decoded.roleId || req.decoded.data.roleId;
+    const id = req.decoded.id || req.decoded.data.id;
+    console.log(roleId);
+    if (parseInt(roleId, 10) === 1 ||
+     String(id) === String(req.params.id)) {
       next();
     } else {
       return res.status(403).send({
@@ -57,91 +61,23 @@ export default {
    *
    */
   validateSearch(req, res, next) {
+    console.log('va;idate search');
     const query = {};
-    const terms = [];
-    const userQuery = req.query.query;
-    const searchArray =
-      userQuery ? userQuery.toLowerCase().match(/\w+/g) : null;
     const limit = req.query.limit || 10;
     const offset = req.query.offset || 0;
     const publishedDate = req.query.publishedDate;
     const order =
       publishedDate && publishedDate === 'ASC' ? publishedDate : 'DESC';
 
-    if (limit < 0 || !/^([1-9]\d*|0)$/.test(limit)) {
+    if (!Helper.checkQuery(limit) || !Helper.checkQuery(offset)) {
       return res.status(400)
         .send({
           message: 'Only positive number is allowed for limit value'
         });
     }
-    if (offset < 0 || !/^([1-9]\d*|0)$/.test(offset)) {
-      return res.status(400)
-        .send({
-          message: 'Only positive number is allowed for offset value'
-        });
-    }
-
-    if (searchArray) {
-      searchArray.forEach((word) => {
-        terms.push(`%${word}%`);
-      });
-    }
     query.limit = limit;
     query.offset = offset;
     query.order = [['createdAt', order]];
-
-    if (`${req.baseUrl}${req.route.path}` === '/users/search') {
-      if (!req.query.query) {
-        return res.status(400)
-          .send({
-            message: 'Please enter a search query'
-          });
-      }
-      query.where = {
-        $or: [
-          { username: { $iLike: { $any: terms } } },
-          { firstname: { $iLike: { $any: terms } } },
-          { lastname: { $iLike: { $any: terms } } },
-          { email: { $iLike: { $any: terms } } }
-        ]
-      };
-    }
-    if (`${req.baseUrl}${req.route.path}` === '/users/') {
-      query.where = {};
-    }
-    if (`${req.baseUrl}${req.route.path}` === '/documents/search') {
-      if (!req.query.query) {
-        return res.status(400)
-          .send({
-            message: 'Please enter a search query'
-          });
-      }
-      if (Helper.isAdmin(req.decoded.roleId)) {
-        query.where = Helper.likeSearch(terms);
-      } else {
-        query.where = {
-          $and: [Helper.docAccess(req), Helper.likeSearch(terms)]
-        };
-      }
-    }
-    if (`${req.baseUrl}${req.route.path}` === '/documents/') {
-      if (Helper.isAdmin(req.decoded.roleId)) {
-        query.where = {};
-      } else {
-        query.where = Helper.docAccess(req);
-      }
-    }
-    if (`${req.baseUrl}${req.route.path}` === '/users/:id/documents') {
-      const adminSearch = req.query.query ? Helper.likeSearch(terms) : { };
-      const userSearch = req.query.query
-        ? [Helper.docAccess(req), Helper.likeSearch(terms)]
-        : Helper.docAccess(req);
-      if (Helper.isAdmin(req.decoded.roleId)) {
-        query.where = adminSearch;
-      } else {
-        query.where = userSearch;
-      }
-    }
     req.odmsFilter = query;
     next();
   },

@@ -33,6 +33,14 @@ const Helper = {
       'createdAt',
     ];
   },
+
+  checkQuery(query) {
+    if (parseInt(query, 10) >= 0) {
+      return true;
+    }
+    return false;
+  },
+
   /**
    * Pagination
    * @param {Object} condition pagination condition

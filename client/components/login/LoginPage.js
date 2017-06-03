@@ -33,8 +33,8 @@ class LoginPage extends React.Component {
 
   /**
    *
-   * @returns {void}
    * @param {any} nextProps
+   * @returns {void}
    *
    * @memberof LoginPage
    */

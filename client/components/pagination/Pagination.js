@@ -11,8 +11,8 @@ const defaultProps = {
 };
 
 /**
- * 
- * 
+ *
+ *
  * @class Pagination
  * @extends {React.Component}
  */

@@ -56,16 +56,16 @@ class Header extends React.Component {
       <ul id="nav-mobile" className="right hide-on-med-and-down">
         <li><Link to="/dms/document" activeClassName="active">
           <i
-         className="fa fa-tachometer" aria-hidden="true" />
+         className="fa fa-tachometer left" aria-hidden="true" />
          Dashboard</Link></li>
         <li><Link to={`/dms/user/account/${id}`} activeClassName="active">
-          <i className="fa fa-user-circle-o" aria-hidden="true" />
+          <i className="fa fa-user-circle-o left" aria-hidden="true" />
           My Account</Link></li>
         <li><a href="" onClick={this.logout} activeClassName="active">
-          <i className="fa fa-sign-out" aria-hidden="true" />
+          <i className="fa fa-sign-out left" aria-hidden="true" />
           Logout</a></li>
         <li><Link to="/dms/search" activeClassName="active">
-          <i className="fa fa-search" aria-hidden="true" />
+          <i className="fa fa-search left" aria-hidden="true" />
         Search</Link></li>
         <Link to="/dms/about" className="waves-effect waves-light btn">Learn More</Link>
       </ul>
@@ -80,18 +80,20 @@ class Header extends React.Component {
     );
     const adminLinks = (
       <ul id="nav-mobile" className="right hide-on-med-and-down">
-        <li><Link to="/dms/document" activeClassName="active">Dashboard</Link></li>
+        <li><Link to="/dms/document" activeClassName="active">
+          <i className="fa fa-tachometer left" aria-hidden="true" />
+        Dashboard</Link></li>
         <li><Link to="/dms/users" activeClassName="active">
-          <i className="fa fa-users" aria-hidden="true" />
+          <i className="fa fa-users left" aria-hidden="true" />
         Manage Users</Link></li>
         <li><Link to={`/dms/user/account/${id}`} activeClassName="active">
-          <i className="fa fa-user-circle-o" aria-hidden="true" />
+          <i className="fa fa-user-circle-o left" aria-hidden="true" />
         My Account</Link></li>
         <li><Link to="/dms/search" activeClassName="active">
-          <i className="fa fa-search" aria-hidden="true" />
+          <i className="fa fa-search left" aria-hidden="true" />
         Search</Link></li>
         <li><a href="" onClick={this.logout} activeClassName="active">
-          <i className="fa fa-sign-out" aria-hidden="true" />
+          <i className="fa fa-sign-out left" aria-hidden="true" />
         Logout</a></li>
       </ul>
     );
