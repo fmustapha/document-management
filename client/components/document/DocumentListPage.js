@@ -62,7 +62,6 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   deleteDocument(id) {
-    alert('deleting document');
     this.props.actions.deleteDocument(id)
     .then(() => toastr.success('Document Successfully Deleted'))
     .catch(() => {
