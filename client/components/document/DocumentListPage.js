@@ -62,17 +62,15 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   deleteDocument(id) {
+    alert('deleting document');
     this.props.actions.deleteDocument(id)
-    .then(() => {
-      toastr.success('Document Successfully Deleted');
-      browserHistory.push('/dms/documents');
-    })
+    .then(() => toastr.success('Document Successfully Deleted'))
     .catch(() => {
       this.props.addFlashMessage({
         type: 'error',
-        text: 'Unable to delete user' });
+        text: 'Unable to delete document' });
       toastr.error(
-        'Unable to delete user');
+        'Unable to delete document, contact your Admin');
     });
     this.setState({ id: 0 });
   }
@@ -149,14 +147,7 @@ class DocumentsListPage extends React.Component {
                               {document.title}</Link>
                           </div>
                           <div className="action-icons">
-                            <i
-                            id="float-icons-left"
-                            className="fa fa-trash tooltipped"
-                              aria-hidden="true"
-                              data-position="bottom"
-                              data-delay="50"
-                              data-tooltip="delete document"
-                            onClick={() => console.log(document.id)} />
+                
                           </div>
                           <div className="clear" />
                         </div>
@@ -209,8 +200,9 @@ class DocumentsListPage extends React.Component {
                             <i
                             id="float-icons-left"
                             className="fa fa-trash"
+                            aria-hidden="true"
                             onClick={() => this.deleteDocument(document.id)}
-                            aria-hidden="true" />
+                            />
                           </div>
                           <div className="clear" />
                         </div>

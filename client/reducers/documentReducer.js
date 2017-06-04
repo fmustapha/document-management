@@ -20,9 +20,21 @@ export default function documentReducer(state = initialState.documents, action) 
       });
 
     case types.DELETE_DOCUMENT:
-      console.log(action);
       return Object.assign({}, state, {
-        documents: state.documents.filter(document => document.id !== action.id),
+        documents: {
+          ...state.documents,
+          rows: [...state.documents.rows].filter((document) => {
+            if (document.id !== action.id) {
+              return document;
+            }
+          }),
+        },
+        userDocuments:
+          [...state.userDocuments].filter((document) => {
+            if (document.id !== action.id) {
+              return document;
+            }
+          }),
         deleteComplete: true,
         isCreating: false
       });

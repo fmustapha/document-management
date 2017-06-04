@@ -13,7 +13,8 @@ export default function userReducer(state = initialState.users, action) {
   switch (action.type) {
     case types.LIST_USERS:
       return Object.assign({}, state, { users: action.users.users,
-        totalUsers: action.users.totalUsers });
+        totalUsers: action.users.totalUsers,
+        pagination: action.users.pagination });
 
     case types.UPDATE_USER:
       return Object.assign({}, state, {
@@ -40,7 +41,7 @@ export default function userReducer(state = initialState.users, action) {
             }
           })
         },
-        totalUsers: state.totalUsers - 1
+        totalUsers: state.totalUsers - 1,
       });
 
     default:

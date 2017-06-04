@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import ReactPaginate from 'react-paginate';
 import { addFlashMessage } from '../../actions/flashMessages';
 import * as listUsers from '../../actions/userAction';
 
@@ -31,10 +32,12 @@ class UserListPage extends React.Component {
         role: props.users.role,
         createdAt: props.users.createdAt,
         updatedAt: props.users.updatedAt,
+        offset: 0
       }
     };
     this.onRoleChange = this.onRoleChange.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
 /**
@@ -90,11 +93,29 @@ class UserListPage extends React.Component {
   /**
    *
    *
+   * @param {Object} data
+   * @returns {void}
+   * @memberof UserListPage
+   */
+  handlePageClick(data) {
+    const selected = data.selected;
+    const offset = Math.ceil(selected * this.state.limit);
+    this.setState({ offset }, () => {
+      this.props.actions.listUsers(this.state.limit, offset);
+    });
+  }
+
+  /**
+   *
+   *
    * @returns {Object} conataining JSX
    *
    * @memberof UserListPage
    */
   render() {
+    const pagination = this.props.users.pagination ?
+     this.props.users.pagination : 1;
+     console.log(pagination, '<===pagination');
     const allUsers = this.props.users.users ? this.props.users.users.rows : null;
     return (
       <div>
@@ -132,7 +153,7 @@ class UserListPage extends React.Component {
                        <select
                        value="select role"
                        onChange={event => this.onRoleChange(event, user.id)}>
-                         <option value="" selected>Select Access Type</option>
+                         <option value={0}>Select Access Type</option>
                          <option value={1} >Admin</option>
                          <option value={2} >Regular</option>
                        </select>
@@ -150,6 +171,21 @@ class UserListPage extends React.Component {
                 )) : <span />}
             </tbody>
           </table>
+          <div>
+            <ReactPaginate
+            previousLabel={'previous'}
+                           nextLabel={'next'}
+                           breakLabel={<a href="">...</a>}
+                           breakClassName={'break-me'}
+                           pageCount={pagination.page_count}
+                           marginPagesDisplayed={2}
+                           pageRangeDisplayed={5}
+                           onPageChange={this.handlePageClick}
+                           containerClassName={'pagination'}
+                           subContainerClassName={'pages pagination'}
+                           pageClassName={'waves-effect'}
+                           activeClassName={'active'} />
+          </div>
         </div>
       </div>
     );
@@ -159,6 +195,7 @@ class UserListPage extends React.Component {
 UserListPage.propTypes = {
   actions: PropTypes.object.isRequired,
   users: PropTypes.object.isRequired,
+  pagination: PropTypes.object.isRequired,
   addFlashMessage: PropTypes.func.isRequired
 };
 
@@ -177,7 +214,8 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = state => ({
   users: state.users,
-  totalUsers: state.totalUsers
+  totalUsers: state.totalUsers,
+  pagination: state.pagination
 });
 
 

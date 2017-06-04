@@ -103,7 +103,7 @@ class AddDocumentsPage
    * @returns {void}
    * @memberof VAddDocumentsPage
    */
-  onClickBack() { //eslint-disable-line
+  onClickBack() {
     browserHistory.goBack();
   }
 

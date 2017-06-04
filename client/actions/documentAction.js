@@ -37,7 +37,7 @@ export function creatingDocument() {
   return { type: types.ADDING_DOCUMENT };
 }
 
-export function deletingDocument() {
+export function deleteDocumentSuccess() {
   return { type: types.DELETING_DOCUMENT };
 }
 /**
@@ -150,9 +150,9 @@ export function updateDocument(id, updatedDocument) {
  */
 export function deleteDocument(id) {
   return (dispatch) => {
-    dispatch(deletingDocument());
-    axios.delete(`/documents/${id}`)
-    .then((response) => {
+    dispatch(deleteDocumentSuccess());
+    return axios.delete(`/documents/${id}`)
+    .then(() => {
       dispatch({ type: types.DELETE_DOCUMENT, id });
     }).catch((error) => {
       dispatch({ type: types.DELETE_ERROR, error });

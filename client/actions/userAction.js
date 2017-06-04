@@ -1,5 +1,4 @@
 import axios from 'axios';
-// import jwtDecode from 'jwt-decode';
 import types from './actionTypes';
 
 
@@ -28,7 +27,8 @@ export const adminUpdateUserSuccess = user => ({
 export function listUsers() {
   return dispatch => axios.get('/users/')
     .then(response => dispatch(listUsersSuccess({ users: response.data.users,
-      totalUsers: response.data.totalUsers
+      totalUsers: response.data.totalUsers,
+      pagination: response.data.pagination
     }))
     )
     .catch((error) => {
@@ -54,6 +54,13 @@ export function updateUser(id, userUpdate) {
   };
 }
 
+/**
+ *
+ *
+ * @export
+ * @param {Number} id
+ * @returns {Object} containing successful message or error message
+ */
 export function deleteUser(id) {
   return (dispatch) => {
     return axios.delete(`/users/${id}`)
