@@ -43,6 +43,13 @@ color:orange;
   color: orange !important;
 }
 
+#pagination {
+  width: 20%;
+  margin-left: 80%;
+  margin-right: 10%;
+  border-color: $theme-color;
+  float: right;
+}
 #page-padding {
   margin: 50px;
   width: 80%;
@@ -129,7 +136,7 @@ border-color: $theme-color;
   text-align: center;
 }
 
-.search_type{
+#search_type{
   width:40%;
 }
 

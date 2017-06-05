@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactPaginate from 'react-paginate';
 import { addFlashMessage } from '../../actions/flashMessages';
+import { SearchBar } from '../../components/searchBar/searchBar';
 import * as listUsers from '../../actions/userAction';
+import * as searchAction from '../../actions/searchAction';
+
 
 /**
  *
@@ -32,7 +35,8 @@ class UserListPage extends React.Component {
         role: props.users.role,
         createdAt: props.users.createdAt,
         updatedAt: props.users.updatedAt,
-        offset: 0
+        offset: 0,
+        limit: 10
       }
     };
     this.onRoleChange = this.onRoleChange.bind(this);
@@ -101,7 +105,7 @@ class UserListPage extends React.Component {
     const selected = data.selected;
     const offset = Math.ceil(selected * this.state.limit);
     this.setState({ offset }, () => {
-      this.props.actions.listUsers(this.state.limit, offset);
+      this.listUsers();
     });
   }
 
@@ -115,10 +119,13 @@ class UserListPage extends React.Component {
   render() {
     const pagination = this.props.users.pagination ?
      this.props.users.pagination : 1;
-     console.log(pagination, '<===pagination');
-    const allUsers = this.props.users.users ? this.props.users.users.rows : null;
+    // console.log(pagination, '<===pagination');
+    let allUsers = this.props.users.users ? this.props.users.users.rows : null;
+    allUsers = this.props.search.user ? this.props.search.user.user.rows : allUsers;
     return (
       <div>
+        <SearchBar searchFor='user' performSearch={this.props.searchAction} />
+        <p>I am here!</p>
         <div className="welcome-message"><h4>Welcome Admin</h4><h6>No of Users:
           {` ${this.props.users.totalUsers} `}</h6></div>
         <div className="table-div">
@@ -161,17 +168,19 @@ class UserListPage extends React.Component {
                     }
                   </td>
                   <td>
-                    <i
+                    {(user.id === 1) ?
+                     'N/A' : <i
                       id="float-icons-left"
                       className="fa fa-trash"
                       aria-hidden="true"
                       onClick={() => this.onClickDelete(user.id)} />
+                    }
                   </td>
                 </tr>
                 )) : <span />}
             </tbody>
           </table>
-          <div>
+          <div id="pagination">
             <ReactPaginate
             previousLabel={'previous'}
                            nextLabel={'next'}
@@ -196,6 +205,8 @@ UserListPage.propTypes = {
   actions: PropTypes.object.isRequired,
   users: PropTypes.object.isRequired,
   pagination: PropTypes.object.isRequired,
+  search: PropTypes.object.isRequired,
+  searchAction: PropTypes.object.isRequired,
   addFlashMessage: PropTypes.func.isRequired
 };
 
@@ -208,6 +219,7 @@ UserListPage.propTypes = {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(listUsers, dispatch),
+    searchAction: bindActionCreators(searchAction.searchUser, dispatch),
     addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
   };
 }
@@ -215,7 +227,8 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = state => ({
   users: state.users,
   totalUsers: state.totalUsers,
-  pagination: state.pagination
+  pagination: state.pagination,
+  search: state.search
 });
 
 
