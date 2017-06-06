@@ -32,6 +32,7 @@ export function listUsers() {
     }))
     )
     .catch((error) => {
+      dispatch({ type: types.LIST_ERROR, error });
     });
 }
 

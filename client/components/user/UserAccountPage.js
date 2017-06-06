@@ -64,7 +64,7 @@ class UserAccountPage extends React.Component {
    * @memberof UserAccountPage
    */
   onClickBack() {
-    this.context.router.push('/dms/');
+    browserHistory.goBack();
   }
 
 /**
@@ -162,16 +162,24 @@ userUpdateAction
                 <label htmlFor="password">Enter new password here</label>
             </div>
           </div>
+          <div className="right">
+          <span>
           <input
           type="submit"
           value="Edit"
+          onClick={this.onClickEdit}
           className="waves-effect waves-light btn"
           />
+          </span>
+          <span>
           <input
           type="submit"
           value="Back"
+          onClick={this.onClickBack}
           className="waves-effect waves-light btn"
           />
+          </span>
+          </div>
         </form>
           <div className="account-side">
           </div>

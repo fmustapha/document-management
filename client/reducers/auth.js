@@ -30,7 +30,7 @@ export default function authReducer(state = initialState, action) {
       return { isAuthenticated: false,
         loggedInUser: null };
     case types.VALIDATION_ERROR:
-      return { error: action.response };
+      return { ...state, error: action.response };
     default:
       return state;
   }

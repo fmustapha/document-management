@@ -75,9 +75,15 @@ export function signUp(userDetails) {
       });
 }
 
-export function logout(userDetails) {
+/**
+ *
+ *
+ * @export
+ * @returns
+ */
+export function logout() {
   return dispatch => axios.post('/users/logout')
-      .then((response) => {
+      .then(() => {
         localStorage.removeItem('jwtToken');
         setAuthorizationToken(false);
         dispatch({
@@ -86,7 +92,7 @@ export function logout(userDetails) {
       })
       .catch((error) => {
         dispatch({
-          type: types.LOGOUT_ERROR,
+          type: types.VALIDATION_ERROR,
           response: error.response.data.message
         });
       });
