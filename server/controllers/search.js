@@ -8,7 +8,6 @@ export default {
   },
 
   userSearch(req, res) {
-    console.log('user search');
     return db.User
       .findAndCountAll({
         where: {
@@ -48,12 +47,7 @@ export default {
 
   documentSearch(req, res) {
     return db.Document
-     .findAndCountAll({
-       where: {
-         $or: [{ title: { $iLike: `%${req.query.term}%` } },
-            { content: { $iLike: `%${req.query.term}%` } }]
-       }
-     }, req.odmsFilter)
+     .findAndCountAll(req.odmsFilter)
       .then((documents) => {
         if (documents.rows.length <= 0) {
           return res.status(404)

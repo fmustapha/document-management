@@ -16,7 +16,8 @@ export default function documentReducer(state = initialState.documents, action) 
       console.log('former', state);
       return Object.assign({}, state, {
         documents: [...state.documents, action.document],
-        isCreating: false
+        isCreating: false,
+        isCreated: true
       });
 
     case types.DELETE_DOCUMENT:
@@ -46,7 +47,11 @@ export default function documentReducer(state = initialState.documents, action) 
       return Object.assign({}, state, { isCreating: true });
 
     case types.ADD_DOCUMENT_ERROR:
-      return Object.assign({}, state, { isCreating: false, error: action.error });
+      return Object.assign({}, state,
+        { isCreating: false,
+          isCreated: false,
+          error: action.error
+        });
 
     case types.VIEW_DOCUMENT:
       return Object.assign({}, state, { currentDocument: action.document });

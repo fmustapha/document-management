@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as documentAction from '../../actions/documentAction';
 import { addFlashMessage } from '../../actions/flashMessages';
+import { SearchBar } from '../../components/searchBar/searchBar';
+import * as searchAction from '../../actions/searchAction';
 
 /**
  *
@@ -32,6 +34,7 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   componentWillMount() {
+    console.log(this.props, 'props')
     const loggedInUser = this.props.auth.loggedInUser.data.id;
     this.props.actions.listDocument();
     this.props.actions.listUserDocument(loggedInUser);
@@ -84,21 +87,27 @@ class DocumentsListPage extends React.Component {
   render() {
     const user = this.props.auth.loggedInUser ?
      this.props.auth.loggedInUser.data.username : null;
-    const allDocuments = this.props.documents.documents ?
-      this.props.documents.documents.rows : null;
+
+    let allDocuments = this.props.documents.documents ?
+      this.props.documents.documents.rows : '';
+    allDocuments = this.props.search.document ?
+      this.props.search.document.documents.rows : allDocuments;
+
     const userDocuments = this.props.documents.userDocuments ?
       this.props.documents.userDocuments : null;
+
     return (
       <div>
+        <SearchBar searchFor='document' performSearch={this.props.searchAction} />
         <div id="page-padding">
           <div className="row">
-          <div className="col s6">
-            <div className="dashboard-title">Dashboard</div>
-          </div>
-          <div className="col s6 right-align dashboard-welcome">
+            <div className="col s6">
+              <div className="dashboard-title">Dashboard</div>
+            </div>
+            <div className="col s6 right-align dashboard-welcome">
             Welcome { user }
+            </div>
           </div>
-        </div>
           <div className="create-logo">
             <a
           className="btn btn-floating btn-large pulse create-logo tooltipped"
@@ -146,7 +155,7 @@ class DocumentsListPage extends React.Component {
                               {document.title}</Link>
                           </div>
                           <div className="action-icons">
-                
+                            {document.User && document.User.username}
                           </div>
                           <div className="clear" />
                         </div>
@@ -221,8 +230,10 @@ class DocumentsListPage extends React.Component {
 
 DocumentsListPage.propTypes = {
   actions: PropTypes.object.isRequired,
-  auth: React.PropTypes.object.isRequired,
-  documents: React.PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  documents: PropTypes.object.isRequired,
+  search: PropTypes.object.isRequired,
+  searchAction: PropTypes.func.isRequired,
   addFlashMessage: PropTypes.func.isRequired
 };
 
@@ -235,6 +246,7 @@ DocumentsListPage.propTypes = {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(documentAction, dispatch),
+    searchAction: bindActionCreators(searchAction.searchDocument, dispatch),
     addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
   };
 }
@@ -246,9 +258,11 @@ function mapDispatchToProps(dispatch) {
  * @returns {Object} contains document and authorization properties
  */
 function mapStateToProps(state) {
+  console.log('state ===>>', state);
   return {
     documents: state.documents,
-    auth: state.auth
+    auth: state.auth,
+    search: state.search
   };
 }
 

@@ -46,7 +46,6 @@ class Header extends React.Component {
    * @memberof Header
    */
   render() {
-    console.log("props======>", this.props);
     const id = (this.props.auth.loggedInUser) ?
       this.props.auth.loggedInUser.data.id : null;
     const roleId = (this.props.auth.loggedInUser) ?
@@ -64,9 +63,6 @@ class Header extends React.Component {
         <li><a href="" onClick={this.logout} activeClassName="active">
           <i className="fa fa-sign-out left" aria-hidden="true" />
           Logout</a></li>
-        <li><Link to="/dms/search" activeClassName="active">
-          <i className="fa fa-search left" aria-hidden="true" />
-        Search</Link></li>
         <Link to="/dms/about" className="waves-effect waves-light btn">Learn More</Link>
       </ul>
       );
@@ -89,9 +85,6 @@ class Header extends React.Component {
         <li><Link to={`/dms/user/account/${id}`} activeClassName="active">
           <i className="fa fa-user-circle-o left" aria-hidden="true" />
         My Account</Link></li>
-        <li><Link to="/dms/search" activeClassName="active">
-          <i className="fa fa-search left" aria-hidden="true" />
-        Search</Link></li>
         <li><a href="" onClick={this.logout} activeClassName="active">
           <i className="fa fa-sign-out left" aria-hidden="true" />
         Logout</a></li>
@@ -151,7 +144,6 @@ function mapDispatchToProps(dispatch) {
  * @returns {Object} auth
  */
 function mapStateToProps(state) {
-  console.log('state =====>',state);
   return {
     auth: state.auth
   };

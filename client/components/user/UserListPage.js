@@ -125,7 +125,6 @@ class UserListPage extends React.Component {
     return (
       <div>
         <SearchBar searchFor='user' performSearch={this.props.searchAction} />
-        <p>I am here!</p>
         <div className="welcome-message"><h4>Welcome Admin</h4><h6>No of Users:
           {` ${this.props.users.totalUsers} `}</h6></div>
         <div className="table-div">
@@ -230,6 +229,5 @@ const mapStateToProps = state => ({
   pagination: state.pagination,
   search: state.search
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserListPage);

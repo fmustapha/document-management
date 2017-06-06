@@ -1,10 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router';
-import { browserHistory } from 'react-router';
+import React, { PropTypes } from 'react';
+import { Link, browserHistory } from 'react-router';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addFlashMessage } from '../../actions/flashMessages';
 import * as searchAction from '../../actions/searchAction';
 
 /**
@@ -39,10 +37,10 @@ class SearchPage
   *
   * @memberof SearchPage
   */
- onTermChange(event) {
-   const term = event.target.value;
-   this.setState({ term });
- }
+  onTermChange(event) {
+    const term = event.target.value;
+    this.setState({ term });
+  }
   /**
    *
    *
@@ -91,21 +89,21 @@ class SearchPage
           </select>
         </div>
         <div><h5>documents</h5>
-        <div id="allDocuments" className="col s12">
-              <div className="row">
-                {(!this.props.search.document) ?
-                  <div className="col s12 m12" key={document.id}>
-                    <div className="card">
-                      <div className="card-content teal-text lighten-1">
-                        <div className="card-title">
-                          <div className="document-title">
-                            <p>No Documents yet! CLick create icon below</p>
-                          </div>
-                          <div className="clear" />
+          <div id="allDocuments" className="col s12">
+            <div className="row">
+              {(!this.props.search.document) ?
+                <div className="col s12 m12" key={document.id}>
+                  <div className="card">
+                    <div className="card-content teal-text lighten-1">
+                      <div className="card-title">
+                        <div className="document-title">
+                          <p>No Documents yet! CLick create icon below</p>
                         </div>
+                        <div className="clear" />
                       </div>
                     </div>
                   </div>
+                </div>
                 :
                 this.props.search.document.documents.rows.map((document) => (
                   <div className="col s12 m12" key={document.id}>
@@ -123,57 +121,74 @@ class SearchPage
                   </div>
                 ))
                 }
-        </div>
-        </div>
-        <div><h5>Users</h5>
-        <div>
-          <table id="page-padding" className="striped">
-            <thead>
-              <tr>
-                <th>S/N</th>
-                <th>UserName</th>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-              </tr>
-            </thead>
-            <tbody>
-              {allUsers ? allUsers.rows.map((user, index) => (
-                <tr>
-                  <td>{index + 1}</td>
-                  <td>{user.username}</td>
-                  <td>{user.firstname}</td>
-                  <td>{user.lastname}</td>
-                  <td>{user.email}</td>
-                  <td>{(user.roleId === 1) ? 'Admin' : 'Regular'}</td>
-                  <td>{user.createdAt}</td>
-                  <td>{user.updatedAt}</td>
-                </tr>
+            </div>
+          </div>
+          <div><h5>Users</h5>
+            <div>
+              <table id="page-padding" className="striped">
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>UserName</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>CreatedAt</th>
+                    <th>UpdatedAt</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {allUsers ? allUsers.rows.map((user, index) => (
+                    <tr>
+                      <td>{index + 1}</td>
+                      <td>{user.username}</td>
+                      <td>{user.firstname}</td>
+                      <td>{user.lastname}</td>
+                      <td>{user.email}</td>
+                      <td>{(user.roleId === 1) ? 'Admin' : 'Regular'}</td>
+                      <td>{user.createdAt}</td>
+                      <td>{user.updatedAt}</td>
+                    </tr>
                 )) : <span />}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    </div>
     );
   }
 }
 
+/**
+ *
+ *
+ * @param {Object} state
+ * @returns {Object} containing key value pairs
+ */
 function mapStateToProps(state) {
   return {
     search: state.search
   };
 }
 
+/**
+ *
+ *
+ * @param {func} dispatch
+ * @returns {Object} containing key value pairs
+ */
 function MapDispatchToProps(dispatch) {
   return {
     searchAction: bindActionCreators(searchAction, dispatch)
   };
 }
+
+SearchPage.propTypes = {
+  search: PropTypes.object.isRequired,
+  searchAction: PropTypes.object.isRequired
+};
 
 
 export default connect(mapStateToProps, MapDispatchToProps)(SearchPage);

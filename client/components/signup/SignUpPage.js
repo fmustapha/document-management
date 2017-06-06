@@ -38,7 +38,7 @@ class SignUpPage extends React.Component {
   /**
    *
    * @returns {void}
-   * @param {any} nextProps
+   * @param {Object} nextProps
    *
    * @memberof SignUpPage
    */
@@ -48,18 +48,14 @@ class SignUpPage extends React.Component {
     } else if (nextProps.auth.error) {
       toastr.error(nextProps.auth.error);
     }
-//     $('form').validate();
-
-//     define(["jquery", "jquery.validate"], function( $ ) {
-//     $("form").validate();
-// });
   }
 
   /**
    *
-   * @returns {void}
-   * @param {any} event
    *
+   * @param {Object} event
+   *
+   * @returns {void}
    * @memberof SignUpPage
    */
   onChange(event) {
@@ -75,23 +71,14 @@ class SignUpPage extends React.Component {
 
   /**
    *
+   * @param {Object} event
    *
-   * @returns {void}
    * @memberof SignUpPage
+   * @returns {void}
    */
   onSubmit(event) {
     event.preventDefault();
     this.props.actions.signUp(this.state.signUp);
-    // .then(() => {
-    //   if (this.props.auth.error) {
-    //     toastr.success('error signed up');
-    //   } else {
-    //     toastr.success('successfully signed up');
-    //   }
-    // })
-    // .catch(() => {
-    //   toastr.error('Oops. Error occured during your sign up. Try again :)');
-    // });
   }
 
   /**
@@ -170,7 +157,7 @@ class SignUpPage extends React.Component {
           <input
           type="submit"
           value="Done"
-          className="waves-effect waves-light btn "
+          className="waves-effect waves-light btn"
           />
           </div>
         </form>
@@ -191,10 +178,16 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+/**
+ *
+ *
+ * @param {Object} state
+ * @returns {Object} containing user authorization details
+ */
 function mapStateToProps(state) {
   return {
     auth: state.auth
-  }
+  };
 }
 
 SignUpPage.propTypes = {

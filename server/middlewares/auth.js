@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken';
 import Helper from '../helper/Helper';
+import db from '../models/';
 
 const secret = process.env.SECRET || 'samplesecret';
 
 export default {
 
   verifyToken(req, res, next) {
-    console.log('verify token');
     const token =
       req.headers.authorization ||
       req.headers['x-access-token'];
@@ -61,7 +61,6 @@ export default {
    *
    */
   validateSearch(req, res, next) {
-    console.log('va;idate search');
     const query = {};
     const limit = req.query.limit || 10;
     const offset = req.query.offset || 0;
@@ -78,6 +77,40 @@ export default {
     query.limit = limit;
     query.offset = offset;
     query.order = [['createdAt', order]];
+    if (`${req.baseUrl}${req.route.path}` === '/documents/') {
+      query.include = [
+        {
+          model: db.User,
+          attributes: [
+            'id',
+            'username',
+            'firstname',
+            'lastname',
+            'email',
+            'roleId'
+          ]
+        }
+      ];
+    }
+    if (`${req.baseUrl}${req.route.path}` === '/search/documents') {
+      query.where = {
+        $or: [{ title: { $iLike: `%${req.query.term}%` } },
+          { content: { $iLike: `%${req.query.term}%` } }]
+      };
+      query.include = [
+        {
+          model: db.User,
+          attributes: [
+            'id',
+            'username',
+            'firstname',
+            'lastname',
+            'email',
+            'roleId'
+          ]
+        }
+      ];
+    }
     req.odmsFilter = query;
     next();
   },

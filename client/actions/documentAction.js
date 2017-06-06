@@ -18,11 +18,10 @@ export function createDocument(document) {
     .then(() => {
       dispatch({ type: types.ADD_DOCUMENT, document });
     }).catch((error) => {
-      console.log(error, 'Action error');
-      // dispatch({
-      //   type: types.ADD_DOCUMENT_ERROR,
-      //   error: error.response.data.message
-      // });
+      dispatch({
+        type: types.ADD_DOCUMENT_ERROR,
+        error: error.response.data.message
+      }, console.log(error.response.data.error.errors, '<===error'));
     });
   };
 }

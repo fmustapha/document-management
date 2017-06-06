@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
@@ -17,8 +17,8 @@ class AddDocumentsPage
  extends React.Component {
   /**
    * Creates an instance of AddDocumentsPage.
-   * @param {any} props
-   * @param {any} context
+   * @param {Object} props
+   * @param {Object} context
    *
    * @memberof AddDocumentsPage
    */
@@ -39,10 +39,6 @@ class AddDocumentsPage
     this.onAccessChange = this.onAccessChange.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.props.dispatch(documentActions.creatingDocument());
-  // }
-
   /**
    *
    * @returns {void}
@@ -51,12 +47,11 @@ class AddDocumentsPage
    * @memberof AddDocumentsPage
    */
   componentWillReceiveProps(nextProps) {
-    alert(JSON.stringify(nextProps));
-    if (!nextProps.documents.error && nextProps.documents.isCreating === 'false') {
+    if (nextProps.documents.isCreated === true) {
+      toastr.success('Document successfully created');
       browserHistory.push('/dms/document');
     } else if (nextProps.documents.error) {
       toastr.error(nextProps.documents.error);
-      browserHistory.push('/dms/document');
     }
   }
 
@@ -93,7 +88,6 @@ class AddDocumentsPage
    * @memberof AddDocumentsPage
    */
   onClickSave() {
-    console.log(this.state.document);
     this.props.createDocumentActions(this.state.document);
   }
 
@@ -152,8 +146,7 @@ class AddDocumentsPage
               toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
             }}
             onChange={this.handleEditorChange}
-            className="wysiwyg"
-            required />
+            className="wysiwyg" required />
           </div>
           <div className="" id="select">
             <select onChange={this.onAccessChange} >
@@ -184,10 +177,10 @@ class AddDocumentsPage
 }
 
 AddDocumentsPage.propTypes = {
-  userId: React.PropTypes.number.isRequired,
-  createDocumentActions: React.PropTypes.func.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired,
-  documents: React.PropTypes.object.isRequired
+  userId: PropTypes.number.isRequired,
+  createDocumentActions: PropTypes.func.isRequired,
+  // addFlashMessage: PropTypes.func.isRequired,
+  // documents: PropTypes.object.isRequired
 };
 
 /**
@@ -199,7 +192,7 @@ AddDocumentsPage.propTypes = {
 function mapStateToProps(state) {
   const user = state.auth.loggedInUser;
   return {
-   // documents: state.documents,
+    documents: state.documents,
     userId: user.data.id
   };
 }

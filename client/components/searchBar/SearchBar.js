@@ -1,11 +1,21 @@
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as searchAction from '../../actions/searchAction';
 
 
+/**
+ *
+ *
+ * @export
+ * @class SearchBar
+ * @extends {React.Component}
+ */
 export class SearchBar extends React.Component {
 
+  /**
+   * Creates an instance of SearchBar.
+   * @param {any} props
+   *
+   * @memberof SearchBar
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +23,8 @@ export class SearchBar extends React.Component {
     };
     // this.performSearch = this.performSearch.bind(this);
     this.onTermChange = this.onTermChange.bind(this);
+    this.onCancel = this.onCancel.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   /**
@@ -26,6 +38,12 @@ export class SearchBar extends React.Component {
     const term = event.target.value;
     this.setState({ term });
   }
+  onCancel(event) {
+    event.preventDefault();
+    this.setState({
+      term: ''
+    });
+  }
   /**
    *
    *
@@ -33,46 +51,56 @@ export class SearchBar extends React.Component {
    * @returns {void}
    * @memberof UpdateDocumentPage
    */
-  // performSearch(event, type) {
-  //   event.preventDefault();
-  //   console.log(this.props, '<==props');
-  //   // if (type && type === 'user') {
-  //   //   this.props.action.searchUser(this.state.term)
-  //   //   .then((response) => {
-  //   //     console.log(response, '<==response');
-  //   //   });
-  //   // } else {
-  //   //   this.props.searchAction.searchDocument(this.state.term);
-  //   // }
-  // }
+  onSubmit(event) {
+    event.preventDefault();
+    this.props.performSearch(event, this.state.term);
+  }
 
+  /**
+   *
+   *
+   * @returns
+   *
+   * @memberof SearchBar
+   */
   render() {
     return (
-      <nav className="search_nav">
-        <div className="nav-wrapper">
-          <form>
-            <div className="input-field">
-              <input id="search_type" type="search" required value={this.state.term} onChange={this.onTermChange} />
-              <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
-              <i className="material-icons">close</i>
-              <input
-                type="button"
-                value="Search"
-                className="waves-effect waves-light btn"
-                onClick={(e) => this.props.performSearch(e, this.state.term)}
-              />
-            </div>
-          </form>
-        </div>
-      </nav>
+      <div>
+        <nav className="search_nav">
+          <div className="nav-wrapper">
+            <form onSubmit={event => this.onSubmit(event)} method="post">
+              <div className="input-field">
+                <input
+                  id="search_type"
+                  type="search"
+                  placeholder="Search..."
+                  required
+              value={this.state.term} onChange={this.onTermChange} />
+                <label className="label-icon search-icon" htmlFor="search">
+                  <a onClick={this.onCancel}>
+                    <i className="material-icons">
+                      close
+                    </i>
+                  </a>
+                </label>
+                <i
+                type="submit"
+                className="material-icons waves-effect waves-light"
+                onClick={event => this.props.performSearch(event, this.state.term)}
+                >search
+                </i>
+              </div>
+            </form>
+          </div>
+        </nav>
+      </div>
     );
   }
 }
 
 SearchBar.propTypes = {
-  search: PropTypes.object.isRequired,
-  searchFor: PropTypes.string.isRequired,
-  action: PropTypes.object.isRequired
+  performSearch: PropTypes.func.isRequired,
+  searchFor: PropTypes.string.isRequired
 };
 
 /**

@@ -136,14 +136,27 @@ border-color: $theme-color;
   text-align: center;
 }
 
-#search_type{
-  width:40%;
+.search-button{
+  // width:4px;
+  // padding-left: 10%;
+  // float: right
+}
+.search-icon {
+  cursor: pointer !important;
+}
+.search-wrap {
+  float: right
 }
 
 .search_nav {
   background-color: $tab-text;
   color: #000000;
+  width: 30%;
+  margin-right: 10%;
+  float: right;
 }
+
+
 
 .document-view {
   width: 80%;

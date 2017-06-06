@@ -6,6 +6,7 @@ const InitialState = {
   userDocuments: [],
   documents: {
     documents: [],
+    isCreated: false,
     isCreating: false,
     isDeleting: false,
   },
