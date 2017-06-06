@@ -157,20 +157,22 @@ class AddDocumentsPage
             <label>Select Access type</label>
           </div>
         </div>
-        <span>
-          <input
+        <div className="right">
+          <span>
+            <input
         type="submit"
         value="Save"
         className="waves-effect waves-light btn"
         onClick={this.onClickSave} />
-        </span>
-        <span>
-          <input
+          </span>
+          <span>
+            <input
         type="submit"
         value="Back"
         className="waves-effect waves-light btn"
         onClick={this.onClickBack} />
-        </span>
+          </span>
+        </div>
       </div>
     );
   }

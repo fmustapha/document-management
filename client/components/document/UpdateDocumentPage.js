@@ -92,7 +92,7 @@ class UpdateDocumentPage
    * @memberof ViewDocumentPage
    */
   onClickBack() {
-    this.props.browserHistory.goBack();
+    browserHistory.goBack();
   }
 
   /**
@@ -118,17 +118,18 @@ class UpdateDocumentPage
   render() {
     return (
       <div id="page-padding">
-        <h3>Update Document</h3>
+        <h3 id="padded">Update Document</h3>
         <div className="row">
           <div className="input-field col s6">
-            <div className="pad-icons">
-              <i className="material-icons prefix">mode_edit</i>
+            <div className="padded">
+              <i className="material-icons prefix pad-icons">mode_edit</i>
             </div>
             <input
               onChange={this.onTitleChange}
               value={this.state.document.title}
               type="text"
               name="title"
+              id="input-margin"
               className="col 5 s12" />
           </div>
           <div className="input-field col s12">
@@ -142,27 +143,31 @@ class UpdateDocumentPage
               />
           </div>
         </div>
-        <div className="" id="select">
-          <select value={this.state.document.access} onChange={this.onAccessChange} >
+        <div className="col s12 padded" id="select">
+          <select name="access" value={this.state.document.access} onChange={this.onAccessChange} >
             <option value="" selected>Select Access Type</option>
             <option value="public">Public</option>
             <option value="private">Private</option>
             <option value="role">Role</option>
           </select>
-          <label>Select Access type</label>
+          <label htmlFor="access">Select Access type</label>
         </div>
-        <span>
-          <input
+        <div className="right">
+          <span>
+            <input
             type="submit"
             value="Save"
             className="waves-effect waves-light btn"
             onClick={this.onClickSave} />
-          <input
+          </span>
+          <span>
+            <input
             type="submit"
             value="Back"
             className="waves-effect waves-light btn"
             onClick={this.onClickBack} />
-        </span>
+          </span>
+        </div>
       </div>
     );
   }

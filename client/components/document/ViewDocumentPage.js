@@ -101,16 +101,20 @@ class ViewDocumentPage
         <h2>{document.title}</h2>
         <p dangerouslySetInnerHTML={this.createMarkup()} />
         <div>
-          <input
+          <span>
+            <input
           type="submit"
           value="Edit"
           className="waves-effect waves-light btn"
           onClick={this.onClickEdit} />
-          <input
+          </span>
+          <span>
+            <input
           type="submit"
           value="Back"
           className="waves-effect waves-light btn"
           onClick={this.onClickBack} />
+          </span>
         </div>
       </div>
         :
