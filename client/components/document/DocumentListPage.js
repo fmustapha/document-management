@@ -3,6 +3,7 @@ import { Link, browserHistory } from 'react-router';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import ReactPaginate from 'react-paginate';
 import * as documentAction from '../../actions/documentAction';
 import { addFlashMessage } from '../../actions/flashMessages';
 import { SearchBar } from '../../components/searchBar/searchBar';
@@ -24,8 +25,13 @@ class DocumentsListPage extends React.Component {
    */
   constructor(props, context) {
     super(props, context);
-    this.state = { id: 0 };
+    this.state = {
+      id: 0,
+      offset: 0,
+      limit: 10
+    };
     this.deleteDocument = this.deleteDocument.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
   /**
    *
@@ -34,9 +40,9 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   componentWillMount() {
-    console.log(this.props, 'props')
+    console.log(this.props, 'props');
     const loggedInUser = this.props.auth.loggedInUser.data.id;
-    this.props.actions.listDocument();
+    this.props.actions.listDocument(this.state.limit, this.state.offset);
     this.props.actions.listUserDocument(loggedInUser);
   }
 
@@ -55,6 +61,21 @@ class DocumentsListPage extends React.Component {
 
   componentWillUnmount() {
     $('.tooltipped').tooltip('remove');
+  }
+
+   /**
+   *
+   *
+   * @param {Object} data
+   * @returns {void}
+   * @memberof UserListPage
+   */
+  handlePageClick(data) {
+    const selected = data.selected;
+    const offset = Math.ceil(selected * this.state.limit);
+    this.setState({ offset }, () => {
+      this.props.actions.listDocument(this.state.limit, offset);
+    });
   }
 
   /**
@@ -85,6 +106,9 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   render() {
+    const pagination = this.props.documents.pagination ?
+     this.props.documents.pagination : 1;
+
     const user = this.props.auth.loggedInUser ?
      this.props.auth.loggedInUser.data.username : null;
 
@@ -223,6 +247,21 @@ class DocumentsListPage extends React.Component {
             </div>
           </div>
         </div>
+        <div id="pagination">
+            <ReactPaginate
+            previousLabel={'previous'}
+                           nextLabel={'next'}
+                           breakLabel={<a href="">...</a>}
+                           breakClassName={'break-me'}
+                           pageCount={pagination.page_count}
+                           marginPagesDisplayed={2}
+                           pageRangeDisplayed={5}
+                           onPageChange={this.handlePageClick}
+                           containerClassName={'pagination'}
+                           subContainerClassName={'pages pagination'}
+                           pageClassName={'waves-effect'}
+                           activeClassName={'active'} />
+          </div>
       </div>
     );
   }
@@ -258,9 +297,9 @@ function mapDispatchToProps(dispatch) {
  * @returns {Object} contains document and authorization properties
  */
 function mapStateToProps(state) {
-  console.log('state ===>>', state);
   return {
     documents: state.documents,
+    pagination: state.pagination,
     auth: state.auth,
     search: state.search
   };

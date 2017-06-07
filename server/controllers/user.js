@@ -32,6 +32,7 @@ export default {
   /**
     * Get all users
     * Route: GET: /users
+    *
     * @param {Object} req request object
     * @param {Object} res response object
     * @returns {void} no returns
@@ -62,6 +63,7 @@ export default {
   /**
    * Get one user by id
    * Route: GET: /users/:id
+   *
    * @param {Object} req
    * @param {Object} res
    * @returns {void|Response} containing user details if successful
@@ -107,6 +109,7 @@ export default {
   /**
     * Get all user's documents by user id
     * Route: GET: /users/:id/documents
+    *
     * @param {Object} req request object
     * @param {Object} res response object
     * @returns {void} no returns
@@ -129,10 +132,10 @@ export default {
   /**
    * Create a new user
    * Route: POST: /users
-   * @returns {void|Response} response object or void
-   * a message
+   *
    * @param {Object} req
    * @param {Object} res
+   * @returns {void|Response} response object or void
    */
   createUser(req, res) {
     db.User.findOne({

@@ -57,11 +57,14 @@ export default function documentReducer(state = initialState.documents, action) 
       return Object.assign({}, state, { currentDocument: action.document });
 
     case types.LIST_DOCUMENT:
-      return Object.assign({}, state, { documents: action.documents });
+      return Object.assign({}, state, { documents: action.documents.documents,
+        pagination: action.documents.pagination });
 
     case types.LIST_USER_DOCUMENT:
       return Object.assign({}, state, { userDocuments:
-         action.documents });
+         action.documents.documents,
+        pagination: action.documents.pagination
+      });
 
     case types.UPDATE_DOCUMENT:
       return Object.assign({}, state, { currentDocument:

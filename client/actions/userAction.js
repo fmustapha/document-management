@@ -24,8 +24,8 @@ export const adminUpdateUserSuccess = user => ({
  * @export
  * @returns {Object} containing users and user details
  */
-export function listUsers() {
-  return dispatch => axios.get('/users/')
+export function listUsers(limit, offset) {
+  return dispatch => axios.get(`/users/?limit=${limit}&offset=${offset}`)
     .then(response => dispatch(listUsersSuccess({ users: response.data.users,
       totalUsers: response.data.totalUsers,
       pagination: response.data.pagination

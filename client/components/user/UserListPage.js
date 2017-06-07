@@ -35,9 +35,9 @@ class UserListPage extends React.Component {
         role: props.users.role,
         createdAt: props.users.createdAt,
         updatedAt: props.users.updatedAt,
-        offset: 0,
-        limit: 10
-      }
+      },
+      offset: 0,
+      limit: 10
     };
     this.onRoleChange = this.onRoleChange.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
@@ -51,7 +51,7 @@ class UserListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   componentWillMount() {
-    this.props.actions.listUsers();
+    this.props.actions.listUsers(this.state.limit, this.state.offset);
   }
 
   /**
@@ -105,7 +105,7 @@ class UserListPage extends React.Component {
     const selected = data.selected;
     const offset = Math.ceil(selected * this.state.limit);
     this.setState({ offset }, () => {
-      this.listUsers();
+      this.props.actions.listUsers(this.state.limit, offset);
     });
   }
 
@@ -119,34 +119,33 @@ class UserListPage extends React.Component {
   render() {
     const pagination = this.props.users.pagination ?
      this.props.users.pagination : 1;
-    // console.log(pagination, '<===pagination');
+    const totalUsers = this.props.users.totalUsers;
     let allUsers = this.props.users.users ? this.props.users.users.rows : null;
     allUsers = this.props.search.user ? this.props.search.user.user.rows : allUsers;
     return (
       <div>
         <SearchBar searchFor='user' performSearch={this.props.searchAction} />
         <div className="welcome-message"><h4>Welcome Admin</h4><h6>No of Users:
-          {` ${this.props.users.totalUsers} `}</h6></div>
+          {`${totalUsers}`}</h6></div>
         <div className="table-div">
           <table id="page-padding" className="striped table">
             <thead>
               <tr>
-                <th>S/N</th>
-                <th>UserName</th>
-                <th>FirstName</th>
-                <th>LastName</th>
+                
+                <th>User Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
                 <th>Email</th>
                 <th>Role</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
+                <th>Created At</th>
+                <th>Updated At</th>
                 <th>Change Role</th>
                 <th>Delete</th>
               </tr>
             </thead>
             <tbody>
-              {allUsers ? allUsers.map((user, index) => (
+              {allUsers ? allUsers.map((user) => (
                 <tr>
-                  <td>{index + 1}</td>
                   <td>{user.username}</td>
                   <td>{user.firstname}</td>
                   <td>{user.lastname}</td>
