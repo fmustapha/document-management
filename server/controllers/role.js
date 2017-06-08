@@ -1,6 +1,6 @@
 import db from '../models/';
 
-const allRoles = ['admin', 'regular'];
+const allRoles = ['admin', 'regular', 'editor'];
 const Roles = db.Role;
 const Users = db.User;
 
@@ -14,14 +14,13 @@ export default {
         req.body
       )
       .then(role => res.status(201).send({
-        role,
-        message: 'Role created succesfully'
+        message: 'Role created succesfully',
+        role
       }))
       .catch((error) => {
-        console.log(error, '[line 17]');
         res.status(400).send({
-          error,
-          message: 'Error creating new role'
+          message: 'Error creating new role',
+          error
         });
       });
   },
@@ -47,13 +46,16 @@ export default {
     return Roles
       .findById(req.params.id, {
         include: [{
-          model: Users
+          model: Users,
+          attributes: [
+            'username'
+          ]
         }],
       })
       .then((role) => {
         if (!role) {
           return res.status(404).send({
-            message: 'Role Not Found',
+            message: 'Role Not Found'
           });
         }
         return res.status(200).send({ role });

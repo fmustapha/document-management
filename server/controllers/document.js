@@ -2,6 +2,14 @@ import db from '../models';
 import Helper from '../helper/Helper';
 
 export default {
+  /**
+    * create a document
+    * Route: POST: /documents/
+    *
+    * @param {Object} req request object
+    * @param {Object} res response object
+    * @returns {void} response object or void
+    */
   createDocument(req, res) {
     if (!req.body.ownerId) {
       req.body.ownerId = req.decoded.id || req.decoded.data.id;
@@ -12,10 +20,10 @@ export default {
       } });
     }
     return db.Document.create(req.body)
-      .then(((newDocument) => {
+      .then(((document) => {
         res.status(200)
           .json({
-            newDocument,
+            document,
             message: 'Document has been successfully created'
           });
       }))
@@ -24,15 +32,38 @@ export default {
           .json({ error });
       });
   },
+
+
+  /**
+    * find a document
+    * Route: GET: /documents/:id
+    *
+    * @param {Object} req request object
+    * @param {Object} res response object
+    * @returns {void} response object or void
+    */
   findDocument(req, res) {
-    return db.Document.findById(req.params.id)
+    return db.Document.findById(req.params.id,
+      {
+        include: [
+          {
+            model: db.User,
+            attributes: [
+              'id',
+              'username',
+              'roleId'
+            ]
+          }
+        ]
+      }
+    )
       .then((document) => {
         if (!document) {
           return res.status(404).send({ message: 'Document not found' });
         }
         const roleId = req.decoded.roleId || req.decoded.data.roleId;
-        
-        if ((Helper.isOwner(req, res, document) || Helper.isAdmin(parseInt(roleId, 10))
+        if ((Helper.isOwner(req, res, document) ||
+         Helper.isAdmin(parseInt(roleId, 10))
           || document.access !== 'private')) {
           return res.status(200)
             .send({
@@ -47,8 +78,7 @@ export default {
       }));
   },
 
-/**
-
+  /**
     * list all documents
     * Route: GET: /documents/
     *
@@ -59,7 +89,19 @@ export default {
   listDocuments(req, res) {
     req.odmsFilter.attributes = Helper.getDocAttribute();
     db.Document
-      .findAndCountAll(req.odmsFilter)
+      .findAndCountAll(req.odmsFilter,
+      {
+        include: [
+          {
+            model: db.User,
+            attributes: [
+              'id',
+              'username',
+              'roleId'
+            ]
+          }
+        ]
+      })
       .then((documents) => {
         const condition = {
           count: documents.count,
@@ -100,8 +142,8 @@ export default {
             if (Helper.isAdmin(roleId)
             || Helper.isOwner(req, res, document)) {
               return document.update(req.body)
-                .then(updatedDoc => res.status(200).send({
-                  updatedDoc,
+                .then(updatedDocument => res.status(200).send({
+                  updatedDocument,
                   message: 'Document updated successfully'
                 }));
             }
@@ -113,6 +155,16 @@ export default {
             message: 'Error updating document'
           })));
   },
+
+
+  /**
+   * Delete document
+   * Route: DELETE: /document/:id
+   *
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} containing successful message or error message
+   */
   deleteDocument(req, res) {
     const roleId = req.decoded.roleId || req.decoded.data.roleId;
     db.Document

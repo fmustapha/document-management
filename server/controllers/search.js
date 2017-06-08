@@ -14,7 +14,10 @@ export default {
           username: {
             $iLike: `%${req.query.term}%`
           }
-        }
+        },
+        attributes: ['id', 'username',
+          'firstname', 'lastname',
+          'email', 'roleId', 'active', 'createdAt', 'updatedAt']
       })
       .then((user) => {
         if (user.rows.length <= 0) {

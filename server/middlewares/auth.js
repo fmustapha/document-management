@@ -31,7 +31,6 @@ export default {
   authorizeAdmin(req, res, next) {
     const roleId = req.decoded.roleId || req.decoded.data.roleId;
     const id = req.decoded.id || req.decoded.data.id;
-    console.log(roleId);
     if (parseInt(roleId, 10) === 1 ||
      String(id) === String(req.params.id)) {
       next();
@@ -84,9 +83,6 @@ export default {
           attributes: [
             'id',
             'username',
-            'firstname',
-            'lastname',
-            'email',
             'roleId'
           ]
         }

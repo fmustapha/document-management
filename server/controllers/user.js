@@ -4,30 +4,9 @@ import omit from 'lodash/omit';
 import db from '../models';
 import Helper from '../helper/Helper';
 
-
-
 const secret = process.env.SECRET || 'samplesecret';
 
 export default {
-
-  // /**
-  //  *
-  //  *
-  //  * @param {any} req
-  //  * @param {any} res
-  //  * @returns {Object} list of users or error message
-  //  * if unsuccessful
-  //  */
-  // getAllUsers(req, res) {
-  //   return db.User.findAll({})
-  //     .then(users => res.status(200).send({
-  //       message: 'Successfull',
-  //       users
-  //     }))
-  //     .catch(error => res.status(400).send({
-  //       error
-  //     }));
-  // },
 
   /**
     * Get all users
@@ -118,7 +97,17 @@ export default {
     db.Document.findAll({
       where: {
         ownerId: req.params.id
-      }
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: [
+            'id',
+            'username',
+            'roleId'
+          ]
+        }
+      ]
     }).then(documents => res.status(200)
       .json({
         message: 'Successfull',
@@ -133,8 +122,8 @@ export default {
    * Create a new user
    * Route: POST: /users
    *
-   * @param {Object} req
-   * @param {Object} res
+   * @param {Object} req request object
+   * @param {Object} res response object
    * @returns {void|Response} response object or void
    */
   createUser(req, res) {
@@ -142,15 +131,15 @@ export default {
       where: {
         email: req.body.email
       }
-    }).then((user) => {
-      if (user) {
+    }).then((newUser) => {
+      if (newUser) {
         return res.status(409).send({
           message: 'User already exists'
         });
       }
       db.User.create(req.body)
-        .then((newUser) => {
-          const userDetails = omit(newUser.dataValues, [
+        .then((user) => {
+          const userDetails = omit(user.dataValues, [
             'password',
             'createdAt',
             'updatedAt'
@@ -163,7 +152,7 @@ export default {
           res.status(201)
             .send({
               token,
-              newUser: userDetails,
+              user: userDetails,
               message: 'User has been successfully created'
             });
         })
@@ -226,6 +215,7 @@ export default {
   /**
     * logout
     * Route: POST: /users/logout
+    *
     * @param {Object} req request object
     * @param {Object} res response object
     * @returns {void} no returns
@@ -261,15 +251,15 @@ export default {
            bcrypt.genSaltSync(10)) : user.password,
           roleId: req.body.roleId || user.roleId
         })
-          .then((updatedUser) => {
+          .then((userUpdated) => {
             res.status(200).json({
               message: 'User role updated',
               updatedUser:
-              { firstname: updatedUser.firstname,
-                lastname: updatedUser.lastname,
-                username: updatedUser.username,
-                email: updatedUser.email,
-                roleId: updatedUser.roleId
+              { firstname: userUpdated.firstname,
+                lastname: userUpdated.lastname,
+                username: userUpdated.username,
+                email: userUpdated.email,
+                roleId: userUpdated.roleId
               }
             });
           })
@@ -284,10 +274,12 @@ export default {
 
   /**
    *
-   * @returns {Object} containing response status and
-   * a message
-   * @param {any} req
-   * @param {any} res
+   *
+   *
+   * @param {Object} req HTTP request
+   * @param {Object} res HTTP responce
+   *
+   * @returns {Object} containing response status and a message
    */
   activeUser(req, res) {
     db.User.findById(req.decoded.id)

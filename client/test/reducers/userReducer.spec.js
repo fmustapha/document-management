@@ -20,15 +20,16 @@ describe('User Reducer', () => {
   });
   describe('UPDATE_USER', () => {
     it('should change the state of user with the update', () => {
-      const initialState = { users: {} };
+      const initialState = { users: [{ id: 5, username: 'mike' }] };
       const action = { type: types.UPDATE_USER,
         users:
-        { users: {},
-          totalUsers: 0,
-          pagination: {}
+        { users: {
+          id: 5,
+          username: 'mikel'
+        }
         } };
       const finalState = userReducer(initialState, action);
-      expect(finalState.users).to.eql(action.users.users);
+      expect(finalState.users.rows[0]).to.eql(action.users[0]);
     });
   });
 });

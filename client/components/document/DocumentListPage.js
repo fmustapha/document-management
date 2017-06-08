@@ -37,6 +37,7 @@ class DocumentsListPage extends React.Component {
    *
    *
    * @returns {void}
+   *
    * @memberof DocumentsListPage
    */
   componentWillMount() {
@@ -50,6 +51,7 @@ class DocumentsListPage extends React.Component {
    *
    *
    * @returns {void}
+   *
    * @memberof DocumentsListPage
    */
   componentDidMount() {
@@ -59,6 +61,12 @@ class DocumentsListPage extends React.Component {
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
+  /**
+   *
+   * @returns {void}
+   *
+   * @memberof DocumentsListPage
+   */
   componentWillUnmount() {
     $('.tooltipped').tooltip('remove');
   }
@@ -68,7 +76,8 @@ class DocumentsListPage extends React.Component {
    *
    * @param {Object} data
    * @returns {void}
-   * @memberof UserListPage
+   *
+   * @memberof DocumentsListPage
    */
   handlePageClick(data) {
     const selected = data.selected;

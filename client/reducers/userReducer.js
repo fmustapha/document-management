@@ -31,7 +31,6 @@ export default function userReducer(state = initialState.users, action) {
 
 
     case types.DELETE_USER:
-      console.log(state);
       return Object.assign({}, state, {
         users: {
           ...state.users,

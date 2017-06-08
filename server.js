@@ -1,4 +1,3 @@
-import open from 'open';
 import path from 'path';
 import dotenv from 'dotenv';
 import Logger from 'js-logger';
@@ -17,7 +16,7 @@ app.get('/dms/*', (req, res) => {
 });
 
 // if (process.env.NODE_ENV !== 'test') {
-  database.sequelize.sync().then(
+database.sequelize.sync().then(
   app.listen(port, (err) => {
     if (err) {
       Logger.error(err);
