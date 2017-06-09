@@ -158,9 +158,7 @@ class DocumentsListPage extends React.Component {
           <div className="row">
             <div className="col s6">
               <div className="dashboard-title">Dashboard</div>
-            </div>
-            <div className="col s6 right-align dashboard-welcome">
-            Welcome { user }
+              <p>Welcome,{ user }</p>
             </div>
           </div>
           <div className="create-logo">
@@ -191,7 +189,8 @@ class DocumentsListPage extends React.Component {
             </div>
             <div id="allDocuments" className="col s12">
               <div className="row">
-                {allDocuments ? allDocuments.map(document => (
+                {allDocuments ? allDocuments
+                .map(document => (
                   <div className="col s12 m12" key={document.id}>
                     <div className="card">
                       <div className="card-content teal-text lighten-1">
@@ -208,6 +207,12 @@ class DocumentsListPage extends React.Component {
                           <div className="document-title">
                             <Link to={`/dms/document/${document.id}`}>
                               {document.title}</Link>
+                            <h6 className="grey-text">
+                              {`Access: ${document.access}`}
+                            </h6>
+                            <h6 className="grey-text">
+                            Last updated: {new Date(document.updatedAt).toDateString()}
+                            </h6>
                           </div>
                           <div className="action-icons">
                             {document.User && document.User.username}
@@ -254,6 +259,12 @@ class DocumentsListPage extends React.Component {
                           <div className="document-title">
                             <Link to={`/dms/document/${document.id}`}>
                               {document.title}</Link>
+                            <h6 className="grey-text">
+                              {`Access: ${document.access}`}
+                            </h6>
+                            <h6 className="grey-text">
+                            Last updated: {new Date(document.updatedAt).toDateString()}
+                            </h6>
                           </div>
                           <div className="action-icons">
                             <i

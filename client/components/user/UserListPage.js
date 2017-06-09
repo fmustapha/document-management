@@ -38,6 +38,7 @@ class UserListPage extends React.Component {
         createdAt: props.users.createdAt,
         updatedAt: props.users.updatedAt,
       },
+      searching: true,
       id: 0,
       offset: 0,
       limit: 10
@@ -147,9 +148,12 @@ class UserListPage extends React.Component {
     allUsers = this.props.search.user ? this.props.search.user.user.rows : allUsers;
     return (
       <div>
-        <SearchBar searchFor="user" performSearch={this.props.searchAction} />
-        <div className="welcome-message"><h4>Welcome Admin</h4><h6>No of Users:
-          {`${totalUsers}`}</h6></div>
+        <SearchBar
+        searchFor="user"
+        loadUsers="{this.props.actions.listUsers(limit, offset)}"
+        performSearch={this.props.searchAction} />
+        <div className="welcome-message"><h4>Welcome Admin</h4><p>No of Users:
+          {`${totalUsers}`}</p></div>
         <div className="table-div">
           <table id="page-padding" className="striped table">
             <thead>
@@ -166,7 +170,7 @@ class UserListPage extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {allUsers ? allUsers.map((user) => (
+              {allUsers ? allUsers.map(user => (
                 <tr>
                   <td>{user.username}</td>
                   <td>{user.firstname}</td>

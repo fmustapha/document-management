@@ -89,19 +89,7 @@ export default {
   listDocuments(req, res) {
     req.odmsFilter.attributes = Helper.getDocAttribute();
     db.Document
-      .findAndCountAll(req.odmsFilter,
-      {
-        include: [
-          {
-            model: db.User,
-            attributes: [
-              'id',
-              'username',
-              'roleId'
-            ]
-          }
-        ]
-      })
+      .findAndCountAll(req.odmsFilter)
       .then((documents) => {
         const condition = {
           count: documents.count,
@@ -118,8 +106,6 @@ export default {
           });
       }).catch(() => res.status(400).send({ message: 'Invalid parameter(s)' }));
   },
-
-
 
   /**
    * Get all document

@@ -1,3 +1,4 @@
+import db from '../models';
 /**
   * Controller's' helper
   */
@@ -71,6 +72,70 @@ const Helper = {
       lastname: data.lastname,
       email: data.email,
     };
+  },
+  createQueryForList(req) {
+    const limit = req.query.limit || 10;
+    const offset = req.query.offset || 0;
+    const query = {};
+    query.limit = limit;
+    query.offset = offset;
+    query.include = [
+      {
+        model: db.User,
+        attributes: [
+          'id',
+          'username',
+          'roleId'
+        ]
+      }
+    ];
+    const hasDecodedProperty =
+    Object.prototype.hasOwnProperty.call(req, 'decoded');
+    if (hasDecodedProperty) {
+      const roleId = req.decoded.data.roleId;
+      if (roleId === 1) {
+        query.where = {};
+      } else {
+        query.where = this.documentAccess(req);
+        query.where = {
+          $or: [
+            { access: 'public' },
+            { access: 'role',
+              $and: {
+                '$User.roleId$': roleId
+              }
+            },
+            { access: 'private',
+              $and: {
+                ownerId: req.decoded.data.id
+              }
+            }
+          ]
+        };
+      }
+    } else {
+      query.where = {
+        access: 'public',
+      };
+    }
+    return query;
+  },
+  documentAccess(req) {
+    const roleId = req.decoded.data.roleId;
+    const userRoleId = roleId.toString();
+    const access = {
+      $or:
+      [
+        { access: 'public' },
+        { ownerId: req.decoded.data.id },
+        { access: 'role',
+          $and: {
+            '$User.roleId$': userRoleId
+          }
+        }
+      ]
+    };
+    return access;
   },
   /**
    * Get document's attributes'

@@ -8,8 +8,8 @@
     "lint": "esw webpack.config.* client server",
     "build": "babel client -d lib",
     "test": "NODE_ENV=test npm run db:test:seed && npm run cover",
-    "test-backend": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --opts mocha.opts server/test/**/search.spec.js --compilers js:babel-register",
-    "test-frontend":"NODE_ENV=test mocha --opts mocha.opts client/test/**/*.spec.js --compilers js:babel-register",
+    "test-backend": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --opts mocha.opts server/test/**/*.spec.js --compilers js:babel-register",
+    "test-frontend": "NODE_ENV=test mocha --opts mocha.opts client/test/**/*.spec.js --compilers js:babel-register",
     "mocha:test": "NODE_ENV=test npm run db:test:seed && mocha --reporter spec ./tools/testSetup.js \"./**/test/**/*.spec.js\" --timeout 60000",
     "cover": "NODE_ENV=test nyc --reporter=html --reporter=text _mocha --reporter spec ./server/test/testSetup.js \"./**/test/**/*.spec.js\" --timeout=60000",
     "test:watch": "npm run mocha:test -- --watch",
@@ -115,6 +115,7 @@
     "selenium-standalone": "^6.1.0",
     "sequelize": "^3.30.4",
     "shortid": "^2.2.8",
+    "sinon": "^2.3.2",
     "style-loader": "0.13.1",
     "supertest": "^3.0.0",
     "toastr": "^2.1.2",
@@ -124,5 +125,10 @@
     "webpack-hot-middleware": "2.18.0",
     "webpack-node-externals": "^1.6.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "chai-spies": "^0.7.1",
+    "enzyme": "^2.8.2",
+    "moxios": "^0.4.0",
+    "nock": "^9.0.13"
+  }
 }

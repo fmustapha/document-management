@@ -1,10 +1,24 @@
 import axios from 'axios';
 import types from './actionTypes';
 
+/**
+ *
+ *
+ * @export
+ * @param {Object} result
+ * @returns {Object}
+ */
 export function searchUserSuccess(result) {
   return { type: types.SEARCH_USER, result };
 }
 
+/**
+ *
+ *
+ * @export
+ * @param {Object} result
+ * @returns {Object}
+ */
 export function searchDocumentSuccess(result) {
   return { type: types.SEARCH_DOCUMENT, result };
 }
@@ -14,7 +28,7 @@ export function searchDocumentSuccess(result) {
  *
  * @export
  * @param {String} term
- * @returns
+ * @returns {Object}
  */
 export function searchUser(event, term) {
   return dispatch => axios.get(`/search/users/?term=${term}`)
@@ -32,7 +46,7 @@ export function searchUser(event, term) {
  * @export
  * @param {Object} event
  * @param {String} term
- * @returns
+ * @returns {func|Object} containing type and/response data
  */
 export function searchDocument(event, term) {
   return dispatch => axios.get(`/search/documents/?term=${term}`)

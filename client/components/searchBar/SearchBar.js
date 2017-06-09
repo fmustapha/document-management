@@ -20,6 +20,7 @@ export class SearchBar extends React.Component {
     super(props);
     this.state = {
       term: '',
+      searching: false,
     };
     // this.performSearch = this.performSearch.bind(this);
     this.onTermChange = this.onTermChange.bind(this);
@@ -41,7 +42,7 @@ export class SearchBar extends React.Component {
   onCancel(event) {
     event.preventDefault();
     this.setState({
-      term: ''
+      term: '',
     });
   }
   /**
@@ -64,6 +65,7 @@ export class SearchBar extends React.Component {
    * @memberof SearchBar
    */
   render() {
+    const searching = this.state.searching;
     return (
       <div>
         <nav className="search_nav">
@@ -86,7 +88,7 @@ export class SearchBar extends React.Component {
                 <i
                 type="submit"
                 className="material-icons waves-effect waves-light"
-                onClick={event => this.props.performSearch(event, this.state.term)}
+                onClick={event => this.onSubmit(event)}
                 >search
                 </i>
               </div>

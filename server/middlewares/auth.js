@@ -61,7 +61,7 @@ export default {
    */
   validateSearch(req, res, next) {
     const query = {};
-    const limit = req.query.limit || 10;
+    const limit = req.query.limit || 40;
     const offset = req.query.offset || 0;
     const publishedDate = req.query.publishedDate;
     const order =
@@ -87,6 +87,26 @@ export default {
           ]
         }
       ];
+      const roleId = req.decoded.data.roleId;
+      if (roleId === 1) {
+        query.where = {};
+      } else {
+        query.where = {
+          $or: [
+            { access: 'public' },
+            { access: 'role',
+              $and: {
+                '$User.roleId$': roleId
+              }
+            },
+            { access: 'private',
+              $and: {
+                ownerId: req.decoded.data.id
+              }
+            }
+          ]
+        };
+      }
     }
     if (`${req.baseUrl}${req.route.path}` === '/search/documents') {
       query.where = {
