@@ -13,7 +13,6 @@ import initialState from '../reducers/InitialState';
 export default function documentReducer(state = initialState.documents, action) {
   switch (action.type) {
     case types.ADD_DOCUMENT:
-      console.log('former', state);
       return Object.assign({}, state, {
         documents: [...state.documents, action.document],
         isCreating: false,

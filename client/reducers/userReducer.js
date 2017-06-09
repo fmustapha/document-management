@@ -14,20 +14,11 @@ export default function userReducer(state = initialState.users, action) {
     case types.LIST_USERS:
       return Object.assign({}, state, { users: action.users.users,
         totalUsers: action.users.totalUsers,
-        pagination: action.users.pagination });
+        pagination: action.users.pagination }
+        );
 
     case types.UPDATE_USER:
-      return Object.assign({}, state, {
-        users: {
-          ...state.users,
-          rows: [...state.users.rows].map((user) => {
-            if (user.id === action.userUpdate.id) {
-              return { ...user, roleId: parseInt(action.userUpdate.roleId, 10) };
-            }
-            return user;
-          }) },
-        isListing: true
-      });
+      return Object.assign({}, state, { userProfile: action.userUpdate });
 
 
     case types.DELETE_USER:
@@ -42,7 +33,6 @@ export default function userReducer(state = initialState.users, action) {
         },
         totalUsers: state.totalUsers - 1,
       });
-
     default:
       return state;
   }

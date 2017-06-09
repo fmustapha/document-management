@@ -18,18 +18,49 @@ describe('User Reducer', () => {
       expect(finalState.users).to.eql(action.users.users);
     });
   });
+
   describe('UPDATE_USER', () => {
-    it('should change the state of user with the update', () => {
-      const initialState = { users: [{ id: 5, username: 'mike' }] };
+    it(`should change the state of
+    userProfile in the store with the update`, () => {
+      const initialState = { userProfile: {} };
       const action = { type: types.UPDATE_USER,
-        users:
-        { users: {
+        userUpdate:
+        {
+          id: 5,
+          username: 'mikel'
+        } };
+
+      const expectedState = {
+        userProfile: {
           id: 5,
           username: 'mikel'
         }
-        } };
-      const finalState = userReducer(initialState, action);
-      expect(finalState.users.rows[0]).to.eql(action.users[0]);
+      };
+      const newState = userReducer(initialState, action);
+      expect(newState).to.eql(expectedState);
+    });
+  });
+
+  describe('DELETE_USER', () => {
+    it('should update the state with a list of users apart from the deleted user', () => {
+      const initialState = { users: { rows: {
+        id: 23,
+        username: 'Galy',
+        firstname: 'Galy',
+        lastname: 'Yim',
+        email: 'galy@gmail.com',
+        roleId: 2,
+        createdAt: '2017-05-31T16:24:33.529Z',
+        updatedAt: '2017-05-31T16:24:33.529Z'
+      }
+      }
+      };
+      const action = { type: types.DELETE_USER, id: 23 };
+      const expectedState = {
+        users: { rows: [] }
+      };
+      const newState = userReducer(initialState, action);
+      expect(newState.users).to.eql(expectedState.users);
     });
   });
 });
