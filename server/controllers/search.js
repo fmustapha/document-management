@@ -40,10 +40,9 @@ export default {
             pagination
           });
       })
-        .catch(error => res.status(400)
+        .catch(() => res.status(400)
         .send({
-          error,
-          message: 'Error occurred while retrieving users'
+          message: 'Error occurred while retrieving users: Invalid parameters'
         }));
   },
 
@@ -72,10 +71,10 @@ export default {
             pagination
           });
       })
-        .catch(error => res.status(400)
+        .catch(() => res.status(400)
         .send({
-          error,
-          message: 'Error occurred while retrieving documents'
+          message: `Error occurred while retrieving
+           documents: Invalid parameters`
         }));
   }
 };

@@ -17,10 +17,9 @@ export default {
         message: 'Role created succesfully',
         role
       }))
-      .catch((error) => {
+      .catch(() => {
         res.status(400).send({
-          message: 'Error creating new role',
-          error
+          message: 'Error creating new role: Invalid parameters'
         });
       });
   },
@@ -36,8 +35,7 @@ export default {
         }
         return res.status(200).send({ role });
       })
-      .catch(error => res.status(400).send({
-        error,
+      .catch(() => res.status(400).send({
         message: 'Error retrieving all roles'
       }));
   },
@@ -60,8 +58,7 @@ export default {
         }
         return res.status(200).send({ role });
       })
-      .catch(error => res.status(400).send({
-        error,
+      .catch(() => res.status(400).send({
         message: 'Error occured while retrieving role'
       }));
   },
@@ -81,13 +78,11 @@ export default {
             message: 'Role updated successfully.',
             role
           }))
-          .catch(error => res.status(400).send({
+          .catch(() => res.status(400).send({
             message: 'Role did not update successfully.',
-            error
           }));
       })
-      .catch(error => res.status(400).send({
-        error,
+      .catch(() => res.status(400).send({
         message: 'Error updating role'
       }));
   },
@@ -107,9 +102,8 @@ export default {
             message: 'Role deleted successfully.'
           }));
       })
-      .catch(error => res.status(400).send({
-        message: 'Cannot delete role with users assigned to it.',
-        error
+      .catch(() => res.status(400).send({
+        message: 'Cannot delete role.',
       }));
   },
 };

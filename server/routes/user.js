@@ -1,6 +1,7 @@
 import express from 'express';
 import User from '../controllers/user';
 import auth from '../middlewares/auth';
+import validateSignup from '../middlewares/users';
 
 const user = express.Router();
 
@@ -9,7 +10,7 @@ user.get('/', auth.verifyToken, auth.authorizeAdmin,
 user.get('/:id', auth.verifyToken, auth.authorizeAdmin, User.getOneUser);
 user.get('/:id/documents',
 auth.verifyToken, auth.authorizeAdmin, User.getUserDocuments);
-user.post('/', User.createUser);
+user.post('/', validateSignup, User.createUser);
 user.post('/login', User.login);
 user.post('/logout', User.logout);
 user.put('/:id', auth.verifyToken, auth.authorizeAdmin, User.updateUser);

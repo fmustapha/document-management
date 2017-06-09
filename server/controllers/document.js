@@ -22,14 +22,14 @@ export default {
     return db.Document.create(req.body)
       .then(((document) => {
         res.status(200)
-          .json({
+          .send({
             document,
             message: 'Document has been successfully created'
           });
       }))
-      .catch((error) => {
+      .catch(() => {
         res.status(400)
-          .json({ error });
+          .send({ message: 'Invalid credentials supplied' });
       });
   },
 
@@ -73,8 +73,8 @@ export default {
         }
         return res.status(403).send({ message: 'Unauthorized access' });
       })
-      .catch(error => res.status(400).send({
-        error
+      .catch(() => res.status(400).send({
+        message: 'Invalid parameter(s)'
       }));
   },
 
@@ -112,12 +112,13 @@ export default {
         const pagination = Helper.pagination(condition);
         res.status(200)
           .send({
-            message: 'You have successfully retrieved all documents',
+            message: 'You have successfully retrieved documents',
             documents,
             pagination
           });
-      });
+      }).catch(() => res.status(400).send({ message: 'Invalid parameter(s)' }));
   },
+
 
 
   /**
@@ -150,9 +151,8 @@ export default {
             return (res.status(403)
                .send({ message: 'Unauthorized Access' }));
           })
-          .catch(error => res.status(400).send({
-            error,
-            message: 'Error updating document'
+          .catch(() => res.status(400).send({
+            message: 'Error updating document, invalid parameter(s)'
           })));
   },
 
@@ -190,8 +190,7 @@ export default {
         return (res.status(403)
                .send({ message: 'Unauthorized Access' }));
       })
-      .catch(error => res.status(400).send({
-        error,
+      .catch(() => res.status(400).send({
         message: 'Error deleting document'
       }));
   },

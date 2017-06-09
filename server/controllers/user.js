@@ -18,7 +18,10 @@ export default {
     */
   getAllUsers(req, res) {
     return db.User
-      .findAndCountAll(req.odmsFilter)
+      .findAndCountAll(Object.assign({}, req.odmsFilter, {
+        attributes: ['id', 'username', 'firstname', 'lastname', 'email',
+          'roleId', 'createdAt', 'updatedAt']
+      }))
       .then((users) => {
         if (users) {
           const condition = {
@@ -36,7 +39,9 @@ export default {
               totalUsers: users.count
             });
         }
-      });
+      }).catch(() => res.status(400).send({
+        message: 'Invalid parameters entered'
+      }));
   },
 
   /**
@@ -60,28 +65,8 @@ export default {
           user
         });
       })
-      .catch(error => res.status(400).json({
-        error
-      }));
-  },
-
-  /**
-   *
-   *
-   * @param {any} req
-   * @param {any} res
-   * @returns {Object} containing pagination limit
-   */
-  getUserPagination(req, res) {
-    return db.User.findAll({
-      limit: 10
-    })
-      .then(limit => res.status(200).json({
-        message: 'Successfull',
-        limit
-      }))
-      .catch(error => res.status(400).json({
-        error
+      .catch(() => res.status(400).send({
+        message: 'Invalid parameters entered'
       }));
   },
 
@@ -112,9 +97,9 @@ export default {
       .json({
         message: 'Successfull',
         documents
-      })).catch((error) => {
+      })).catch(() => {
         res.status(400)
-        .send(error);
+        .send({ message: 'Invalid parameters entered' });
       });
   },
 
@@ -206,8 +191,7 @@ export default {
           token
         });
       })
-      .catch(error => res.status(400).send({
-        error,
+      .catch(() => res.status(400).send({
         message: 'User was not authenticated'
       }));
   },
@@ -263,12 +247,13 @@ export default {
               }
             });
           })
-          .catch(error => res.status(400).send({
-            error
+          .catch(() => res.status(400).send({
+            message: `User update was unsuccessful,
+             invalid credentials supplied`
           }));
       })
-      .catch(error => res.status(400).send({
-        error
+      .catch(() => res.status(400).send({
+        message: 'User update was unsuccessful, invalid credentails supplied'
       }));
   },
 
@@ -285,8 +270,8 @@ export default {
     db.User.findById(req.decoded.id)
     .then(user =>
     res.status(200).send({ user }))
-    .catch(error => res.status(400).send({
-      error
+    .catch(() => res.status(400).send({
+      message: 'invalid credentials supplied'
     }));
   },
 
@@ -310,7 +295,8 @@ export default {
             message: 'User successfully deleted'
           }));
       })
-      .catch(error => res.status(400).send(error));
+      .catch(() => res.status(400)
+      .send({ message: 'An error occurred, unable to delete user' }));
   }
 };
 
