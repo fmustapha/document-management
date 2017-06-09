@@ -4,6 +4,8 @@ import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactPaginate from 'react-paginate';
+import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
+import '../../../node_modules/sweetalert/dist/sweetalert.css';
 import * as documentAction from '../../actions/documentAction';
 import { addFlashMessage } from '../../actions/flashMessages';
 import { SearchBar } from '../../components/searchBar/searchBar';
@@ -32,6 +34,7 @@ class DocumentsListPage extends React.Component {
     };
     this.deleteDocument = this.deleteDocument.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
+    this.renderAlert = this.renderAlert.bind(this);
   }
   /**
    *
@@ -41,7 +44,6 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   componentWillMount() {
-    console.log(this.props, 'props');
     const loggedInUser = this.props.auth.loggedInUser.data.id;
     this.props.actions.listDocument(this.state.limit, this.state.offset);
     this.props.actions.listUserDocument(loggedInUser);
@@ -107,6 +109,26 @@ class DocumentsListPage extends React.Component {
     this.setState({ id: 0 });
   }
 
+/**
+   *
+   *
+   * @param {Number} documentId
+   * @returns {func} call to deleteDocument
+   *
+   * @memberof DocumentsListPage
+   */
+  renderAlert(documentId) {
+    event.preventDefault();
+    this.props.swal({
+      title: 'Warning!',
+      text: 'Are you sure you want to delete user?',
+      type: 'info',
+      showCancelButton: true,
+      onConfirm: (() => this.deleteDocument(documentId)),
+      onCancel: this.props.close,
+    });
+  }
+
   /**
    *
    *
@@ -131,7 +153,7 @@ class DocumentsListPage extends React.Component {
 
     return (
       <div>
-        <SearchBar searchFor='document' performSearch={this.props.searchAction} />
+        <SearchBar searchFor="document" performSearch={this.props.searchAction} />
         <div id="page-padding">
           <div className="row">
             <div className="col s6">
@@ -242,7 +264,7 @@ class DocumentsListPage extends React.Component {
                             id="float-icons-left"
                             className="fa fa-trash"
                             aria-hidden="true"
-                            onClick={() => this.deleteDocument(document.id)}
+                            onClick={() => this.renderAlert(document.id)}
                             />
                           </div>
                           <div className="clear" />
@@ -257,7 +279,7 @@ class DocumentsListPage extends React.Component {
           </div>
         </div>
         <div id="pagination">
-            <ReactPaginate
+          <ReactPaginate
             previousLabel={'previous'}
                            nextLabel={'next'}
                            breakLabel={<a href="">...</a>}
@@ -270,7 +292,8 @@ class DocumentsListPage extends React.Component {
                            subContainerClassName={'pages pagination'}
                            pageClassName={'waves-effect'}
                            activeClassName={'active'} />
-          </div>
+        </div>
+        <ReduxSweetAlert />
       </div>
     );
   }
@@ -280,6 +303,8 @@ DocumentsListPage.propTypes = {
   actions: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   documents: PropTypes.object.isRequired,
+  swal: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
   search: PropTypes.object.isRequired,
   searchAction: PropTypes.func.isRequired,
   addFlashMessage: PropTypes.func.isRequired
@@ -295,7 +320,9 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(documentAction, dispatch),
     searchAction: bindActionCreators(searchAction.searchDocument, dispatch),
-    addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
+    addFlashMessage: bindActionCreators(addFlashMessage, dispatch),
+    swal: bindActionCreators(swal, dispatch),
+    close: bindActionCreators(close, dispatch)
   };
 }
 

@@ -3,7 +3,9 @@ import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactPaginate from 'react-paginate';
+import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
 import { addFlashMessage } from '../../actions/flashMessages';
+import '../../../node_modules/sweetalert/dist/sweetalert.css';
 import { SearchBar } from '../../components/searchBar/searchBar';
 import * as listUsers from '../../actions/userAction';
 import * as searchAction from '../../actions/searchAction';
@@ -36,12 +38,14 @@ class UserListPage extends React.Component {
         createdAt: props.users.createdAt,
         updatedAt: props.users.updatedAt,
       },
+      id: 0,
       offset: 0,
       limit: 10
     };
     this.onRoleChange = this.onRoleChange.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
+    this.renderAlert = this.renderAlert.bind(this);
   }
 
 /**
@@ -112,6 +116,25 @@ class UserListPage extends React.Component {
   /**
    *
    *
+   * @param {Number} userId
+   * @returns {func} call to onClickDelete
+   * @memberof UserListPage
+   */
+  renderAlert(userId) {
+    event.preventDefault();
+    this.props.swal({
+      title: 'Warning!',
+      text: 'Are you sure you want to delete user?',
+      type: 'info',
+      showCancelButton: true,
+      onConfirm: (() => this.onClickDelete(userId)),
+      onCancel: this.props.close,
+    });
+  }
+
+  /**
+   *
+   *
    * @returns {Object} conataining JSX
    *
    * @memberof UserListPage
@@ -124,14 +147,13 @@ class UserListPage extends React.Component {
     allUsers = this.props.search.user ? this.props.search.user.user.rows : allUsers;
     return (
       <div>
-        <SearchBar searchFor='user' performSearch={this.props.searchAction} />
+        <SearchBar searchFor="user" performSearch={this.props.searchAction} />
         <div className="welcome-message"><h4>Welcome Admin</h4><h6>No of Users:
           {`${totalUsers}`}</h6></div>
         <div className="table-div">
           <table id="page-padding" className="striped table">
             <thead>
               <tr>
-                
                 <th>User Name</th>
                 <th>First Name</th>
                 <th>Last Name</th>
@@ -151,8 +173,8 @@ class UserListPage extends React.Component {
                   <td>{user.lastname}</td>
                   <td>{user.email}</td>
                   <td>{(user.roleId === 1) ? 'Admin' : 'Regular'}</td>
-                  <td>{user.createdAt}</td>
-                  <td>{user.updatedAt}</td>
+                  <td>{new Date(user.createdAt).toDateString()}</td>
+                  <td>{new Date(user.updatedAt).toDateString()}</td>
                   <td>{(user.id === 1) ?
                      'Super Admin' : <div className="" id="select">
                        <select
@@ -171,7 +193,7 @@ class UserListPage extends React.Component {
                       id="float-icons-left"
                       className="fa fa-trash"
                       aria-hidden="true"
-                      onClick={() => this.onClickDelete(user.id)} />
+                      onClick={() => this.renderAlert(user.id)} />
                     }
                   </td>
                 </tr>
@@ -194,6 +216,7 @@ class UserListPage extends React.Component {
                            activeClassName={'active'} />
           </div>
         </div>
+        <ReduxSweetAlert />
       </div>
     );
   }
@@ -203,6 +226,8 @@ UserListPage.propTypes = {
   actions: PropTypes.object.isRequired,
   users: PropTypes.object.isRequired,
   pagination: PropTypes.object.isRequired,
+  swal: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
   search: PropTypes.object.isRequired,
   searchAction: PropTypes.object.isRequired,
   addFlashMessage: PropTypes.func.isRequired
@@ -218,6 +243,8 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(listUsers, dispatch),
     searchAction: bindActionCreators(searchAction.searchUser, dispatch),
+    swal: bindActionCreators(swal, dispatch),
+    close: bindActionCreators(close, dispatch),
     addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
   };
 }
