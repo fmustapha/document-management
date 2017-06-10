@@ -121,7 +121,7 @@ class DocumentsListPage extends React.Component {
     event.preventDefault();
     this.props.swal({
       title: 'Warning!',
-      text: 'Are you sure you want to delete user?',
+      text: 'Are you sure you want to delete this document?',
       type: 'info',
       showCancelButton: true,
       onConfirm: (() => this.deleteDocument(documentId)),
@@ -158,7 +158,7 @@ class DocumentsListPage extends React.Component {
           <div className="row">
             <div className="col s6">
               <div className="dashboard-title">Dashboard</div>
-              <p>Welcome,{ user }</p>
+              <p>Welcome, { user }</p>
             </div>
           </div>
           <div className="create-logo">
@@ -176,7 +176,7 @@ class DocumentsListPage extends React.Component {
                 <li className="tab col s3 white-text">
                   <a
                 className="s"
-               href="#allDocuments">All Public Documents
+               href="#allDocuments">All Documents
                </a>
                 </li>
                 <li className="tab col s3 white-text">

@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import TinyMCE from 'react-tinymce';
 import { bindActionCreators } from 'redux';
 import UpdateDocumentPage from './UpdateDocumentPage';
 import * as documentActions from '../../actions/documentAction';
