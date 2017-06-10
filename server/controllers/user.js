@@ -226,7 +226,7 @@ export default {
           });
         }
         return user.update({
-          firstname: req.body.name || user.firstname,
+          firstname: req.body.firstname || user.firstname,
           lastname: req.body.lastname || user.lastname,
           username: req.body.username || user.username,
           email: req.body.email || user.email,

@@ -58,7 +58,7 @@ export function signUp(userDetails) {
         setAuthorizationToken(token);
         dispatch({
           type: types.SIGNUP_USER,
-          response: response.data.newUser
+          response: response.data.user
         });
         dispatch(setCurrentUser(jwtDecode(token)));
         dispatch({
@@ -66,12 +66,10 @@ export function signUp(userDetails) {
         });
       })
       .catch((error) => {
-        console.log('error======>', error);
         dispatch({
           type: types.VALIDATION_ERROR,
           response: error.response.data.message
         });
-        // toastr.error('Unable to sign up');
       });
 }
 
