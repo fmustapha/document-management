@@ -1,7 +1,6 @@
 import request from 'supertest';
 import chai from 'chai';
 import jwt from 'jsonwebtoken';
-import app from '../../config/config';
 import db from '../../models';
 import helper from '../helper/test.helper';
 import server from '../../../server';

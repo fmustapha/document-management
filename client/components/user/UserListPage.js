@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import ReactPaginate from 'react-paginate';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
 import { addFlashMessage } from '../../actions/flashMessages';
-// import '../../../node_modules/sweetalert/dist/sweetalert.css';
 import { SearchBar } from '../../components/searchBar/searchBar';
 import * as listUsers from '../../actions/userAction';
 import * as searchAction from '../../actions/searchAction';

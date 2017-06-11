@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
 import toastr from 'toastr';
 import { bindActionCreators } from 'redux';
-import { addFlashMessage } from '../../actions/flashMessages';
 import { createDocument } from '../../actions/documentAction';
 
 /**
@@ -180,7 +179,6 @@ export class AddDocumentsPage
 AddDocumentsPage.propTypes = {
   userId: PropTypes.number.isRequired,
   createDocumentActions: PropTypes.func.isRequired,
-  // addFlashMessage: PropTypes.func.isRequired,
   // documents: PropTypes.object.isRequired
 };
 
@@ -202,12 +200,11 @@ function mapStateToProps(state) {
  *
  *
  * @param {any} dispatch
- * @returns {Object} containing actions to create document and add flash message
+ * @returns {Object} containing actions to create document
  */
 function mapDispatchToProps(dispatch) {
   return {
-    createDocumentActions: bindActionCreators(createDocument, dispatch),
-    addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
+    createDocumentActions: bindActionCreators(createDocument, dispatch)
   };
 }
 

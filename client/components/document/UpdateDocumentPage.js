@@ -4,7 +4,6 @@ import toastr from 'toastr';
 import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
 import { bindActionCreators } from 'redux';
-import { addFlashMessage } from '../../actions/flashMessages';
 import * as documentActions from '../../actions/documentAction';
 
 /**
@@ -76,9 +75,6 @@ class UpdateDocumentPage
     this.props.updateDocumentAction(this.props.id, this.state.document)
     .then(() => toastr.success('Document Successfully Updated'))
     .catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to update document' });
       toastr.error(
         'Unable to update document');
     });
@@ -196,8 +192,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     updateDocumentAction:
-    bindActionCreators(documentActions.updateDocument, dispatch),
-    addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
+    bindActionCreators(documentActions.updateDocument, dispatch)
   };
 }
 
@@ -209,9 +204,7 @@ UpdateDocumentPage.propTypes = {
   documents: React.PropTypes.object.isRequired,
   title: React.PropTypes.string.isRequired,
   content: React.PropTypes.string.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired,
   access: React.PropTypes.string.isRequired,
-  browserHistory: React.PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateDocumentPage);

@@ -40,11 +40,7 @@ export default function userReducer(state = initialState.users, action) {
       return Object.assign({}, state, {
         users: {
           ...state.users,
-          rows: [...state.users.rows].filter((user) => {
-            if (user.id !== action.id) {
-              return user;
-            }
-          })
+          rows: [...state.users.rows].filter(user => user.id !== action.id)
         },
         totalUsers: state.totalUsers - 1,
       });

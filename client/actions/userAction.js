@@ -52,10 +52,8 @@ export function updateUser(id, userUpdate) {
   return (dispatch) => {
     return axios.put(`/users/${id}`, userUpdate)
     .then((response) => {
-      console.log(response);
       dispatch({ type: types.UPDATE_USER, userUpdate: { id, ...response.data.updatedUser } });
-      dispatch({ type: 'UPDATE_USER_LIST', id, userUpdate: { id, ...response.data.updatedUser } });
-
+      dispatch({ type: types.UPDATE_USER_LIST, id, userUpdate: { id, ...response.data.updatedUser } });
     }).catch((error) => {
       dispatch({ type: types.UPDATE_ERROR, error });
     });
@@ -74,10 +72,9 @@ export function viewUser(id, user) {
   return (dispatch) => {
     return axios.get(`/users/${id}`, user)
     .then((response) => {
-      console.log(response.data);
       dispatch(dispatch(viewUserSuccess(response.data)));
     }).catch((error) => {
-      dispatch({ type: types.UPDATE_ERROR, error });
+      dispatch({ type: types.VIEW_ERROR, error });
     });
   };
 }
@@ -95,6 +92,7 @@ export function deleteUser(id) {
     .then(() => dispatch(deleteUserSuccess(id))
     )
     .catch((error) => {
+      dispatch({ type: types.DELETE_USER_ERROR, error });
     });
   };
 }

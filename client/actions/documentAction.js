@@ -21,7 +21,7 @@ export function createDocument(document) {
       dispatch({
         type: types.ADD_DOCUMENT_ERROR,
         error: error.response.data.message
-      }, console.log(error.response.data.error.errors, '<===error'));
+      });
     });
   };
 }
@@ -36,6 +36,12 @@ export function creatingDocument() {
   return { type: types.ADDING_DOCUMENT };
 }
 
+/**
+ *
+ *
+ * @export
+ * @returns
+ */
 export function deleteDocumentSuccess() {
   return { type: types.DELETING_DOCUMENT };
 }
@@ -43,7 +49,7 @@ export function deleteDocumentSuccess() {
  *
  *
  * @export
- * @param {any} documents
+ * @param {object} documents
  * @returns {object} containing an action type a payload
  */
 export function listDocumentSuccess(documents) {
@@ -54,7 +60,7 @@ export function listDocumentSuccess(documents) {
  *
  *
  * @export
- * @param {any} documents
+ * @param {object} documents
  * @returns {object} containing action type and payload properties
  */
 export function listUserDocumentSuccess(documents) {
@@ -68,7 +74,6 @@ export function listUserDocumentSuccess(documents) {
  * @returns {func} containing a payload
  */
 export function listDocument(limit, offset) {
-  console.log('limit==>', limit, 'offset', offset);
   return (dispatch) => {
     return axios.get(`/documents/?limit=${limit}&offset=${offset}`)
     .then((response) => {
@@ -113,7 +118,6 @@ export function listUserDocument(id) {
  * @returns {func} containing a payload and an action type
  */
 export function viewDocument(id) {
-  console.log('I got here!');
   return (dispatch) => {
     return axios.get(`/documents/${id}`)
     .then((response) => {

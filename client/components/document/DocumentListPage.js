@@ -5,9 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactPaginate from 'react-paginate';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
-import '../../../node_modules/sweetalert/dist/sweetalert.css';
 import * as documentAction from '../../actions/documentAction';
-import { addFlashMessage } from '../../actions/flashMessages';
 import { SearchBar } from '../../components/searchBar/searchBar';
 import * as searchAction from '../../actions/searchAction';
 
@@ -100,9 +98,6 @@ class DocumentsListPage extends React.Component {
     this.props.actions.deleteDocument(id)
     .then(() => toastr.success('Document Successfully Deleted'))
     .catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to delete document' });
       toastr.error(
         'Unable to delete document, contact your Admin');
     });
@@ -141,7 +136,7 @@ class DocumentsListPage extends React.Component {
      this.props.documents.pagination : 1;
 
     const user = this.props.auth.loggedInUser ?
-     this.props.auth.loggedInUser.data.username : null;
+     this.props.auth.loggedInUser.data : null;
 
     let allDocuments = this.props.documents.documents ?
       this.props.documents.documents.rows : '';
@@ -158,7 +153,7 @@ class DocumentsListPage extends React.Component {
           <div className="row">
             <div className="col s6">
               <div className="dashboard-title">Dashboard</div>
-              <p>Welcome, { user }</p>
+              <p>Welcome, { user.firstname }</p>
             </div>
           </div>
           <div className="create-logo">
@@ -175,17 +170,30 @@ class DocumentsListPage extends React.Component {
               <ul className="tabs teal darken-4 tab-text">
                 <li className="tab col s3 white-text">
                   <a
-                className="s"
+                className="all-documents"
                href="#allDocuments">All Documents
                </a>
                 </li>
                 <li className="tab col s3 white-text">
                   <a
-                className="s"
+                className="my-documents"
                 href="#myDocuments">My Documents
                 </a>
                 </li>
               </ul>
+            </div>
+            <div className="padded" id="select">
+              {(user.roleId === 2) ?
+              ' ' :
+              <select
+              value="sort by access"
+              onChange={event => this.onAccessChange(event, user.id)}>
+                <option value={1}>All documents</option>
+                <option value={2}>Public documents</option>
+                <option value={3}>Private documents</option>
+                <option value={4}>Role documents</option>
+              </select>
+              }
             </div>
             <div id="allDocuments" className="col s12">
               <div className="row">
@@ -263,14 +271,21 @@ class DocumentsListPage extends React.Component {
                               {`Access: ${document.access}`}
                             </h6>
                             <h6 className="grey-text">
-                            Last updated: {new Date(document.updatedAt).toDateString()}
+                            Last updated: {new Date(document.updatedAt)
+                            .toDateString()}
                             </h6>
                           </div>
                           <div className="action-icons">
                             <i
-                            id="float-icons-left"
-                            className="fa fa-pencil-square-o"
-                             aria-hidden="true" />
+                            id="float-icons-left tooltipped"
+                            className="fa fa-eye"
+                             aria-hidden="true"
+                             onClick={() =>
+                             browserHistory
+                             .push(`/dms/document/${document.id}`)}
+                             data-delay="50"
+                            data-tooltip="click to view/edit document"
+                              />
                             <i
                             id="float-icons-left"
                             className="fa fa-trash"
@@ -317,8 +332,7 @@ DocumentsListPage.propTypes = {
   swal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
   search: PropTypes.object.isRequired,
-  searchAction: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  searchAction: PropTypes.func.isRequired
 };
 
 /**
@@ -331,7 +345,6 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(documentAction, dispatch),
     searchAction: bindActionCreators(searchAction.searchDocument, dispatch),
-    addFlashMessage: bindActionCreators(addFlashMessage, dispatch),
     swal: bindActionCreators(swal, dispatch),
     close: bindActionCreators(close, dispatch)
   };
