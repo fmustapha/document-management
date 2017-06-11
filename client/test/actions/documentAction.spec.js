@@ -1,5 +1,11 @@
+import chai from 'chai';
+import thunk from 'redux-thunk';
+import moxios from 'moxios';
+import configureMockStore from 'redux-mock-store';
 import * as auth from '../../actions/documentAction';
 import types from '../../actions/actionTypes';
+
+const expect = chai.expect;
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -13,7 +19,7 @@ describe('documentActions', () => {
     moxios.uninstall();
   });
 
-  it('should set the current user', () => {
+  it('should successfully create document', () => {
     const users = { id: 1 };
     expect(auth.createDocumentSuccess(users)).to.eql({
       type: types.LIST_USERS,
@@ -21,19 +27,19 @@ describe('documentActions', () => {
     });
   });
 
-  it('should set the current user', () => {
+  it('should update the state of adding document in the store', () => {
     expect(auth.creatingDocument()).to.eql({
       type: types.ADDING_DOCUMENT
     });
   });
 
-  it('should set the current user', () => {
+  it('should successfully delete a document', () => {
     expect(auth.deleteDocumentSuccess()).to.eql({
       type: types.DELETING_DOCUMENT
     });
   });
 
-  it('should set the current user', () => {
+  it('should successfully return type and payload that list documents', () => {
     const documents = { id: 1 };
     expect(auth.listDocumentSuccess(documents)).to.eql({
       type: types.LIST_DOCUMENT,
@@ -41,32 +47,7 @@ describe('documentActions', () => {
     });
   });
 
-  // it('should login a user', (done) => {
-  //   const expectedActions = [
-  //     { type: types.SET_CURRENT_USER, user: { userName: 'abc' } }
-  //   ];
-
-  //   const store = mockStore({ auth: { loggedInUser: null, isAuthenticated: false } });
-
-  //   store.dispatch(auth.login({
-  //     email: 'any@gmail.com',
-  //     password: 'password'
-  //   })).then(() => {
-  //     console.log('dsdsds');
-  //     expect(store.getActions()).to.eql(expectedActions);
-  //     done();
-  //   });
-
-  //   moxios.wait(() => {
-  //     const request = moxios.requests.mostRecent();
-  //     request.respondWith({
-  //       status: 200,
-  //       response: { user: 'abc' }
-  //     });
-  //   });
-  // });
-
-  it('should logout a user', (done) => {
+  it('should return payload and action type that creates a document', (done) => {
     const expectedActions = [
       { type: types.ADD_DOCUMENT, document: { id: 1 } }
     ];
@@ -79,7 +60,6 @@ describe('documentActions', () => {
     } });
 
     store.dispatch(auth.createDocument({ id: 1 })).then(() => {
-      console.log(store.getActions());
       expect(store.getActions()).to.eql(expectedActions);
       done();
     });
@@ -93,9 +73,9 @@ describe('documentActions', () => {
     });
   });
 
-  it('should logout a user', (done) => {
+  it('should return payload and action type that lists documents', (done) => {
     const expectedActions = [
-       { type: 'LIST_DOCUMENT',
+      { type: 'LIST_DOCUMENT',
         documents: { documents: [], pagination: {} } }
     ];
 
@@ -107,7 +87,6 @@ describe('documentActions', () => {
     } });
 
     store.dispatch(auth.listDocument()).then(() => {
-      console.log(store.getActions());
       expect(store.getActions()).to.eql(expectedActions);
       done();
     });
@@ -121,9 +100,10 @@ describe('documentActions', () => {
     });
   });
 
-  it('should logout a user', (done) => {
+  it(`should return payload and action type
+   that lists a users document`, (done) => {
     const expectedActions = [
-       { type: 'LIST_USER_DOCUMENT',
+      { type: 'LIST_USER_DOCUMENT',
         documents: { documents: [], pagination: {} } }
     ];
 
@@ -135,7 +115,6 @@ describe('documentActions', () => {
     } });
 
     store.dispatch(auth.listUserDocument(1)).then(() => {
-      console.log(store.getActions());
       expect(store.getActions()).to.eql(expectedActions);
       done();
     });
@@ -149,9 +128,10 @@ describe('documentActions', () => {
     });
   });
 
-  it('should logout a user', (done) => {
+  it(`should return payload and action type
+   that enables a document to be viewed`, (done) => {
     const expectedActions = [
-       { type: types.VIEW_DOCUMENT,
+      { type: types.VIEW_DOCUMENT,
         document: { id: 1 } }
     ];
 
@@ -163,7 +143,6 @@ describe('documentActions', () => {
     } });
 
     store.dispatch(auth.viewDocument(1)).then(() => {
-      console.log(store.getActions());
       expect(store.getActions()).to.eql(expectedActions);
       done();
     });
@@ -177,9 +156,10 @@ describe('documentActions', () => {
     });
   });
 
-  it('should logout a user', (done) => {
+  it(`should return payload and action
+   type that updates state of document in the store`, (done) => {
     const expectedActions = [
-       { type: types.UPDATE_DOCUMENT,
+      { type: types.UPDATE_DOCUMENT,
         updatedDocument: { } }
     ];
 
@@ -191,7 +171,6 @@ describe('documentActions', () => {
     } });
 
     store.dispatch(auth.updateDocument(1, {})).then(() => {
-      console.log(store.getActions());
       expect(store.getActions()).to.eql(expectedActions);
       done();
     });
@@ -204,8 +183,9 @@ describe('documentActions', () => {
       });
     });
   });
-  
-  it('should logout a user', (done) => {
+
+  it(`should return payload and action
+   type that removes a document from the store`, (done) => {
     const expectedActions = [
       { type: 'DELETING_DOCUMENT' },
       { type: 'DELETE_DOCUMENT', id: 1 }
@@ -219,7 +199,6 @@ describe('documentActions', () => {
     } });
 
     store.dispatch(auth.deleteDocument(1)).then(() => {
-      console.log(store.getActions());
       expect(store.getActions()).to.eql(expectedActions);
       done();
     });

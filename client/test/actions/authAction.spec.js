@@ -1,5 +1,11 @@
+import chai from 'chai';
+import thunk from 'redux-thunk';
+import moxios from 'moxios';
+import configureMockStore from 'redux-mock-store';
 import * as auth from '../../actions/auth';
 import types from '../../actions/actionTypes';
+
+const expect = chai.expect;
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -20,31 +26,6 @@ describe('authAction', () => {
       user
     });
   });
-
-  // it('should login a user', (done) => {
-  //   const expectedActions = [
-  //     { type: types.SET_CURRENT_USER, user: { userName: 'abc' } }
-  //   ];
-
-  //   const store = mockStore({ auth: { loggedInUser: null, isAuthenticated: false } });
-
-  //   store.dispatch(auth.login({
-  //     email: 'any@gmail.com',
-  //     password: 'password'
-  //   })).then(() => {
-  //     console.log('dsdsds');
-  //     expect(store.getActions()).to.eql(expectedActions);
-  //     done();
-  //   });
-
-  //   moxios.wait(() => {
-  //     const request = moxios.requests.mostRecent();
-  //     request.respondWith({
-  //       status: 200,
-  //       response: { user: 'abc' }
-  //     });
-  //   });
-  // });
 
   it('should logout a user', (done) => {
     const expectedActions = [

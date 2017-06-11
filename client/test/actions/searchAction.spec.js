@@ -1,5 +1,11 @@
+import chai from 'chai';
+import thunk from 'redux-thunk';
+import moxios from 'moxios';
+import configureMockStore from 'redux-mock-store';
 import * as auth from '../../actions/searchAction';
 import types from '../../actions/actionTypes';
+
+const expect = chai.expect;
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -13,7 +19,7 @@ describe('searchAction', () => {
     moxios.uninstall();
   });
 
-  it('should set the current user', () => {
+  it('should return type and payload on successfull user search', () => {
     const result = [{}];
     expect(auth.searchUserSuccess(result)).to.eql({
       type: types.SEARCH_USER,
@@ -21,14 +27,14 @@ describe('searchAction', () => {
     });
   });
 
-  it('should successfully delete user', () => {
+  it('should return type and payload on successfull document search', () => {
     const result = [{}];
     expect(auth.searchDocumentSuccess(result)).to.eql({
       type: types.SEARCH_DOCUMENT, result
     });
   });
 
-  it('should logout a user', (done) => {
+  it('should return type and user search result ', (done) => {
     const expectedActions = [{ type: 'SEARCH_USER', result: { users: [], pagination: {} } }];
 
     const store = mockStore({ documents: {
@@ -39,7 +45,6 @@ describe('searchAction', () => {
     } });
 
     store.dispatch(auth.searchUser(0, 1)).then(() => {
-      console.log(store.getActions());
       expect(store.getActions()).to.eql(expectedActions);
       done();
     });
@@ -53,7 +58,7 @@ describe('searchAction', () => {
     });
   });
 
-  it('should logout a user', (done) => {
+  it('should return type and document search result', (done) => {
     const expectedActions = [
       { type: 'SEARCH_DOCUMENT', result: { documents: [], pagination: {} } }
     ];
@@ -66,7 +71,6 @@ describe('searchAction', () => {
     } });
 
     store.dispatch(auth.searchDocument(1, {})).then(() => {
-      console.log(store.getActions());
       expect(store.getActions()).to.eql(expectedActions);
       done();
     });
