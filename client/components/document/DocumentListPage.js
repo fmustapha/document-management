@@ -96,7 +96,7 @@ class DocumentsListPage extends React.Component {
    */
   deleteDocument(id) {
     this.props.actions.deleteDocument(id)
-    .then(() => toastr.success('Document Successfully Deleted'))
+    .then(() => toastr.success('Document successfully deleted'))
     .catch(() => {
       toastr.error(
         'Unable to delete document, contact your Admin');
@@ -221,9 +221,21 @@ class DocumentsListPage extends React.Component {
                             <h6 className="grey-text">
                             Last updated: {new Date(document.updatedAt).toDateString()}
                             </h6>
+                            <h6 className="grey-text">
+                            Author: {document.User && document.User.username}
+                            </h6>
                           </div>
                           <div className="action-icons">
-                            {document.User && document.User.username}
+                            <i
+                            id="float-icons-left tooltipped"
+                            className="fa fa-eye"
+                             aria-hidden="true"
+                             onClick={() =>
+                             browserHistory
+                             .push(`/dms/document/${document.id}`)}
+                             data-delay="50"
+                            data-tooltip="click to view/edit document"
+                              />
                           </div>
                           <div className="clear" />
                         </div>
