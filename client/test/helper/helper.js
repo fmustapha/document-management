@@ -1,13 +1,13 @@
 import { jsdom } from 'jsdom'; //eslint-disable-line
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import nock from 'nock';
+import nock from 'nock'; //eslint-disable-line
 import faker from 'faker';
 import * as chai from 'chai';
-import spies from 'chai-spies';
+import spies from 'chai-spies'; //eslint-disable-line
 import sinon from 'sinon';
-import moxios from 'moxios';
-import { mount, shallow, render } from 'enzyme';
+import moxios from 'moxios'; //eslint-disable-line
+import { mount, shallow, render } from 'enzyme'; //eslint-disable-line
 
 const exposedProperties = ['window', 'navigator', 'document'];
 
@@ -27,9 +27,7 @@ Object.keys(document.defaultView).forEach((property) => {
 chai.use(spies);
 
 global.window.localStorage = {
-  getItem: () => {
-    return 'abc';
-  }
+  getItem: () => 'abc'
 };
 
 global.sinon = sinon;
