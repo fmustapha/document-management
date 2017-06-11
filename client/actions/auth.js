@@ -35,7 +35,7 @@ export function login(loginDetails) {
         console.log(jwtDecode(token));
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log(error);
         dispatch({
           type: types.VALIDATION_ERROR,
           response: error.response.data.message

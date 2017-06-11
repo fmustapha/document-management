@@ -73,6 +73,7 @@ const Helper = {
       email: data.email,
     };
   },
+
   createQueryForList(req) {
     const limit = req.query.limit || 10;
     const offset = req.query.offset || 0;
@@ -120,6 +121,7 @@ const Helper = {
     }
     return query;
   },
+
   documentAccess(req) {
     const roleId = req.decoded.data.roleId;
     const userRoleId = roleId.toString();
@@ -137,6 +139,7 @@ const Helper = {
     };
     return access;
   },
+
   /**
    * Get document's attributes'
    * @returns {Array} return user's attributes
@@ -152,6 +155,7 @@ const Helper = {
       'updatedAt'
     ];
   },
+
   /**
    * Get errors
    * @param {Array} error client side errors
@@ -164,10 +168,11 @@ const Helper = {
     });
     return errorArray;
   },
+
   /**
    * @param {Object} document document response from the database
    * Get documents's attributes'
-   * @returns {Object} return user's attributes
+   * @returns {Object} return attributes
    */
   getDocument(document) {
     return {
@@ -180,6 +185,7 @@ const Helper = {
       updatedAt: document.updatedAt
     };
   },
+
   /**
    * Query for document's access
    * @param {Object} req request object
@@ -200,6 +206,7 @@ const Helper = {
     };
     return access;
   },
+
   /**
    * Query for search terms
    * @param {Array} terms array of search terms
@@ -215,6 +222,7 @@ const Helper = {
     };
     return like;
   },
+
   /**
    * Check for admin permission
    * @param {String} roleId user role id
@@ -223,6 +231,7 @@ const Helper = {
   isAdmin(roleId) {
     return roleId === 1;
   },
+
   /**
    * Check for regular permission
    * @param {String} roleId user role id
@@ -231,6 +240,7 @@ const Helper = {
   isRegular(roleId) {
     return roleId === 2;
   },
+
   /**
    * Check for owner
    * @param {Object} req request object
@@ -241,9 +251,9 @@ const Helper = {
   isOwner(req, res, document) {
     const id = req.decoded.id || req.decoded.data.id;
     const ownerId = document ? String(document.ownerId) : req.params.id;
-    console.log('ownwe', id, ownerId);
     return parseInt(id, 10) === parseInt(ownerId, 10);
   },
+
   /**
    * Check if document's access level is public
    * @param {Object} doc object
@@ -252,6 +262,7 @@ const Helper = {
   isPublic(doc) {
     return doc.access === 'public';
   },
+
   /**
    * Check for document's role permission
    * @param {Object} doc object

@@ -9,8 +9,12 @@ export const deleteUserSuccess = id => ({
   type: types.DELETE_USER, id
 });
 
-export const UpdateUserSuccess = user => ({
+export const updateUserSuccess = user => ({
   type: types.UPDATE_USER, user
+});
+
+export const viewUserSuccess = user => ({
+  type: types.VIEW_USER, user
 });
 
 export const adminUpdateUserSuccess = user => ({
@@ -48,7 +52,30 @@ export function updateUser(id, userUpdate) {
   return (dispatch) => {
     return axios.put(`/users/${id}`, userUpdate)
     .then((response) => {
+      console.log(response);
       dispatch({ type: types.UPDATE_USER, userUpdate: { id, ...response.data.updatedUser } });
+      dispatch({ type: 'UPDATE_USER_LIST', id, userUpdate: { id, ...response.data.updatedUser } });
+
+    }).catch((error) => {
+      dispatch({ type: types.UPDATE_ERROR, error });
+    });
+  };
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {Number} id
+ * @param {Object} user
+ * @returns {func}
+ */
+export function viewUser(id, user) {
+  return (dispatch) => {
+    return axios.get(`/users/${id}`, user)
+    .then((response) => {
+      console.log(response.data);
+      dispatch(dispatch(viewUserSuccess(response.data)));
     }).catch((error) => {
       dispatch({ type: types.UPDATE_ERROR, error });
     });

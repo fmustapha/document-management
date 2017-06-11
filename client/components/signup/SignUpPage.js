@@ -12,12 +12,12 @@ import * as auth from '../../actions/auth';
  * @class SignUpPage
  * @extends {React.Component}
  */
-class SignUpPage extends React.Component {
+export class SignUpPage extends React.Component {
   /**
    * Creates an instance of SignUpPage.
    * @returns {void}
-   * @param {any} props
-   * @param {any} context
+   * @param {Object} props
+   * @param {Object} context
    *
    * @memberof SignUpPage
    */
@@ -156,7 +156,7 @@ class SignUpPage extends React.Component {
           <div className="button-right">
           <input
           type="submit"
-          value="Done"
+          value="Sign up"
           className="waves-effect waves-light btn"
           />
           </div>

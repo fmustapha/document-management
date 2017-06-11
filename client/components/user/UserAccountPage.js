@@ -12,7 +12,7 @@ import * as auth from '../../actions/auth';
  * @class UserAccountPage
  * @extends {React.Component}
  */
-class UserAccountPage extends React.Component {
+export class UserAccountPage extends React.Component {
   /**
    * Creates an instance of UserAccountPage.
    * @param {Object} props
@@ -72,7 +72,7 @@ class UserAccountPage extends React.Component {
     })
       .catch(() => {
         toastr.error(
-          'Unable to create document, kindly contact your Admin');
+          'An error occurred, user account was not updated');
       });
   }
 
@@ -85,7 +85,6 @@ class UserAccountPage extends React.Component {
    */
   onClickBack() {
     browserHistory.goBack();
-    // console.log('Got here');
   }
 
   /**
@@ -110,6 +109,7 @@ class UserAccountPage extends React.Component {
                 name="username"
                 type="text"
                 className="col 5 s12" />
+                <label htmlFor="Username" className="active">Username</label>
               </div>
             </div>
             <div className="">
@@ -121,6 +121,7 @@ class UserAccountPage extends React.Component {
                 name="firstname"
                 type="text"
                 className="col 5 s12" />
+                <label htmlFor="firstname" className="active">Firstname</label>
               </div>
             </div>
             <div className="">
@@ -132,6 +133,7 @@ class UserAccountPage extends React.Component {
                 name="lastname"
                 type="text"
                 className="col 5 s12" />
+                <label htmlFor="lastname" className="active">Lastname</label>
               </div>
             </div>
             <div className="">
@@ -143,6 +145,7 @@ class UserAccountPage extends React.Component {
                 type="text"
                 name="email"
                 className="col 5 s12" />
+                <label htmlFor="email" className="active">Email</label>
               </div>
             </div>
             <div className="">
@@ -154,14 +157,16 @@ class UserAccountPage extends React.Component {
                 type="password"
                 name="password"
                 className="col 5 s12" />
-                <label htmlFor="password">Enter new password here</label>
+                <label
+                htmlFor="password">
+                Enter new password to change the current one</label>
               </div>
             </div>
             <div className="right">
               <span>
                 <input
           type="submit"
-          value="Edit"
+          value="Update"
           onClick={() => this.onClickEdit}
           className="waves-effect waves-light btn"
           />
@@ -191,9 +196,9 @@ class UserAccountPage extends React.Component {
  * @returns {Object} containing user details
  */
 function mapStateToProps(state) {
-  console.log(state.auth.loggedInUser.data, '<==state.auth.loggedInUser.data');
   return {
-    user: state.auth.loggedInUser.data
+    user: state.auth.loggedInUser.data,
+    userUpdate: state.users.userProfile
   };
 }
 

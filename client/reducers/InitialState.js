@@ -2,7 +2,7 @@ const InitialState = {
   isAuthenticated: false,
   loggedInUser: null,
   users: {
-    userProfile: {}
+   // userProfile: {}
   },
   isListing: false,
   userDocuments: [],

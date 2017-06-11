@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import ReactPaginate from 'react-paginate';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
 import { addFlashMessage } from '../../actions/flashMessages';
-import '../../../node_modules/sweetalert/dist/sweetalert.css';
+// import '../../../node_modules/sweetalert/dist/sweetalert.css';
 import { SearchBar } from '../../components/searchBar/searchBar';
 import * as listUsers from '../../actions/userAction';
 import * as searchAction from '../../actions/searchAction';
@@ -17,7 +17,7 @@ import * as searchAction from '../../actions/searchAction';
  * @class UserListPage
  * @extends {React.Component}
  */
-class UserListPage extends React.Component {
+export class UserListPage extends React.Component {
   /**
    * Creates an instance of UserListPage.
    * @param {Object} props
@@ -171,12 +171,12 @@ class UserListPage extends React.Component {
             </thead>
             <tbody>
               {allUsers ? allUsers.map(user => (
-                <tr>
+                <tr key={user.id}>
                   <td>{user.username}</td>
                   <td>{user.firstname}</td>
                   <td>{user.lastname}</td>
                   <td>{user.email}</td>
-                  <td>{(user.roleId === 1) ? 'Admin' : 'Regular'}</td>
+                  <td>{(parseInt(user.roleId, 10) === 1) ? 'Admin' : 'Regular'}</td>
                   <td>{new Date(user.createdAt).toDateString()}</td>
                   <td>{new Date(user.updatedAt).toDateString()}</td>
                   <td>{(user.id === 1) ?

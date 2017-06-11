@@ -13,7 +13,7 @@ import { createDocument } from '../../actions/documentAction';
  * @class AddDocumentsPage
  * @extends {React.Component}
  */
-class AddDocumentsPage
+export class AddDocumentsPage
  extends React.Component {
   /**
    * Creates an instance of AddDocumentsPage.
@@ -124,7 +124,7 @@ class AddDocumentsPage
   render() {
     return (
       <div id="page-padding">
-        <h3>Add Document</h3>
+        <h3 className="padded">Add Document</h3>
         <div className="row">
           <div className="input-field col s6 pad-icons">
             <div className="pad-icons">
@@ -134,10 +134,9 @@ class AddDocumentsPage
               onChange={this.onTitleChange}
               value={this.state.document.title}
               name="title"
-              type="text" className="col 5 s12" required />
-            <label htmlFor="title">Document Title</label>
+              type="text" className="col 5 s12 padded" required />
           </div>
-          <div className="input-field col s12" >
+          <div className="input-field col s12 padded" >
             <TinyMCE
             content={this.state.document.content}
             name="content"
@@ -148,13 +147,13 @@ class AddDocumentsPage
             onChange={this.handleEditorChange}
             className="wysiwyg" required />
           </div>
-          <div className="" id="select">
+          <div className="padded" id="select">
             <select onChange={this.onAccessChange} >
               <option value="public">Public</option>
               <option value="private">Private</option>
               <option value="role">Role</option>
             </select>
-            <label>Select Access type</label>
+            <label htmlFor="access" className="active">Select Access type</label>
           </div>
         </div>
         <div className="right">

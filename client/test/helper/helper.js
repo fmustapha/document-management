@@ -13,6 +13,10 @@ const exposedProperties = ['window', 'navigator', 'document'];
 
 global.document = jsdom('');
 global.window = document.defaultView;
+global.localStorage = {
+  setItem: () => null,
+  removeItem: () => null
+};
 Object.keys(document.defaultView).forEach((property) => {
   if (typeof global[property] === 'undefined') {
     exposedProperties.push(property);

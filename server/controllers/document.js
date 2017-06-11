@@ -96,7 +96,7 @@ export default {
           limit: req.odmsFilter.limit,
           offset: req.odmsFilter.offset
         };
-        delete documents.count;
+        // delete documents.count;
         const pagination = Helper.pagination(condition);
         res.status(200)
           .send({

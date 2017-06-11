@@ -70,7 +70,7 @@ export function listUserDocumentSuccess(documents) {
 export function listDocument(limit, offset) {
   console.log('limit==>', limit, 'offset', offset);
   return (dispatch) => {
-    axios.get(`/documents/?limit=${limit}&offset=${offset}`)
+    return axios.get(`/documents/?limit=${limit}&offset=${offset}`)
     .then((response) => {
       const documents = response.data.documents;
       const pagination = response.data.pagination;
@@ -115,7 +115,7 @@ export function listUserDocument(id) {
 export function viewDocument(id) {
   console.log('I got here!');
   return (dispatch) => {
-    axios.get(`/documents/${id}`)
+    return axios.get(`/documents/${id}`)
     .then((response) => {
       const document = response.data.document;
       dispatch({ type: types.VIEW_DOCUMENT, document });

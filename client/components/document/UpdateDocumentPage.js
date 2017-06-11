@@ -131,6 +131,7 @@ class UpdateDocumentPage
               name="title"
               id="input-margin"
               className="col 5 s12" />
+            <label htmlFor="title" className="active">Title</label>
           </div>
           <div className="input-field col s12">
             <TinyMCE
@@ -141,6 +142,7 @@ class UpdateDocumentPage
             }}
             onChange={this.handleEditorChange}
               />
+            <label htmlFor="content" className="active">Content</label>
           </div>
         </div>
         <div className="col s12 padded" id="select">
@@ -150,7 +152,7 @@ class UpdateDocumentPage
             <option value="private">Private</option>
             <option value="role">Role</option>
           </select>
-          <label htmlFor="access">Select Access type</label>
+          <label htmlFor="access" className="active">Select Access Type</label>
         </div>
         <div className="right">
           <span>

@@ -117,10 +117,6 @@ class Header extends React.Component {
   }
 }
 
-// Header.contextTypes = {
-//   router: PropTypes.object.isRequired
-// };
-
 Header.propTypes = {
   actions: React.PropTypes.object.isRequired,
   auth: React.PropTypes.object.isRequired

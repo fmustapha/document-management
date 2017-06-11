@@ -8,7 +8,7 @@ import Header from './common/Header';
  * @class Layout
  * @extends {React.Component}
  */
-class Layout extends React.Component {
+export class Layout extends React.Component {
   /**
    *
    *
@@ -26,10 +26,5 @@ class Layout extends React.Component {
     );
   }
 }
-
-
-Layout.contextTypes = {
-  router: PropTypes.object.isRequired
-};
 
 export default Layout;

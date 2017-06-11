@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import toastr from 'toastr';
@@ -11,7 +11,7 @@ import * as auth from '../../actions/auth';
  * @class LoginPage
  * @extends {React.Component}
  */
-class LoginPage extends React.Component {
+export class LoginPage extends React.Component {
 
   /**
    * Creates an instance of LoginPage.
@@ -116,7 +116,7 @@ class LoginPage extends React.Component {
           <div className="button-right">
           <input
           type="submit"
-          value="Done"
+          value="Log in"
           className="waves-effect waves-light btn"
           />
           </div>
@@ -126,9 +126,8 @@ class LoginPage extends React.Component {
   }
 }
 
-LoginPage.contextTypes = {
-  router: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+LoginPage.propTypes = {
+  auth: React.PropTypes.object.isRequired
 };
 
 /**

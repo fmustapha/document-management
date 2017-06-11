@@ -82,7 +82,6 @@ describe('search reducer', () => {
 
       const action = { type: types.SEARCH_DOCUMENT, result: documentResult };
       const newState = search(initialState.search, action);
-      console.log(newState, 'newState document');
       expect(newState.document).to.be.an('object');
       expect(newState.document).to.eql(documentResult);
       expect(newState).to.not.eql(initialState);
