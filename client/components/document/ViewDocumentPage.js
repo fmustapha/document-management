@@ -84,6 +84,7 @@ class ViewDocumentPage
    * @memberof ViewDocumentPage
    */
   render() {
+    const user = this.props.auth.loggedInUser.data;
     const document = this.props.documents.currentDocument;
     if (this.state.editing) {
       return <UpdateDocumentPage
@@ -101,11 +102,14 @@ class ViewDocumentPage
         <p dangerouslySetInnerHTML={this.createMarkup()} />
         <div>
           <span>
-            <input
+            {(document.ownerId !== user.id) ?
+          ' ' :
+          <input
           type="submit"
           value="Edit"
           className="waves-effect waves-light btn"
           onClick={this.onClickEdit} />
+          }
           </span>
           <span>
             <input
@@ -147,6 +151,7 @@ function mapDispatchToProps(dispatch) {
  * @returns {Object} object containing document and authourization details
  */
 function mapStateToProps(state) {
+  console.log(state.documents)
   return {
     documents: state.documents,
     auth: state.auth

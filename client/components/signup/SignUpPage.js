@@ -29,7 +29,9 @@ export class SignUpPage extends React.Component {
         firstname: '',
         lastname: '',
         email: '',
-        password: '' }
+        password: '',
+        confirmPassword: ''
+      }
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -78,7 +80,12 @@ export class SignUpPage extends React.Component {
    */
   onSubmit(event) {
     event.preventDefault();
-    this.props.actions.signUp(this.state.signUp);
+    if (this.state.signUp.password !== this.state.signUp.confirmPassword) {
+      toastr.error(`An Error occurred: Password and Confirm 
+      password do not match, try again!`);
+    } else {
+      this.props.actions.signUp(this.state.signUp);
+    }
   }
 
   /**
@@ -152,9 +159,19 @@ export class SignUpPage extends React.Component {
                 className="col 5 s12" required />
               <label htmlFor="password">Password</label>
             </div>
+            <div className="input-field col s6">
+              <i className="material-icons prefix">lock</i>
+              <input
+                onChange={this.onChange}
+                value={this.state.signUp.confirmPassword}
+                type="password"
+                name="confirmPassword"
+                className="col 5 s12" required />
+              <label htmlFor="password">Confirm Password</label>
+            </div>
           </div>
           <div className="button-right">
-          <input
+            <input
           type="submit"
           value="Sign up"
           className="waves-effect waves-light btn"

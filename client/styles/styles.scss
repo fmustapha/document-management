@@ -97,7 +97,6 @@ select {
   display: inline-block;
   width: 35%;
   height: 60%;
-  // z-index: -1; 
 }
 
 #form {
@@ -160,8 +159,6 @@ span {
   margin-right: 10%;
   float: right;
 }
-
-
 
 .document-view {
   width: 80%;
@@ -257,19 +254,8 @@ custom{
   margin: 0px 0px 0px 40px;
 }
 
-#body {
-  /*background-color: rgba(0, 0, 0, 0.5);
-  color: black;
-  position: absolute;
-  height: 100%;
-  width: 100%;*/
-}
-
 #bg {
   background-image: url("./image/bg.jpg");
-  /*background-position: center;
-  background-size:cover;
-  margin: 0;*/
   background-size: cover;
   padding-left: 10px;
   background-repeat: no-repeat;

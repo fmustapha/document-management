@@ -127,13 +127,13 @@ export class AddDocumentsPage
         <div className="row">
           <div className="input-field col s6 pad-icons">
             <div className="pad-icons">
-              <i className="material-icons prefix">mode_edit</i>
+              <i className="material-icons prefix pad-icons">mode_edit</i>
             </div>
             <input
               onChange={this.onTitleChange}
               value={this.state.document.title}
               name="title"
-              type="text" className="col 5 s12 padded" required />
+              type="text" className="col 5 s12 padded" id="input-margin" required />
           </div>
           <div className="input-field col s12 padded" >
             <TinyMCE
