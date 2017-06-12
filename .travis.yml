@@ -1,0 +1,21 @@
+sudo: required
+dist: trusty
+
+language:
+  - node_js
+  - "6"
+
+node_js:
+  - node
+
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database travis;' -U postgres
+
+script:
+  - npm test
+
+after_success:
+- npm run coveralls
