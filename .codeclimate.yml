@@ -5,6 +5,8 @@ engines:
     checks:
       import/no-unresolved:
         enabled: false
+      import/extensions:
+        enabled: false
   duplication:
     enabled: false
     config:
