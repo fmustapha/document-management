@@ -38,7 +38,15 @@ export class SearchBar extends React.Component {
   onTermChange(event) {
     const term = event.target.value;
     this.setState({ term });
+    this.props.performSearch(event, this.state.term, this.props.offset);
   }
+  /**
+   *
+   *
+   * @param {Object} event
+   * @return {void}
+   * @memberof SearchBar
+   */
   onCancel(event) {
     event.preventDefault();
     this.setState({
@@ -54,7 +62,7 @@ export class SearchBar extends React.Component {
    */
   onSubmit(event) {
     event.preventDefault();
-    this.props.performSearch(event, this.state.term);
+    this.props.performSearch(event, this.state.term, this.props.offset);
   }
 
   /**
@@ -76,7 +84,6 @@ export class SearchBar extends React.Component {
                   id="search_type"
                   type="search"
                   placeholder="Search..."
-                  required
               value={this.state.term} onChange={this.onTermChange} />
                 <label className="label-icon search-icon" htmlFor="search">
                   <a onClick={this.onCancel}>
@@ -102,7 +109,7 @@ export class SearchBar extends React.Component {
 
 SearchBar.propTypes = {
   performSearch: PropTypes.func.isRequired,
-  searchFor: PropTypes.string.isRequired
+  offset: PropTypes.number.isRequired
 };
 
 /**

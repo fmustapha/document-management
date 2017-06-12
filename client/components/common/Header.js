@@ -53,14 +53,14 @@ class Header extends React.Component {
     const { isAuthenticated } = this.props.auth;
     const userLinks = (
       <ul id="nav-mobile" className="right hide-on-med-and-down">
-        <li><Link to="/dms/document" activeClassName="active">
+        <li><Link activeClassName="active" to="/dms/document">
           <i
          className="fa fa-tachometer left" aria-hidden="true" />
          Dashboard</Link></li>
-        <li><Link to={`/dms/user/account/${id}`} activeClassName="active">
+        <li><Link activeClassName="active" to={`/dms/user/account/${id}`} >
           <i className="fa fa-user-circle-o left" aria-hidden="true" />
           My Account</Link></li>
-        <li><a href="" onClick={this.logout} activeClassName="active">
+        <li><a href="" activeClassName="active" onClick={this.logout}>
           <i className="fa fa-sign-out left" aria-hidden="true" />
           Logout</a></li>
         <Link to="/dms/about" className="waves-effect waves-light btn">Learn More</Link>

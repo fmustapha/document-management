@@ -140,8 +140,12 @@ export class UserListPage extends React.Component {
    * @memberof UserListPage
    */
   render() {
-    const pagination = this.props.users.pagination ?
+    let pagination = this.props.users.pagination ?
      this.props.users.pagination : 1;
+     
+    pagination = this.props.search.users ?
+    this.props.search.document.pagination : pagination;
+
     const totalUsers = this.props.users.totalUsers;
     let allUsers = this.props.users.users ? this.props.users.users.rows : null;
     allUsers = this.props.search.user ? this.props.search.user.user.rows : allUsers;

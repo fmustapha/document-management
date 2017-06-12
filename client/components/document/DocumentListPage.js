@@ -28,11 +28,14 @@ class DocumentsListPage extends React.Component {
     this.state = {
       id: 0,
       offset: 0,
-      limit: 10
+      limit: 10,
+      documents: [],
+      access: 'public'
     };
     this.deleteDocument = this.deleteDocument.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.renderAlert = this.renderAlert.bind(this);
+    this.onAccessChange = this.onAccessChange.bind(this);
   }
   /**
    *
@@ -61,6 +64,14 @@ class DocumentsListPage extends React.Component {
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.documents) {
+      this.setState({
+        documents: nextProps.documents.documents.rows
+      });
+    }
+  }
+
   /**
    *
    * @returns {void}
@@ -70,7 +81,6 @@ class DocumentsListPage extends React.Component {
   componentWillUnmount() {
     $('.tooltipped').tooltip('remove');
   }
-
    /**
    *
    *
@@ -82,9 +92,13 @@ class DocumentsListPage extends React.Component {
   handlePageClick(data) {
     const selected = data.selected;
     const offset = Math.ceil(selected * this.state.limit);
-    this.setState({ offset }, () => {
+    this.setState({ offset });
+    const searchResult = this.props.search.document;
+    if (searchResult.documents.rows.length === 0) {
       this.props.actions.listDocument(this.state.limit, offset);
-    });
+    } else {
+      this.props.searchAction(null, searchResult.term, offset);
+    }
   }
 
   /**
@@ -104,6 +118,12 @@ class DocumentsListPage extends React.Component {
     this.setState({ id: 0 });
   }
 
+  onAccessChange(event) {
+    const access = event.target.value;
+    this.setState({
+      access
+    });
+  }
 /**
    *
    *
@@ -132,23 +152,33 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   render() {
-    const pagination = this.props.documents.pagination ?
-     this.props.documents.pagination : 1;
+    let pagination = this.props.documents.pagination ?
+     this.props.documents.pagination : 0;
+
+    pagination = this.props.search.document.documents.rows.length > 0 ?
+      this.props.search.document.pagination : pagination;
 
     const user = this.props.auth.loggedInUser ?
      this.props.auth.loggedInUser.data : null;
-
+    let availableDocuments;
+    if (this.state.documents) {
+      availableDocuments = this.state.documents
+    .filter(document => document.access === this.state.access);
+    }
     let allDocuments = this.props.documents.documents ?
-      this.props.documents.documents.rows : '';
-    allDocuments = this.props.search.document ?
-      this.props.search.document.documents.rows : allDocuments;
-
+      availableDocuments : '';
+    if (this.props.search.document.documents.rows.length > 0) {
+      allDocuments = this.props.search.document.documents.rows
+      .filter(document => document.access === this.state.access);
+    } else {
+      allDocuments = availableDocuments;
+    }
     const userDocuments = this.props.documents.userDocuments ?
       this.props.documents.userDocuments : null;
 
     return (
       <div>
-        <SearchBar searchFor="document" performSearch={this.props.searchAction} />
+        <SearchBar searchFor="document" offset={this.state.offset} performSearch={this.props.searchAction} />
         <div id="page-padding">
           <div className="row">
             <div className="col s6">
@@ -158,10 +188,10 @@ class DocumentsListPage extends React.Component {
           </div>
           <div className="create-logo">
             <a
-          className="btn btn-floating btn-large pulse create-logo tooltipped"
-          data-position="left" data-delay="50"
-          data-tooltip="create new document"
-           onClick={() => browserHistory.push('/dms/document/create')}>
+              className="btn btn-floating btn-large pulse create-logo tooltipped"
+              data-position="left" data-delay="50"
+              data-tooltip="create new document"
+              onClick={() => browserHistory.push('/dms/document/create')}>
               <i className="material-icons">edit</i>
             </a>
           </div>
@@ -186,12 +216,10 @@ class DocumentsListPage extends React.Component {
               {(user.roleId === 2) ?
               ' ' :
               <select
-              value="sort by access"
               onChange={event => this.onAccessChange(event, user.id)}>
-                <option value={1}>All documents</option>
-                <option value={2}>Public documents</option>
-                <option value={3}>Private documents</option>
-                <option value={4}>Role documents</option>
+                <option value="public">Public documents</option>
+                <option value="private">Private documents</option>
+                <option value="role">Role documents</option>
               </select>
               }
             </div>
