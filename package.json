@@ -7,7 +7,7 @@
     "start": "babel-watch ./server.js",
     "lint": "esw webpack.config.* client server",
     "build": "babel client -d lib",
-    "test": "NODE_ENV=test npm run db:test:seed && npm run cover",
+    "test": "NODE_ENV=test npm run test-backend && npm run cover",
     "test-backend": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --opts mocha.opts server/test/**/*.spec.js --compilers js:babel-register",
     "test-frontend": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --opts mocha.opts -w client/test/helper/helper.js client/test/**/*.spec.js --compilers js:babel-register",
     "mocha:test": "NODE_ENV=test npm run db:test:seed && mocha --reporter spec ./tools/testSetup.js \"./**/test/**/*.spec.js\" --timeout 60000",
@@ -18,7 +18,8 @@
     "db:migrate:test": "NODE_ENV=test sequelize db:migrate",
     "db:test:seed": "NODE_ENV=test babel-watch ./server/test/helper/seed-helper",
     "db:seed": "babel-watch ./server/test/helper/seed-helper",
-    "coveralls": "nyc report --reporter=text-lcov |  coveralls"
+    "coveralls": "nyc report --reporter=text-lcov |  coveralls",
+    "test-e2e": "nightwatch"
   },
   "repository": {
     "type": "git",
@@ -125,10 +126,12 @@
     "webpack-node-externals": "^1.6.0"
   },
   "devDependencies": {
+    "chai-http": "^3.0.0",
     "chai-spies": "^0.7.1",
     "enzyme": "^2.8.2",
     "jsdom": "^9.12.0",
     "moxios": "^0.4.0",
+    "nightwatch": "^0.9.15",
     "nock": "^9.0.13",
     "react-addons-test-utils": "^15.0.2",
     "react-dom": "^15.5.4"
