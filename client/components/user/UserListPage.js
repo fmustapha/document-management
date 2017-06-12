@@ -181,7 +181,7 @@ export class UserListPage extends React.Component {
                   <td>{(user.id === 1) ?
                      'Super Admin' : <div className="" id="select">
                        <select
-                       value="select role"
+                       value="select-role"
                        onChange={event => this.onRoleChange(event, user.id)}>
                          <option value={0}>Select Access Type</option>
                          <option value={1} >Admin</option>
