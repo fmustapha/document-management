@@ -1,5 +1,5 @@
 import express from 'express';
-import Search from '../controllers/search';
+import Search from '../controllers/Search';
 import auth from '../middlewares/auth';
 
 const search = express.Router();
