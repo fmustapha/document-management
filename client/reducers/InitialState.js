@@ -12,7 +12,15 @@ const InitialState = {
     isCreating: false,
     isDeleting: false,
   },
-  search: { user: null, document: null },
+  search: { user: null,
+    document: {
+      message: '',
+      documents: {
+        rows: []
+      },
+      pagination: {}
+    }
+  },
   currentDocument: null
 };
 
