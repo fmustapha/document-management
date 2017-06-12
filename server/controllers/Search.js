@@ -1,7 +1,7 @@
 import db from '../models/';
 import Helper from '../helper/Helper';
 
-export default {
+const Search = {
 
   searchPage(req, res) {
     res.send('You are now on the search page');
@@ -78,3 +78,5 @@ export default {
         }));
   }
 };
+
+export default Search;
