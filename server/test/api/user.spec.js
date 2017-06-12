@@ -12,7 +12,7 @@ const goodUser = helper.regularUser;
 const goodUser2 = helper.regularUser2;
 const adminUser = helper.adminUser;
 const badUser = helper.badUser;
-console.log('goodUser', goodUser);
+// console.log('goodUser', goodUser);
 
 
 let token;

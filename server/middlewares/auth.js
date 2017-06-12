@@ -13,7 +13,7 @@ export default {
     if (token) {
       jwt.verify(token, secret, (err, decoded) => {
         if (err) {
-          return res.status(403)
+          res.status(403)
             .send({
               message: 'Token Authentication failed'
             });
@@ -22,7 +22,8 @@ export default {
         next();
       });
     } else {
-      return res.status(403).send({
+      console.log('no token');
+      res.status(403).send({
         message: 'No token provided'
       });
     }
@@ -35,7 +36,8 @@ export default {
      String(id) === String(req.params.id)) {
       next();
     } else {
-      return res.status(403).send({
+      console.log('end call');
+      res.status(403).send({
         message: 'Access denied'
       });
     }
@@ -61,8 +63,8 @@ export default {
    */
   validateSearch(req, res, next) {
     const query = {};
-    const limit = req.query.limit || 40;
-    const offset = req.query.offset || 0;
+    const limit = req.query.limit > 0 ? req.query.limit : 10;
+    const offset = req.query.offset > 0 ? req.query.offset : 0;
     const publishedDate = req.query.publishedDate;
     const order =
       publishedDate && publishedDate === 'ASC' ? publishedDate : 'DESC';

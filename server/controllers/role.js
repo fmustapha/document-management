@@ -4,7 +4,7 @@ const allRoles = ['admin', 'regular', 'editor'];
 const Roles = db.Role;
 const Users = db.User;
 
-export default {
+const Role = {
   createRole(req, res) {
     if (allRoles.indexOf(req.body.title) === -1) {
       return res.status(403).json({ message: 'Invalid role title' });
@@ -108,3 +108,4 @@ export default {
   },
 };
 
+export default Role;

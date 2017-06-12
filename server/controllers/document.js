@@ -1,7 +1,7 @@
 import db from '../models';
 import Helper from '../helper/Helper';
 
-export default {
+const Document = {
   /**
     * create a document
     * Route: POST: /documents/
@@ -96,7 +96,6 @@ export default {
           limit: req.odmsFilter.limit,
           offset: req.odmsFilter.offset
         };
-        // delete documents.count;
         const pagination = Helper.pagination(condition);
         res.status(200)
           .send({
@@ -181,3 +180,5 @@ export default {
       }));
   },
 };
+
+export default Document;
