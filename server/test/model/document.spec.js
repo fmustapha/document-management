@@ -11,7 +11,8 @@ describe('Document Model', () => {
   const emptyFields = ['title', 'content', 'access'];
 
   before((done) => {
-    db.Role.create(helper.regularRole)
+    db.Role.destroy({ where: {} }).then(() => {
+      db.Role.create(helper.regularRole)
       .then(() => {
         db.User.create(helper.regularUser)
           .then((user) => {
@@ -19,6 +20,7 @@ describe('Document Model', () => {
             done();
           });
       });
+    });
   });
 
   after((done) => { db.Role.destroy({ where: {} }); done(); });

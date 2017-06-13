@@ -8,7 +8,7 @@
     "lint": "esw webpack.config.* client server",
     "build": "babel client -d lib",
     "test": "NODE_ENV=test npm run test-backend && npm run cover",
-    "test-backend": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --opts mocha.opts server/test/**/*.spec.js --compilers js:babel-register",
+    "test-backend": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --opts mocha.opts server/test/**/document.spec.js --compilers js:babel-register",
     "test-frontend": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --opts mocha.opts -w client/test/helper/helper.js client/test/**/*.spec.js --compilers js:babel-register",
     "mocha:test": "NODE_ENV=test npm run db:test:seed && mocha --reporter spec ./tools/testSetup.js \"./**/test/**/*.spec.js\" --timeout 60000",
      "cover": "NODE_ENV=test nyc --reporter=html --reporter=text _mocha --reporter spec ./server/test/testSetup.js \"./**/test/**/*.spec.js\" --timeout=60000",

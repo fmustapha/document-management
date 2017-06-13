@@ -15,7 +15,7 @@ let request;
 const responseEvent = () => httpMocks
   .createResponse({ eventEmitter: events.EventEmitter });
 
-describe.skip('MIDDLEWARE UNIT TEST', () => {
+describe('MIDDLEWARE UNIT TEST', () => {
   let adminToken, regularToken, regularUser;
   let publicDocument, privateDocument;
 
