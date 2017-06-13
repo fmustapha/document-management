@@ -21,8 +21,8 @@ export class SearchBar extends React.Component {
     this.state = {
       term: '',
       searching: false,
+      limit: 10
     };
-    // this.performSearch = this.performSearch.bind(this);
     this.onTermChange = this.onTermChange.bind(this);
     this.onCancel = this.onCancel.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -38,7 +38,6 @@ export class SearchBar extends React.Component {
   onTermChange(event) {
     const term = event.target.value;
     this.setState({ term });
-    this.props.performSearch(event, this.state.term, this.props.offset);
   }
   /**
    *
@@ -62,7 +61,7 @@ export class SearchBar extends React.Component {
    */
   onSubmit(event) {
     event.preventDefault();
-    this.props.performSearch(event, this.state.term, this.props.offset);
+    this.props.performSearch(event, this.state.term, this.state.limit, this.props.offset);
   }
 
   /**
@@ -121,5 +120,3 @@ SearchBar.propTypes = {
 
 
 export default SearchBar;
-
-

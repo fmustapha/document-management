@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactPaginate from 'react-paginate';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
-import { addFlashMessage } from '../../actions/flashMessages';
 import { SearchBar } from '../../components/searchBar/searchBar';
 import * as listUsers from '../../actions/userAction';
 import * as searchAction from '../../actions/searchAction';
@@ -70,9 +69,6 @@ export class UserListPage extends React.Component {
     this.props.actions.updateUser(id, { roleId: event.target.value })
     .then(() => toastr.success('User Successfully updated'))
     .catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to update user' });
       toastr.error(
         'Unable to update user');
     });
@@ -89,9 +85,6 @@ export class UserListPage extends React.Component {
     this.props.actions.deleteUser(id)
     .then(() => toastr.success('User Successfully Deleted'))
     .catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to delete user' });
       toastr.error(
         'Unable to delete user');
     });
@@ -108,9 +101,8 @@ export class UserListPage extends React.Component {
   handlePageClick(data) {
     const selected = data.selected;
     const offset = Math.ceil(selected * this.state.limit);
-    this.setState({ offset }, () => {
-      this.props.actions.listUsers(this.state.limit, offset);
-    });
+    this.setState({ offset });
+    this.props.actions.listUsers(this.state.limit, offset);
   }
 
   /**
@@ -140,23 +132,13 @@ export class UserListPage extends React.Component {
    * @memberof UserListPage
    */
   render() {
-    let pagination = this.props.users.pagination ?
-     this.props.users.pagination : 1;
-     
-    pagination = this.props.search.users ?
-    this.props.search.document.pagination : pagination;
-
-    const totalUsers = this.props.users.totalUsers;
-    let allUsers = this.props.users.users ? this.props.users.users.rows : null;
-    allUsers = this.props.search.user ? this.props.search.user.user.rows : allUsers;
     return (
       <div>
         <SearchBar
-        searchFor="user"
-        loadUsers="{this.props.actions.listUsers(limit, offset)}"
+        offset={this.state.offset}
         performSearch={this.props.searchAction} />
         <div className="welcome-message"><h4>Welcome Admin</h4><p>No of Users:
-          {`${totalUsers}`}</p></div>
+          {`${this.props.totalUsers}`}</p></div>
         <div className="table-div">
           <table id="page-padding" className="striped table">
             <thead>
@@ -173,7 +155,7 @@ export class UserListPage extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {allUsers ? allUsers.map(user => (
+              {this.props.users.length ? this.props.users.map(user => (
                 <tr key={user.id}>
                   <td>{user.username}</td>
                   <td>{user.firstname}</td>
@@ -204,7 +186,7 @@ export class UserListPage extends React.Component {
                     }
                   </td>
                 </tr>
-                )) : <span />}
+                )) : null}
             </tbody>
           </table>
           <div id="pagination">
@@ -213,7 +195,7 @@ export class UserListPage extends React.Component {
                            nextLabel={'next'}
                            breakLabel={<a href="">...</a>}
                            breakClassName={'break-me'}
-                           pageCount={pagination.page_count}
+                           pageCount={this.props.pagination.page_count}
                            marginPagesDisplayed={2}
                            pageRangeDisplayed={5}
                            onPageChange={this.handlePageClick}
@@ -231,36 +213,42 @@ export class UserListPage extends React.Component {
 
 UserListPage.propTypes = {
   actions: PropTypes.object.isRequired,
-  users: PropTypes.object.isRequired,
+  users: PropTypes.array.isRequired,
   pagination: PropTypes.object.isRequired,
   swal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
   search: PropTypes.object.isRequired,
-  searchAction: PropTypes.object.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  searchAction: PropTypes.func.isRequired
 };
 
 /**
  *
  *
  * @param {func} dispatch
- * @returns {Object} containing the action property
+ * @returns {Object} containing the list users, search, swal and close actions
  */
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(listUsers, dispatch),
     searchAction: bindActionCreators(searchAction.searchUser, dispatch),
     swal: bindActionCreators(swal, dispatch),
-    close: bindActionCreators(close, dispatch),
-    addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
+    close: bindActionCreators(close, dispatch)
   };
 }
 
-const mapStateToProps = state => ({
-  users: state.users,
-  totalUsers: state.totalUsers,
-  pagination: state.pagination,
-  search: state.search
-});
+/**
+ *
+ *
+ * @param {Object} state
+ * @returns {Object} users, totalUsers, pagination and search states
+ */
+function mapStateToProps(state) {
+  return {
+    users: state.users.rows,
+    totalUsers: state.users.totalUsers,
+    pagination: state.users.pagination,
+    search: state.search
+  };
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserListPage);

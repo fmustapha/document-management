@@ -24,19 +24,22 @@ export const adminUpdateUserSuccess = user => ({
 
 /**
  *
- *
+ * @param {Number} limit
+ * @param {Number} offset
  * @export
- * @returns {Object} containing users and user details
+ * @returns {func} cdispatch
  */
 export function listUsers(limit, offset) {
   return dispatch => axios.get(`/users/?limit=${limit}&offset=${offset}`)
-    .then(response => dispatch(listUsersSuccess({ users: response.data.users,
-      totalUsers: response.data.totalUsers,
-      pagination: response.data.pagination
-    }))
-    )
+    .then((response) => {
+      const users = response.data.users;
+      const totalUsers = response.data.totalUsers;
+      const pagination = response.data.pagination;
+      const userList = { users, totalUsers, pagination };
+      dispatch(listUsersSuccess(userList));
+    })
     .catch((error) => {
-      dispatch({ type: types.LIST_ERROR, error });
+      dispatch({ type: types.LIST_USER_ERROR, error });
     });
 }
 

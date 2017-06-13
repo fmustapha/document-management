@@ -12,7 +12,7 @@ import initialState from '../reducers/InitialState';
 export default function userReducer(state = initialState.users, action) {
   switch (action.type) {
     case types.LIST_USERS:
-      return Object.assign({}, state, { users: action.users.users,
+      return Object.assign({}, state, { rows: action.users.users.rows,
         totalUsers: action.users.totalUsers,
         pagination: action.users.pagination }
         );

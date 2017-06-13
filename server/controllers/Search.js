@@ -19,25 +19,25 @@ const Search = {
           'firstname', 'lastname',
           'email', 'roleId', 'active', 'createdAt', 'updatedAt']
       })
-      .then((user) => {
-        if (user.rows.length <= 0) {
+      .then((users) => {
+        if (users.rows.length <= 0) {
           return res.status(404)
             .send({
               message: 'User Not Found',
             });
         }
         const condition = {
-          count: user.count,
+          count: users.count,
           limit: req.odmsFilter.limit,
           offset: req.odmsFilter.offset
         };
-        delete user.count;
         const pagination = Helper.pagination(condition);
         res.status(200)
           .send({
             message: 'This search was successfull',
-            user,
-            pagination
+            users: { rows: users.rows },
+            pagination,
+            totalUsers: users.count
           });
       })
         .catch(() => res.status(400)

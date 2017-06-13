@@ -2,7 +2,9 @@ const InitialState = {
   isAuthenticated: false,
   loggedInUser: null,
   users: {
-   // userProfile: {}
+    rows: [],
+    totalUsers: 0,
+    pagination: {}
   },
   isListing: false,
   userDocuments: [],
@@ -11,15 +13,7 @@ const InitialState = {
     isCreated: false,
     isCreating: false,
     isDeleting: false,
-  },
-  search: { user: null,
-    document: {
-      message: '',
-      documents: {
-        rows: []
-      },
-      pagination: {}
-    }
+    status: false
   },
   currentDocument: null
 };

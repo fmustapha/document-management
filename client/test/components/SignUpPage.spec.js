@@ -26,13 +26,14 @@ describe('SignUpForm', () => {
   });
   it('renders text inputs for form fields', () => {
     const wrapper = setup();
-    expect(wrapper.find('input').length).toEqual(6);
+    expect(wrapper.find('input').length).toEqual(7);
     expect(wrapper.find('input[name="username"]').prop('name')).toBe('username');
     expect(wrapper.find('input[name="firstname"]').prop('name')).toBe('firstname');
     expect(wrapper.find('input[name="lastname"]').prop('name')).toBe('lastname');
     expect(wrapper.find('input[name="email"]').prop('name')).toBe('email');
     expect(wrapper.find('input[name="password"]').prop('name')).toBe('password');
-    // expect(wrapper.find('input[name="confirmPassword"]').second().prop('name')).toBe('confirmPassword');
+    expect(wrapper.find('input[name="confirmPassword"]')
+    .prop('name')).toBe('confirmPassword');
   });
   it('renders the SignUp button', () => {
     const wrapper = setup();

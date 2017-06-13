@@ -22,7 +22,6 @@ export default {
         next();
       });
     } else {
-      console.log('no token');
       res.status(403).send({
         message: 'No token provided'
       });

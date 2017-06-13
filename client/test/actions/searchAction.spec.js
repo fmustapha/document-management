@@ -69,7 +69,6 @@ describe('searchAction', () => {
       isCreating: false,
       isDeleting: false,
     } });
-
     store.dispatch(auth.searchDocument(1, {})).then(() => {
       expect(store.getActions()).to.eql(expectedActions);
       done();

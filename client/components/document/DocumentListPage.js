@@ -64,11 +64,20 @@ class DocumentsListPage extends React.Component {
     $('.tooltipped').tooltip({ delay: 50 });
   }
 
+  /**
+   *
+   *
+   * @param {any} nextProps
+   *
+   * @memberof DocumentsListPage
+   */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.documents) {
+    if (nextProps.documents && !nextProps.documents.status) {
       this.setState({
         documents: nextProps.documents.documents.rows
       });
+    } else {
+      toastr.error('Document not found');
     }
   }
 
@@ -81,26 +90,7 @@ class DocumentsListPage extends React.Component {
   componentWillUnmount() {
     $('.tooltipped').tooltip('remove');
   }
-   /**
-   *
-   *
-   * @param {Object} data
-   * @returns {void}
-   *
-   * @memberof DocumentsListPage
-   */
-  handlePageClick(data) {
-    const selected = data.selected;
-    const offset = Math.ceil(selected * this.state.limit);
-    this.setState({ offset });
-    const searchResult = this.props.search.document;
-    if (searchResult.documents.rows.length === 0) {
-      this.props.actions.listDocument(this.state.limit, offset);
-    } else {
-      this.props.searchAction(null, searchResult.term, offset);
-    }
-  }
-
+   
   /**
    *
    * @return {void}
@@ -118,12 +108,35 @@ class DocumentsListPage extends React.Component {
     this.setState({ id: 0 });
   }
 
+  /**
+   *
+   *
+   * @param {Object} event
+   *
+   * @memberof DocumentsListPage
+   */
   onAccessChange(event) {
     const access = event.target.value;
     this.setState({
       access
     });
   }
+
+  /**
+   *
+   *
+   * @param {Object} data
+   * @returns {void}
+   *
+   * @memberof DocumentsListPage
+   */
+  handlePageClick(data) {
+    const selected = data.selected;
+    const offset = Math.ceil(selected * this.state.limit);
+    this.setState({ offset });
+    this.props.actions.listDocument(this.state.limit, offset);
+  }
+
 /**
    *
    *
@@ -152,27 +165,27 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   render() {
-    let pagination = this.props.documents.pagination ?
+    const pagination = this.props.documents.pagination ?
      this.props.documents.pagination : 0;
 
-    pagination = this.props.search.document.documents.rows.length > 0 ?
-      this.props.search.document.pagination : pagination;
+    // pagination = this.props.search.document.documents.rows.length > 0 ?
+    //   this.props.search.document.pagination : pagination;
 
     const user = this.props.auth.loggedInUser ?
      this.props.auth.loggedInUser.data : null;
-    let availableDocuments;
-    if (this.state.documents) {
-      availableDocuments = this.state.documents
-    .filter(document => document.access === this.state.access);
-    }
-    let allDocuments = this.props.documents.documents ?
-      availableDocuments : '';
-    if (this.props.search.document.documents.rows.length > 0) {
-      allDocuments = this.props.search.document.documents.rows
-      .filter(document => document.access === this.state.access);
-    } else {
-      allDocuments = availableDocuments;
-    }
+    // let availableDocuments;
+    // if (this.state.documents) {
+    //   availableDocuments = this.state.documents
+    // .filter(document => document.access === this.state.access);
+    // }
+    const allDocuments = this.props.documents.documents ?
+      this.props.documents.documents.rows : null;
+    // if (this.props.search.document.documents.rows.length > 0) {
+    //   allDocuments = this.props.search.document.documents.rows
+    //   .filter(document => document.access === this.state.access);
+    // } else {
+    //   allDocuments = availableDocuments;
+    // }
     const userDocuments = this.props.documents.userDocuments ?
       this.props.documents.userDocuments : null;
 
@@ -213,7 +226,7 @@ class DocumentsListPage extends React.Component {
               </ul>
             </div>
             <div className="padded" id="select">
-              {(user.roleId === 2) ?
+              {/*{(user.roleId === 2) ?
               ' ' :
               <select
               onChange={event => this.onAccessChange(event, user.id)}>
@@ -221,7 +234,7 @@ class DocumentsListPage extends React.Component {
                 <option value="private">Private documents</option>
                 <option value="role">Role documents</option>
               </select>
-              }
+              }*/}
             </div>
             <div id="allDocuments" className="col s12">
               <div className="row">
@@ -371,7 +384,6 @@ DocumentsListPage.propTypes = {
   documents: PropTypes.object.isRequired,
   swal: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
-  search: PropTypes.object.isRequired,
   searchAction: PropTypes.func.isRequired
 };
 
@@ -401,7 +413,6 @@ function mapStateToProps(state) {
     documents: state.documents,
     pagination: state.pagination,
     auth: state.auth,
-    search: state.search
   };
 }
 

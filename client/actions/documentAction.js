@@ -69,13 +69,13 @@ export function listUserDocumentSuccess(documents) {
 
 /**
  *
- *
+ * @param {Number} limit
+ * @param {Number} offset
  * @export
  * @returns {func} containing a payload
  */
 export function listDocument(limit, offset) {
-  return (dispatch) => {
-    return axios.get(`/documents/?limit=${limit}&offset=${offset}`)
+  return dispatch => axios.get(`/documents/?limit=${limit}&offset=${offset}`)
     .then((response) => {
       const documents = response.data.documents;
       const pagination = response.data.pagination;
@@ -83,9 +83,8 @@ export function listDocument(limit, offset) {
       dispatch(listDocumentSuccess(listDocuments));
     })
     .catch((error) => {
-      dispatch({ type: types.LIST_ERROR, error });
+      dispatch({ type: types.LIST_DOCUMENT_ERROR, error });
     });
-  };
 }
 
 /**
@@ -96,8 +95,7 @@ export function listDocument(limit, offset) {
  * @returns {func} containing a payload
  */
 export function listUserDocument(id) {
-  return (dispatch) => {
-    return axios.get(`/users/${id}/documents`)
+  return dispatch => axios.get(`/users/${id}/documents`)
     .then((response) => {
       const documents = response.data.documents;
       const pagination = response.data.pagination;
@@ -107,7 +105,6 @@ export function listUserDocument(id) {
     .catch((error) => {
       dispatch({ type: types.LIST_ERROR, error });
     });
-  };
 }
 
 /**

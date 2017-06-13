@@ -8,7 +8,7 @@ import initialState from '../reducers/InitialState';
  * @export
  * @param {Object} state
  * @param {Object} action
- * @returns {Object} containing the new state for the store
+ * @returns {Object} containing the new state of the store
  */
 export default function documentReducer(state = initialState.documents, action) {
   switch (action.type) {
@@ -34,6 +34,7 @@ export default function documentReducer(state = initialState.documents, action) 
             if (document.id !== action.id) {
               return document;
             }
+            return false;
           }),
         deleteComplete: true,
         isCreating: false
@@ -57,7 +58,12 @@ export default function documentReducer(state = initialState.documents, action) 
 
     case types.LIST_DOCUMENT:
       return Object.assign({}, state, { documents: action.documents.documents,
-        pagination: action.documents.pagination });
+        pagination: action.documents.pagination,
+        status: false
+      });
+
+    case types.LIST_DOCUMENT_ERROR:
+      return Object.assign({}, state, { status: true });
 
     case types.LIST_USER_DOCUMENT:
       return Object.assign({}, state, { userDocuments:

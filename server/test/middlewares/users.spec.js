@@ -1,11 +1,9 @@
-// import request from 'supertest';
 import chai from 'chai';
 import httpMocks from 'node-mocks-http';
 import events from 'events';
 import sinon from 'sinon';
 import chaiHttp from 'chai-http';
 import validateSignup from '../../middlewares/validateSignup';
-// import helper from '../helper/test.helper';
 import server from '../../../server';
 
 chai.use(chaiHttp);
@@ -14,7 +12,7 @@ const expect = chai.expect;
 const responseEvent = () => httpMocks
   .createResponse({ eventEmitter: events.EventEmitter });
 
-describe.only('middleware', () => {
+describe('middleware', () => {
   let userToken, userBody, request;
 
   before((done) => {
@@ -37,7 +35,6 @@ describe.only('middleware', () => {
       request = httpMocks.createRequest({
         method: 'POST',
         url: '/users/',
-        // headers: { authorization: `bearer ${userToken}` },
         body: {
           username: '',
           email: 'test@test.com',
@@ -65,7 +62,6 @@ describe.only('middleware', () => {
       request = httpMocks.createRequest({
         method: 'POST',
         url: '/users/',
-        // headers: { authorization: `bearer ${userToken}` },
         body: {
           username: 'myusername',
           firstname: '',
@@ -93,7 +89,6 @@ describe.only('middleware', () => {
       request = httpMocks.createRequest({
         method: 'POST',
         url: '/users/',
-        // headers: { authorization: `bearer ${userToken}` },
         body: {
           username: 'myusername',
           firstname: 'myfirstname',
@@ -121,7 +116,6 @@ describe.only('middleware', () => {
       request = httpMocks.createRequest({
         method: 'POST',
         url: '/users/',
-        // headers: { authorization: `bearer ${userToken}` },
         body: {
           username: 'myusername',
           firstname: 'myfirstname',
@@ -149,7 +143,6 @@ describe.only('middleware', () => {
       request = httpMocks.createRequest({
         method: 'POST',
         url: '/users/',
-        // headers: { authorization: `bearer ${userToken}` },
         body: {
           username: 'myusername',
           firstname: 'myfirstname',
@@ -192,7 +185,6 @@ describe.only('middleware', () => {
       sinon.spy(middlewareStub, 'callback');
 
       response.on('end', () => {
-        const data = JSON.parse(response._getData());
         expect(middlewareStub.callback.called).to.equal(true);
         expect(middlewareStub.callback.callCount).to.equal(1);
       });
