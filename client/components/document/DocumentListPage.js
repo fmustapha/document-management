@@ -363,7 +363,8 @@ class DocumentsListPage extends React.Component {
                            nextLabel={'next'}
                            breakLabel={<a href="">...</a>}
                            breakClassName={'break-me'}
-                           pageCount={pagination.page_count ? pagination.page_count : 1}
+                           pageCount={pagination.page_count ?
+                            pagination.page_count : null}
                            marginPagesDisplayed={2}
                            pageRangeDisplayed={5}
                            onPageChange={this.handlePageClick}

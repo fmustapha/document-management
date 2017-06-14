@@ -113,20 +113,22 @@ export default {
       const roleId = req.decoded.roleId || req.decoded.data.roleId;
       const id = req.decoded.id || req.decoded.data.id;
       query.where = {
-        $or: [{ title: { $iLike: `%${req.query.term}%` } },
-          { content: { $iLike: `%${req.query.term}%` } },
-          { access: 'public' },
-          { access: 'role',
-            $and: {
-              '$User.roleId$': roleId
-            }
-          },
-          { access: 'private',
-            $and: {
-              ownerId: id
-            }
-          }
-        ]
+        $and: [{
+          $or: [
+            { title: { $iLike: `%${req.query.term}%` } },
+            { content: { $iLike: `%${req.query.term}%` } }
+          ]
+        }, {
+          $or: [
+            { access: 'public' },
+            { ownerId: id },
+            { $and: [
+              { '$User.roleId$': roleId },
+              { access: 'role' }
+            ] }
+          ]
+
+        }]
       };
       query.include = [
         {

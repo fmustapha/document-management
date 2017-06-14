@@ -96,6 +96,7 @@ export function deleteUser(id) {
     .then(() => dispatch(deleteUserSuccess(id))
     )
     .catch((error) => {
+      console.log('error', error);
       dispatch({ type: types.DELETE_USER_ERROR, error });
     });
   };
