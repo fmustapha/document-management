@@ -195,7 +195,8 @@ export class UserListPage extends React.Component {
                            nextLabel={'next'}
                            breakLabel={<a href="">...</a>}
                            breakClassName={'break-me'}
-                           pageCount={this.props.pagination.page_count}
+                           pageCount={this.props.pagination.page_count ?
+                            this.props.pagination.page_count : 1}
                            marginPagesDisplayed={2}
                            pageRangeDisplayed={5}
                            onPageChange={this.handlePageClick}
