@@ -107,3 +107,18 @@ describe('MIDDLEWARE UNIT TEST', () => {
   });
 });
 
+it('should not continue for empty token', (done) => {
+  const response = responseEvent();
+  request = httpMocks.createRequest({
+    method: 'GET',
+    url: '/roles'
+  });
+  const middlewareStub = {
+    callback: () => { }
+  };
+  sinon.spy(middlewareStub, 'callback');
+  Auth.verifyToken(request, response, middlewareStub.callback);
+  expect(middlewareStub.callback).to.have.been.called;
+  done();
+});
+

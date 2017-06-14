@@ -18,7 +18,6 @@ export default function userReducer(state = initialState.users, action) {
         );
 
     case types.UPDATE_USER:
-    console.log('action', action);
       return Object.assign({}, state, { userProfile: action.userUpdate });
 
     case types.UPDATE_USER_LIST:
