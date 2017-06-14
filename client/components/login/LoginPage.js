@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import toastr from 'toastr';
@@ -11,7 +11,7 @@ import * as auth from '../../actions/auth';
  * @class LoginPage
  * @extends {React.Component}
  */
-class LoginPage extends React.Component {
+export class LoginPage extends React.Component {
 
   /**
    * Creates an instance of LoginPage.
@@ -33,8 +33,8 @@ class LoginPage extends React.Component {
 
   /**
    *
-   * @returns {void}
    * @param {any} nextProps
+   * @returns {void}
    *
    * @memberof LoginPage
    */
@@ -87,12 +87,11 @@ class LoginPage extends React.Component {
   render() {
     return (
       <div id="login-padding">
-        <h3>login</h3>
+        <h3>Log In</h3>
         <form action="#" onSubmit={this.onSubmit} method="post">
-          <i className="material-icons prefix">email
-              </i>
-          <div className="row">
+          <div className="">
             <div className="input-field col s6">
+              <i className="material-icons prefix">email</i>
               <input
                 onChange={this.onChange}
                 value={this.state.login.email}
@@ -102,9 +101,9 @@ class LoginPage extends React.Component {
               <label htmlFor="email">Email</label>
             </div>
           </div>
-          <i className="material-icons prefix">lock</i>
-          <div className="row">
+          <div className="">
             <div className="input-field col s6">
+              <i className="material-icons prefix">lock</i>
               <input
                 onChange={this.onChange}
                 value={this.state.login.password}
@@ -114,20 +113,21 @@ class LoginPage extends React.Component {
               <label htmlFor="password">Password</label>
             </div>
           </div>
+          <div className="button-right">
           <input
           type="submit"
-          value="Done"
+          value="Log in"
           className="waves-effect waves-light btn"
           />
+          </div>
         </form>
       </div>
     );
   }
 }
 
-LoginPage.contextTypes = {
-  router: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+LoginPage.propTypes = {
+  auth: React.PropTypes.object.isRequired
 };
 
 /**

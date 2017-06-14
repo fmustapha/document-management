@@ -46,7 +46,6 @@ class Header extends React.Component {
    * @memberof Header
    */
   render() {
-    console.log("props======>", this.props);
     const id = (this.props.auth.loggedInUser) ?
       this.props.auth.loggedInUser.data.id : null;
     const roleId = (this.props.auth.loggedInUser) ?
@@ -54,25 +53,22 @@ class Header extends React.Component {
     const { isAuthenticated } = this.props.auth;
     const userLinks = (
       <ul id="nav-mobile" className="right hide-on-med-and-down">
-        <li><Link to="/dms/document" activeClassName="active">
+        <li><Link activeClassName="active" to="/dms/document">
           <i
-         className="fa fa-tachometer" aria-hidden="true" />
+         className="fa fa-tachometer left" aria-hidden="true" />
          Dashboard</Link></li>
-        <li><Link to={`/dms/user/account/${id}`} activeClassName="active">
-          <i className="fa fa-user-circle-o" aria-hidden="true" />
+        <li><Link activeClassName="active" to={`/dms/user/account/${id}`} >
+          <i className="fa fa-user-circle-o left" aria-hidden="true" />
           My Account</Link></li>
-        <li><a href="" onClick={this.logout} activeClassName="active">
-          <i className="fa fa-sign-out" aria-hidden="true" />
+        <li><a href="" activeClassName="active" onClick={this.logout}>
+          <i className="fa fa-sign-out left" aria-hidden="true" />
           Logout</a></li>
-        <li><Link to="/dms/search" activeClassName="active">
-          <i className="fa fa-search" aria-hidden="true" />
-        Search</Link></li>
         <Link to="/dms/about" className="waves-effect waves-light btn">Learn More</Link>
       </ul>
       );
     const guestLinks = (
       <ul className="nav navbar-nav navbar-right">
-        <li><Link to="/dms/login" activeClassName="active">Login</Link></li>
+        <li><Link to="/dms/login" activeClassName="active">LogIn</Link></li>
         <li><Link to="/dms/signup" activeClassName="active">SignUp</Link></li>
         <li><a href="https://github.com/andela-fmustapha/document-management">GitHub</a></li>
         <Link to="/dms/about" className="waves-effect waves-light btn">Learn More</Link>
@@ -80,25 +76,23 @@ class Header extends React.Component {
     );
     const adminLinks = (
       <ul id="nav-mobile" className="right hide-on-med-and-down">
-        <li><Link to="/dms/document" activeClassName="active">Dashboard</Link></li>
+        <li><Link to="/dms/document" activeClassName="active">
+          <i className="fa fa-tachometer left" aria-hidden="true" />
+        Dashboard</Link></li>
         <li><Link to="/dms/users" activeClassName="active">
-          <i className="fa fa-users" aria-hidden="true" />
+          <i className="fa fa-users left" aria-hidden="true" />
         Manage Users</Link></li>
         <li><Link to={`/dms/user/account/${id}`} activeClassName="active">
-          <i className="fa fa-user-circle-o" aria-hidden="true" />
+          <i className="fa fa-user-circle-o left" aria-hidden="true" />
         My Account</Link></li>
-        <li><Link to="/dms/search" activeClassName="active">
-          <i className="fa fa-search" aria-hidden="true" />
-        Search</Link></li>
         <li><a href="" onClick={this.logout} activeClassName="active">
-          <i className="fa fa-sign-out" aria-hidden="true" />
+          <i className="fa fa-sign-out left" aria-hidden="true" />
         Logout</a></li>
       </ul>
     );
 
     let link = guestLinks;
     if (!isAuthenticated) {
-      console.log("isauth=======>", isAuthenticated);
       link = guestLinks;
     } else if (parseInt(roleId, 10) === 1) {
       link = adminLinks;
@@ -123,10 +117,6 @@ class Header extends React.Component {
   }
 }
 
-// Header.contextTypes = {
-//   router: PropTypes.object.isRequired
-// };
-
 Header.propTypes = {
   actions: React.PropTypes.object.isRequired,
   auth: React.PropTypes.object.isRequired
@@ -150,7 +140,6 @@ function mapDispatchToProps(dispatch) {
  * @returns {Object} auth
  */
 function mapStateToProps(state) {
-  console.log('state =====>',state);
   return {
     auth: state.auth
   };

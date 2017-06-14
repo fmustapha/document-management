@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import TinyMCE from 'react-tinymce';
 import { bindActionCreators } from 'redux';
 import UpdateDocumentPage from './UpdateDocumentPage';
 import * as documentActions from '../../actions/documentAction';
@@ -85,6 +84,7 @@ class ViewDocumentPage
    * @memberof ViewDocumentPage
    */
   render() {
+    const user = this.props.auth.loggedInUser.data;
     const document = this.props.documents.currentDocument;
     if (this.state.editing) {
       return <UpdateDocumentPage
@@ -101,16 +101,23 @@ class ViewDocumentPage
         <h2>{document.title}</h2>
         <p dangerouslySetInnerHTML={this.createMarkup()} />
         <div>
+          <span>
+            {(document.ownerId !== user.id) ?
+          ' ' :
           <input
           type="submit"
           value="Edit"
           className="waves-effect waves-light btn"
           onClick={this.onClickEdit} />
-          <input
+          }
+          </span>
+          <span>
+            <input
           type="submit"
           value="Back"
           className="waves-effect waves-light btn"
           onClick={this.onClickBack} />
+          </span>
         </div>
       </div>
         :
@@ -144,6 +151,7 @@ function mapDispatchToProps(dispatch) {
  * @returns {Object} object containing document and authourization details
  */
 function mapStateToProps(state) {
+  console.log(state.documents)
   return {
     documents: state.documents,
     auth: state.auth

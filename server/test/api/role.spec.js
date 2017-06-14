@@ -31,7 +31,7 @@ describe('Role API', () => {
                     done();
                   });
               });
-          }).catch((err) => null);
+          }).catch(() => null);
       });
   });
 

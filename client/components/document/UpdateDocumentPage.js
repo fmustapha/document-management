@@ -4,7 +4,6 @@ import toastr from 'toastr';
 import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
 import { bindActionCreators } from 'redux';
-import { addFlashMessage } from '../../actions/flashMessages';
 import * as documentActions from '../../actions/documentAction';
 
 /**
@@ -76,9 +75,6 @@ class UpdateDocumentPage
     this.props.updateDocumentAction(this.props.id, this.state.document)
     .then(() => toastr.success('Document Successfully Updated'))
     .catch(() => {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to update document' });
       toastr.error(
         'Unable to update document');
     });
@@ -92,7 +88,7 @@ class UpdateDocumentPage
    * @memberof ViewDocumentPage
    */
   onClickBack() {
-    this.props.browserHistory.goBack();
+    browserHistory.goBack();
   }
 
   /**
@@ -118,18 +114,20 @@ class UpdateDocumentPage
   render() {
     return (
       <div id="page-padding">
-        <h3>Update Document</h3>
+        <h3 id="padded">Update Document</h3>
         <div className="row">
           <div className="input-field col s6">
-            <div className="pad-icons">
-              <i className="material-icons prefix">mode_edit</i>
+            <div className="padded">
+              <i className="material-icons prefix pad-icons">mode_edit</i>
             </div>
             <input
               onChange={this.onTitleChange}
               value={this.state.document.title}
               type="text"
               name="title"
+              id="input-margin"
               className="col 5 s12" />
+            <label htmlFor="title" className="active">Title</label>
           </div>
           <div className="input-field col s12">
             <TinyMCE
@@ -140,29 +138,34 @@ class UpdateDocumentPage
             }}
             onChange={this.handleEditorChange}
               />
+            <label htmlFor="content" className="active">Content</label>
           </div>
         </div>
-        <div className="" id="select">
-          <select value={this.state.document.access} onChange={this.onAccessChange} >
+        <div className="col s12 padded" id="select">
+          <select name="access" value={this.state.document.access} onChange={this.onAccessChange} >
             <option value="" selected>Select Access Type</option>
             <option value="public">Public</option>
             <option value="private">Private</option>
             <option value="role">Role</option>
           </select>
-          <label>Select Access type</label>
+          <label htmlFor="access" className="active">Select Access Type</label>
         </div>
-        <span>
-          <input
+        <div className="right">
+          <span>
+            <input
             type="submit"
             value="Save"
             className="waves-effect waves-light btn"
             onClick={this.onClickSave} />
-          <input
+          </span>
+          <span>
+            <input
             type="submit"
             value="Back"
             className="waves-effect waves-light btn"
             onClick={this.onClickBack} />
-        </span>
+          </span>
+        </div>
       </div>
     );
   }
@@ -189,8 +192,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     updateDocumentAction:
-    bindActionCreators(documentActions.updateDocument, dispatch),
-    addFlashMessage: bindActionCreators(addFlashMessage, dispatch)
+    bindActionCreators(documentActions.updateDocument, dispatch)
   };
 }
 
@@ -202,9 +204,7 @@ UpdateDocumentPage.propTypes = {
   documents: React.PropTypes.object.isRequired,
   title: React.PropTypes.string.isRequired,
   content: React.PropTypes.string.isRequired,
-  addFlashMessage: React.PropTypes.func.isRequired,
   access: React.PropTypes.string.isRequired,
-  browserHistory: React.PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateDocumentPage);

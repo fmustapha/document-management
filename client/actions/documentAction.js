@@ -18,11 +18,10 @@ export function createDocument(document) {
     .then(() => {
       dispatch({ type: types.ADD_DOCUMENT, document });
     }).catch((error) => {
-      console.log(error, 'Action error');
-      // dispatch({
-      //   type: types.ADD_DOCUMENT_ERROR,
-      //   error: error.response.data.message
-      // });
+      dispatch({
+        type: types.ADD_DOCUMENT_ERROR,
+        error: error.response.data.message
+      });
     });
   };
 }
@@ -37,14 +36,20 @@ export function creatingDocument() {
   return { type: types.ADDING_DOCUMENT };
 }
 
-export function deletingDocument() {
+/**
+ *
+ *
+ * @export
+ * @returns
+ */
+export function deleteDocumentSuccess() {
   return { type: types.DELETING_DOCUMENT };
 }
 /**
  *
  *
  * @export
- * @param {any} documents
+ * @param {object} documents
  * @returns {object} containing an action type a payload
  */
 export function listDocumentSuccess(documents) {
@@ -55,7 +60,7 @@ export function listDocumentSuccess(documents) {
  *
  *
  * @export
- * @param {any} documents
+ * @param {object} documents
  * @returns {object} containing action type and payload properties
  */
 export function listUserDocumentSuccess(documents) {
@@ -64,21 +69,22 @@ export function listUserDocumentSuccess(documents) {
 
 /**
  *
- *
+ * @param {Number} limit
+ * @param {Number} offset
  * @export
  * @returns {func} containing a payload
  */
-export function listDocument() {
-  return (dispatch) => {
-    axios.get('/documents')
+export function listDocument(limit, offset) {
+  return dispatch => axios.get(`/documents/?limit=${limit}&offset=${offset}`)
     .then((response) => {
       const documents = response.data.documents;
-      dispatch(listDocumentSuccess(documents));
+      const pagination = response.data.pagination;
+      const listDocuments = { documents, pagination };
+      dispatch(listDocumentSuccess(listDocuments));
     })
     .catch((error) => {
-      dispatch({ type: types.LIST_ERROR, error });
+      dispatch({ type: types.LIST_DOCUMENT_ERROR, error });
     });
-  };
 }
 
 /**
@@ -89,16 +95,16 @@ export function listDocument() {
  * @returns {func} containing a payload
  */
 export function listUserDocument(id) {
-  return (dispatch) => {
-    return axios.get(`/users/${id}/documents`)
+  return dispatch => axios.get(`/users/${id}/documents`)
     .then((response) => {
       const documents = response.data.documents;
-      dispatch(listUserDocumentSuccess(documents));
+      const pagination = response.data.pagination;
+      const listUserDocuments = { documents, pagination };
+      dispatch(listUserDocumentSuccess(listUserDocuments));
     })
     .catch((error) => {
       dispatch({ type: types.LIST_ERROR, error });
     });
-  };
 }
 
 /**
@@ -109,9 +115,8 @@ export function listUserDocument(id) {
  * @returns {func} containing a payload and an action type
  */
 export function viewDocument(id) {
-  console.log('I got here!');
   return (dispatch) => {
-    axios.get(`/documents/${id}`)
+    return axios.get(`/documents/${id}`)
     .then((response) => {
       const document = response.data.document;
       dispatch({ type: types.VIEW_DOCUMENT, document });
@@ -150,9 +155,9 @@ export function updateDocument(id, updatedDocument) {
  */
 export function deleteDocument(id) {
   return (dispatch) => {
-    dispatch(deletingDocument());
-    axios.delete(`/documents/${id}`)
-    .then((response) => {
+    dispatch(deleteDocumentSuccess());
+    return axios.delete(`/documents/${id}`)
+    .then(() => {
       dispatch({ type: types.DELETE_DOCUMENT, id });
     }).catch((error) => {
       dispatch({ type: types.DELETE_ERROR, error });

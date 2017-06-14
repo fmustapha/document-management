@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import Helper from '../helper/Helper';
+import db from '../models/';
 
 const secret = process.env.SECRET || 'samplesecret';
 
@@ -12,7 +13,7 @@ export default {
     if (token) {
       jwt.verify(token, secret, (err, decoded) => {
         if (err) {
-          return res.status(403)
+          res.status(403)
             .send({
               message: 'Token Authentication failed'
             });
@@ -21,18 +22,21 @@ export default {
         next();
       });
     } else {
-      return res.status(403).send({
+      res.status(403).send({
         message: 'No token provided'
       });
     }
   },
 
   authorizeAdmin(req, res, next) {
-    if (parseInt(req.decoded.data.roleId, 10) === 1 ||
-     String(req.decoded.data.id) === String(req.params.id)) {
+    const roleId = req.decoded.roleId || req.decoded.data.roleId;
+    const id = req.decoded.id || req.decoded.data.id;
+    if (parseInt(roleId, 10) === 1 ||
+     String(id) === String(req.params.id)) {
       next();
     } else {
-      return res.status(403).send({
+      console.log('end call');
+      res.status(403).send({
         message: 'Access denied'
       });
     }
@@ -58,89 +62,84 @@ export default {
    */
   validateSearch(req, res, next) {
     const query = {};
-    const terms = [];
-    const userQuery = req.query.query;
-    const searchArray =
-      userQuery ? userQuery.toLowerCase().match(/\w+/g) : null;
-    const limit = req.query.limit || 10;
-    const offset = req.query.offset || 0;
+    const limit = req.query.limit > 0 ? req.query.limit : 10;
+    const offset = req.query.offset > 0 ? req.query.offset : 0;
     const publishedDate = req.query.publishedDate;
     const order =
       publishedDate && publishedDate === 'ASC' ? publishedDate : 'DESC';
 
-    if (limit < 0 || !/^([1-9]\d*|0)$/.test(limit)) {
+    if (!Helper.checkQuery(limit) || !Helper.checkQuery(offset)) {
       return res.status(400)
         .send({
           message: 'Only positive number is allowed for limit value'
         });
     }
-    if (offset < 0 || !/^([1-9]\d*|0)$/.test(offset)) {
-      return res.status(400)
-        .send({
-          message: 'Only positive number is allowed for offset value'
-        });
-    }
-
-    if (searchArray) {
-      searchArray.forEach((word) => {
-        terms.push(`%${word}%`);
-      });
-    }
     query.limit = limit;
     query.offset = offset;
     query.order = [['createdAt', order]];
-
-    if (`${req.baseUrl}${req.route.path}` === '/users/search') {
-      if (!req.query.query) {
-        return res.status(400)
-          .send({
-            message: 'Please enter a search query'
-          });
-      }
-      query.where = {
-        $or: [
-          { username: { $iLike: { $any: terms } } },
-          { firstname: { $iLike: { $any: terms } } },
-          { lastname: { $iLike: { $any: terms } } },
-          { email: { $iLike: { $any: terms } } }
-        ]
-      };
-    }
-    if (`${req.baseUrl}${req.route.path}` === '/users/') {
-      query.where = {};
-    }
-    if (`${req.baseUrl}${req.route.path}` === '/documents/search') {
-      if (!req.query.query) {
-        return res.status(400)
-          .send({
-            message: 'Please enter a search query'
-          });
-      }
-      if (Helper.isAdmin(req.decoded.roleId)) {
-        query.where = Helper.likeSearch(terms);
+    if (`${req.baseUrl}${req.route.path}` === '/documents/') {
+      query.include = [
+        {
+          model: db.User,
+          attributes: [
+            'id',
+            'username',
+            'roleId'
+          ]
+        }
+      ];
+      const roleId = req.decoded.data.roleId;
+      if (roleId === 1) {
+        query.where = {};
       } else {
         query.where = {
-          $and: [Helper.docAccess(req), Helper.likeSearch(terms)]
+          $or: [
+            { access: 'public' },
+            { access: 'role',
+              $and: {
+                '$User.roleId$': roleId
+              }
+            },
+            { access: 'private',
+              $and: {
+                ownerId: req.decoded.data.id
+              }
+            }
+          ]
         };
       }
     }
-    if (`${req.baseUrl}${req.route.path}` === '/documents/') {
-      if (Helper.isAdmin(req.decoded.roleId)) {
-        query.where = {};
-      } else {
-        query.where = Helper.docAccess(req);
-      }
-    }
-    if (`${req.baseUrl}${req.route.path}` === '/users/:id/documents') {
-      const adminSearch = req.query.query ? Helper.likeSearch(terms) : { };
-      const userSearch = req.query.query
-        ? [Helper.docAccess(req), Helper.likeSearch(terms)]
-        : Helper.docAccess(req);
-      if (Helper.isAdmin(req.decoded.roleId)) {
-        query.where = adminSearch;
-      } else {
-        query.where = userSearch;
-      }
+    if (`${req.baseUrl}${req.route.path}` === '/search/documents') {
+      const roleId = req.decoded.roleId || req.decoded.data.roleId;
+      const id = req.decoded.id || req.decoded.data.id;
+      query.where = {
+        $or: [{ title: { $iLike: `%${req.query.term}%` } },
+          { content: { $iLike: `%${req.query.term}%` } },
+          { access: 'public' },
+          { access: 'role',
+            $and: {
+              '$User.roleId$': roleId
+            }
+          },
+          { access: 'private',
+            $and: {
+              ownerId: id
+            }
+          }
+        ]
+      };
+      query.include = [
+        {
+          model: db.User,
+          attributes: [
+            'id',
+            'username',
+            'firstname',
+            'lastname',
+            'roleId'
+          ]
+        }
+      ];
     }
     req.odmsFilter = query;
     next();

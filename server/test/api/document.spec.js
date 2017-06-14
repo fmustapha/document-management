@@ -1,7 +1,6 @@
 import request from 'supertest';
 import chai from 'chai';
 import jwt from 'jsonwebtoken';
-import app from '../../config/config';
 import db from '../../models';
 import helper from '../helper/test.helper';
 import server from '../../../server';
@@ -25,11 +24,10 @@ describe('DOCUMENT API', () => {
   let document, updateDoc;
 
   beforeEach((done) => {
-      db.Role.destroy({ where: {} })
+    db.Role.destroy({ where: {} })
         .then(() => {
           db.Role.bulkCreate([helper.adminRole, helper.regularRole])
             .then((roles) => {
-              // helper.adminUser.roleId = roles[0].id;
               db.User.create(helper.adminUser)
                 .then((user) => {
                   adminToken = jwt.sign({ id: user.id, roleId: 1 }, secret, {
@@ -49,7 +47,6 @@ describe('DOCUMENT API', () => {
                           });
                           db.Document.create({ ...publicD, ownerId: regUser.id })
                             .then((doc) => {
-                              console.log(doc, 'was created');
                               createdDoc = doc;
                               done();
                             });
@@ -60,7 +57,7 @@ describe('DOCUMENT API', () => {
         });
   });
   afterEach((done) => {
-        db.User.destroy({ where: {} })
+    db.User.destroy({ where: {} })
           .then(() => {
             db.Document.destroy({ where: {} })
               .then(() => {
@@ -78,9 +75,9 @@ describe('DOCUMENT API', () => {
         .expect(200)
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.newDocument.title).to.equal(secondPublicD.title);
-          expect(res.body.newDocument.ownerId).to.equal(regularUser.id);
-          expect(res.body.newDocument.access).to.equal(secondPublicD.access);
+          expect(res.body.document.title).to.equal(secondPublicD.title);
+          expect(res.body.document.ownerId).to.equal(regularUser.id);
+          expect(res.body.document.access).to.equal(secondPublicD.access);
           done(err);
         });
     });
@@ -105,7 +102,7 @@ describe('DOCUMENT API', () => {
         .set('authorization', adminToken)
         .end((err, res) => {
           expect(res.status).to.equal(400);
-          expect(res.body.error.message).to.equal('notNull Violation: title cannot be null');
+          expect(res.body.message).to.equal('Invalid credentials supplied');
           done();
         });
     });
@@ -117,7 +114,7 @@ describe('DOCUMENT API', () => {
         .set('authorization', adminToken)
         .end((err, res) => {
           expect(res.status).to.equal(400);
-          expect(res.body.error.message).to.equal('notNull Violation: content cannot be null');
+          expect(res.body.message).to.equal('Invalid credentials supplied');
           done();
         });
     });
@@ -139,7 +136,6 @@ describe('DOCUMENT API', () => {
   });
 
   describe('Update Document /documents/:id', () => {
-    
     it('should update document when user is the owner', (done) => {
       updateDoc = { title: 'andela' };
       superRequest.put(`/documents/${createdDoc.id}`)
@@ -147,8 +143,8 @@ describe('DOCUMENT API', () => {
         .set('authorization', regularToken)
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.updatedDoc.title).to.equal(updateDoc.title);
-          expect(res.body.updatedDoc.content).to.equal(createdDoc.content);
+          expect(res.body.updatedDocument.title).to.equal(updateDoc.title);
+          expect(res.body.updatedDocument.content).to.equal(createdDoc.content);
           done();
         });
     });
@@ -160,8 +156,8 @@ describe('DOCUMENT API', () => {
         .set('authorization', adminToken)
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.updatedDoc.title).to.equal(updateDoc.title);
-          expect(res.body.updatedDoc.content).to.equal(createdDoc.content);
+          expect(res.body.updatedDocument.title).to.equal(updateDoc.title);
+          expect(res.body.updatedDocument.content).to.equal(createdDoc.content);
           done();
         });
     });

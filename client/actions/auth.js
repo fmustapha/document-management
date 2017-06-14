@@ -35,7 +35,7 @@ export function login(loginDetails) {
         console.log(jwtDecode(token));
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log(error);
         dispatch({
           type: types.VALIDATION_ERROR,
           response: error.response.data.message
@@ -58,7 +58,7 @@ export function signUp(userDetails) {
         setAuthorizationToken(token);
         dispatch({
           type: types.SIGNUP_USER,
-          response: response.data.newUser
+          response: response.data.user
         });
         dispatch(setCurrentUser(jwtDecode(token)));
         dispatch({
@@ -66,18 +66,22 @@ export function signUp(userDetails) {
         });
       })
       .catch((error) => {
-        console.log('error======>', error);
         dispatch({
           type: types.VALIDATION_ERROR,
           response: error.response.data.message
         });
-        // toastr.error('Unable to sign up');
       });
 }
 
-export function logout(userDetails) {
+/**
+ *
+ *
+ * @export
+ * @returns
+ */
+export function logout() {
   return dispatch => axios.post('/users/logout')
-      .then((response) => {
+      .then(() => {
         localStorage.removeItem('jwtToken');
         setAuthorizationToken(false);
         dispatch({
@@ -86,7 +90,7 @@ export function logout(userDetails) {
       })
       .catch((error) => {
         dispatch({
-          type: types.LOGOUT_ERROR,
+          type: types.VALIDATION_ERROR,
           response: error.response.data.message
         });
       });

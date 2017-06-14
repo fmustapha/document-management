@@ -1,15 +1,20 @@
 const InitialState = {
   isAuthenticated: false,
   loggedInUser: null,
-  users: {},
+  users: {
+    rows: [],
+    totalUsers: 0,
+    pagination: {}
+  },
   isListing: false,
   userDocuments: [],
   documents: {
     documents: [],
+    isCreated: false,
     isCreating: false,
     isDeleting: false,
+    status: false
   },
-  search: { user: null, document: null },
   currentDocument: null
 };
 

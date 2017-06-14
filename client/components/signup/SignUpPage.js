@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import toastr from 'toastr';
-// import 'jquery-validation';
 import * as auth from '../../actions/auth';
 
 /**
@@ -12,12 +11,12 @@ import * as auth from '../../actions/auth';
  * @class SignUpPage
  * @extends {React.Component}
  */
-class SignUpPage extends React.Component {
+export class SignUpPage extends React.Component {
   /**
    * Creates an instance of SignUpPage.
    * @returns {void}
-   * @param {any} props
-   * @param {any} context
+   * @param {Object} props
+   * @param {Object} context
    *
    * @memberof SignUpPage
    */
@@ -29,7 +28,9 @@ class SignUpPage extends React.Component {
         firstname: '',
         lastname: '',
         email: '',
-        password: '' }
+        password: '',
+        confirmPassword: ''
+      }
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -38,7 +39,7 @@ class SignUpPage extends React.Component {
   /**
    *
    * @returns {void}
-   * @param {any} nextProps
+   * @param {Object} nextProps
    *
    * @memberof SignUpPage
    */
@@ -48,18 +49,14 @@ class SignUpPage extends React.Component {
     } else if (nextProps.auth.error) {
       toastr.error(nextProps.auth.error);
     }
-//     $('form').validate();
-
-//     define(["jquery", "jquery.validate"], function( $ ) {
-//     $("form").validate();
-// });
   }
 
   /**
    *
-   * @returns {void}
-   * @param {any} event
    *
+   * @param {Object} event
+   *
+   * @returns {void}
    * @memberof SignUpPage
    */
   onChange(event) {
@@ -75,23 +72,19 @@ class SignUpPage extends React.Component {
 
   /**
    *
+   * @param {Object} event
    *
-   * @returns {void}
    * @memberof SignUpPage
+   * @returns {void}
    */
   onSubmit(event) {
     event.preventDefault();
-    this.props.actions.signUp(this.state.signUp);
-    // .then(() => {
-    //   if (this.props.auth.error) {
-    //     toastr.success('error signed up');
-    //   } else {
-    //     toastr.success('successfully signed up');
-    //   }
-    // })
-    // .catch(() => {
-    //   toastr.error('Oops. Error occured during your sign up. Try again :)');
-    // });
+    if (this.state.signUp.password !== this.state.signUp.confirmPassword) {
+      toastr.error(`An Error occurred: Password and Confirm 
+      password do not match, try again!`);
+    } else {
+      this.props.actions.signUp(this.state.signUp);
+    }
   }
 
   /**
@@ -104,11 +97,11 @@ class SignUpPage extends React.Component {
   render() {
     return (
       <div id="login-padding">
-        <h3>SignUp</h3>
+        <h3>Sign Up</h3>
         <form onSubmit={this.onSubmit} method="post">
-          <div className="row">
+          <div>
             <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">account_circle</i>
+              <i className="material-icons prefix">account_circle</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.Username}
@@ -118,9 +111,9 @@ class SignUpPage extends React.Component {
               <label htmlFor="username">Username</label>
             </div>
           </div>
-          <div className="row">
+          <div>
             <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">account_circle</i>
+              <i className="material-icons prefix">account_circle</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.Firstname}
@@ -130,9 +123,9 @@ class SignUpPage extends React.Component {
               <label htmlFor="firstname">Firstname</label>
             </div>
           </div>
-          <div className="row">
+          <div>
             <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">account_circle</i>
+              <i className="material-icons prefix">account_circle</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.Lastname}
@@ -142,9 +135,9 @@ class SignUpPage extends React.Component {
               <label htmlFor="lastname">Lastname</label>
             </div>
           </div>
-          <div className="row">
+          <div>
             <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">email</i>
+              <i className="material-icons prefix">email</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.email}
@@ -154,9 +147,9 @@ class SignUpPage extends React.Component {
               <label htmlFor="email">Email</label>
             </div>
           </div>
-          <div className="row">
+          <div>
             <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">lock</i>
+              <i className="material-icons prefix">lock</i>
               <input
                 onChange={this.onChange}
                 value={this.state.signUp.password}
@@ -165,12 +158,24 @@ class SignUpPage extends React.Component {
                 className="col 5 s12" required />
               <label htmlFor="password">Password</label>
             </div>
+            <div className="input-field col s6">
+              <i className="material-icons prefix">lock</i>
+              <input
+                onChange={this.onChange}
+                value={this.state.signUp.confirmPassword}
+                type="password"
+                name="confirmPassword"
+                className="col 5 s12" required />
+              <label htmlFor="password">Confirm Password</label>
+            </div>
           </div>
-          <input
+          <div className="button-right">
+            <input
           type="submit"
-          value="Done"
+          value="Sign up"
           className="waves-effect waves-light btn"
           />
+          </div>
         </form>
       </div>
     );
@@ -189,10 +194,16 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+/**
+ *
+ *
+ * @param {Object} state
+ * @returns {Object} containing user authorization details
+ */
 function mapStateToProps(state) {
   return {
     auth: state.auth
-  }
+  };
 }
 
 SignUpPage.propTypes = {

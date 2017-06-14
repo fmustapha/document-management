@@ -1,12 +1,10 @@
 import React from 'react';
-import { Link , browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
-import TinyMCE from 'react-tinymce';
 import { bindActionCreators } from 'redux';
 import * as userAction from '../../actions/userAction';
 import * as auth from '../../actions/auth';
-import { addFlashMessage } from '../../actions/flashMessages';
 
 /**
  *
@@ -14,13 +12,13 @@ import { addFlashMessage } from '../../actions/flashMessages';
  * @class UserAccountPage
  * @extends {React.Component}
  */
-class UserAccountPage extends React.Component {
+export class UserAccountPage extends React.Component {
   /**
-   * Creates an instance of ViewDocumentPage.
+   * Creates an instance of UserAccountPage.
    * @param {Object} props
    * @param {Object} context
    *
-   * @memberof ViewDocumentPage
+   * @memberof UserAccountPage
    */
   constructor(props, context) {
     super(props, context);
@@ -56,43 +54,39 @@ class UserAccountPage extends React.Component {
     );
   }
 
-
   /**
+   *
+   *
+   * @param {Object} event
+   *
+   * @memberof UserAccountPage
+   */
+  onClickEdit(event) {
+    event.preventDefault();
+    if (this.state.account.password.length < 1) {
+      delete this.state.account.password;
+    }
+    this.props.userUpdateAction(this.props.params.id, this.state.account)
+    .then(() => {
+      toastr.success('User Successfully Updated');
+    })
+      .catch(() => {
+        toastr.error(
+          'An error occurred, user account was not updated');
+      });
+  }
+
+
+/**
    *
    *
    * @returns {void}
    * @memberof UserAccountPage
    */
   onClickBack() {
-    this.context.router.push('/dms/');
+    browserHistory.goBack();
   }
 
-/**
- * 
- * 
- * @param {Object} event 
- * 
- * @memberof UserAccountPage
- */
-onClickEdit(event) {
-  event.preventDefault();
-    if (this.state.account.password.length < 1) {
-      delete this.state.account.password;
-    }
-    this.props.userUpdateAction(this.props.params.id, this.state.account)
-    .then(() => {
-      toastr.success('User Successfully Updated')
-    })
-    .catch(() => {
-       this.props.addFlashMessage({
-        type: 'error',
-        text: 'Unable to create document' });
-      toastr.error(
-        'Unable to create document, kindly contact your Admin');
-    });
-  }
-
-userUpdateAction
   /**
    *
    *
@@ -103,95 +97,129 @@ userUpdateAction
   render() {
     return (
       <div className="">
-      <div id="account">
-        <h3>My Account</h3>
-        <form onSubmit={this.onClickEdit} method="post" id="form">
-          <div className="" >
-            <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">account_circle</i>
-              <input
+        <div id="account">
+          <h3>My Account</h3>
+          <form onSubmit={this.onClickEdit} method="post" id="form">
+            <div className="" >
+              <div className="input-field col s6">
+                <i className="material-icons prefix pad-icons">account_circle</i>
+                <input
                 onChange={this.onChange}
                 value={this.state.account.username}
                 name="username"
                 type="text"
                 className="col 5 s12" />
+                <label htmlFor="Username" className="active">Username</label>
+              </div>
             </div>
-          </div>
-          <div className="">
-            <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">account_circle</i>
-              <input
+            <div className="">
+              <div className="input-field col s6">
+                <i className="material-icons prefix pad-icons">account_circle</i>
+                <input
                 onChange={this.onChange}
                 value={this.state.account.firstname}
                 name="firstname"
                 type="text"
                 className="col 5 s12" />
+                <label htmlFor="firstname" className="active">Firstname</label>
+              </div>
             </div>
-          </div>
-          <div className="">
-            <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">account_circle</i>
-              <input
+            <div className="">
+              <div className="input-field col s6">
+                <i className="material-icons prefix pad-icons">account_circle</i>
+                <input
                 onChange={this.onChange}
                 value={this.state.account.lastname}
                 name="lastname"
                 type="text"
                 className="col 5 s12" />
+                <label htmlFor="lastname" className="active">Lastname</label>
+              </div>
             </div>
-          </div>
-          <div className="">
-            <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">email</i>
-              <input
+            <div className="">
+              <div className="input-field col s6">
+                <i className="material-icons prefix pad-icons">email</i>
+                <input
                 onChange={this.onChange}
                 value={this.state.account.email}
                 type="text"
                 name="email"
                 className="col 5 s12" />
+                <label htmlFor="email" className="active">Email</label>
+              </div>
             </div>
-          </div>
-          <div className="">
-            <div className="input-field col s6">
-              <i className="material-icons prefix pad-icons">lock</i>
-              <input
+            <div className="">
+              <div className="input-field col s6">
+                <i className="material-icons prefix pad-icons">lock</i>
+                <input
                 onChange={this.onChange}
                 value={this.state.account.password}
                 type="password"
                 name="password"
                 className="col 5 s12" />
-                <label htmlFor="password">Enter new password here</label>
+                <label
+                htmlFor="password">
+                Enter new password to change the current one</label>
+              </div>
             </div>
-          </div>
-          <input
+            <div className="right">
+              <span>
+                <input
           type="submit"
-          value="Edit"
+          value="Update"
+          onClick={() => this.onClickEdit}
           className="waves-effect waves-light btn"
           />
-          <input
-          type="submit"
-          value="Back"
-          className="waves-effect waves-light btn"
-          />
-        </form>
+              </span>
+              <span>
+                <input
+              type="button"
+              value="Back"
+              onClick={this.onClickBack}
+              className="waves-effect waves-light btn"
+              />
+              </span>
+            </div>
+          </form>
           <div className="account-side">
           </div>
-      </div>
+        </div>
       </div>
     );
   }
 }
 
+/**
+ *
+ *
+ * @param {Object} state
+ * @returns {Object} containing user details
+ */
 function mapStateToProps(state) {
   return {
-    user: state.auth.loggedInUser.data
+    user: state.auth.loggedInUser.data,
+    userUpdate: state.users.userProfile
   };
 }
 
+/**
+ *
+ *
+ * @param {any} dispatch
+ * @returns {Object} containing user authentication and update details
+ */
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(auth, dispatch),
     userUpdateAction: bindActionCreators(userAction.updateUser, dispatch)
   };
 }
+
+UserAccountPage.prpTypes = {
+  userUpdateAction: React.PropTypes.func.isRequired,
+  browserHistory: React.PropTypes.func.isRequired,
+  user: React.PropTypes.func.isRequired,
+  actions: React.PropTypes.func.isRequired
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserAccountPage);
