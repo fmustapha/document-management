@@ -13,6 +13,7 @@ const User = {
     * Route: GET: /users
     * @param {Object} req request object
     * @param {Object} res response object
+    *
     * @returns {void} no returns
     */
   getAllUsers(req, res) {
@@ -40,8 +41,9 @@ const User = {
   /**
    * Get one user by id
    * Route: GET: /users/:id
-   * @param {Object} req
-   * @param {Object} res
+   * @param {Object} req request object
+   * @param {Object} res response object
+   *
    * @returns {void|Response} containing user details if successful
    */
   getOneUser(req, res) {
@@ -57,28 +59,8 @@ const User = {
           user
         });
       })
-      .catch(error => res.status(400).json({
-        error
-      }));
-  },
-
-  /**
-   *
-   *
-   * @param {Object} req
-   * @param {Object} res
-   * @returns {Object} containing pagination limit
-   */
-  getUserPagination(req, res) {
-    return db.User.findAll({
-      limit: 10
-    })
-      .then(limit => res.status(200).json({
-        message: 'Successfull',
-        limit
-      }))
-      .catch(error => res.status(400).json({
-        error
+      .catch(() => res.status(400).send({
+        message: 'Invalid credentials supplied'
       }));
   },
 
@@ -98,34 +80,35 @@ const User = {
       .json({
         message: 'Successfull',
         documents
-      })).catch((error) => {
+      })).catch(() => {
         res.status(400)
-        .send(error);
+        .send({ message: 'Invalid credentials supplied' });
       });
   },
 
   /**
    * Create a new user
    * Route: POST: /users
-   * @returns {void|Response} response object or void
+   *
    * a message
    * @param {Object} req
    * @param {Object} res
+   * @returns {void|Response} response object or void
    */
   createUser(req, res) {
     db.User.findOne({
       where: {
         email: req.body.email
       }
-    }).then((user) => {
-      if (user) {
+    }).then((client) => {
+      if (client) {
         return res.status(409).send({
           message: 'User already exists'
         });
       }
       db.User.create(req.body)
-        .then((newUser) => {
-          const userDetails = omit(newUser.dataValues, [
+        .then((user) => {
+          const userDetails = omit(user.dataValues, [
             'password',
             'createdAt',
             'updatedAt'
@@ -138,13 +121,13 @@ const User = {
           res.status(201)
             .send({
               token,
-              newUser: userDetails,
+              user: userDetails,
               message: 'User has been successfully created'
             });
         })
         .catch((error) => {
           res.status(400)
-            .send(error);
+            .send({ error });
         });
     });
   },
@@ -192,8 +175,7 @@ const User = {
           token
         });
       })
-      .catch(error => res.status(400).send({
-        error,
+      .catch(() => res.status(400).send({
         message: 'User was not authenticated'
       }));
   },
@@ -203,6 +185,7 @@ const User = {
     * Route: POST: /users/logout
     * @param {Object} req request object
     * @param {Object} res response object
+    *
     * @returns {void} no returns
     */
   logout(req, res) {
@@ -216,6 +199,7 @@ const User = {
     * Route: PUT: /users/:id
     * @param {Object} req request object
     * @param {Object} res response object
+    *
     * @returns {void|Response} response object or void
     */
   updateUser(req, res) {
@@ -252,8 +236,8 @@ const User = {
             error
           }));
       })
-      .catch(error => res.status(400).send({
-        error
+      .catch(() => res.status(400).send({
+        message: 'Invalid credentials supplied'
       }));
   },
 
@@ -268,8 +252,8 @@ const User = {
     db.User.findById(req.decoded.id)
     .then(user =>
     res.status(200).send({ user }))
-    .catch(error => res.status(400).send({
-      error
+    .catch(() => res.status(400).send({
+      message: 'Invalid credentials supplied'
     }));
   },
 
@@ -293,7 +277,8 @@ const User = {
             message: 'User successfully deleted'
           }));
       })
-      .catch(error => res.status(400).send(error));
+      .catch(() => res.status(400)
+      .send({ message: 'Invalid credentials supplied' }));
   }
 };
 

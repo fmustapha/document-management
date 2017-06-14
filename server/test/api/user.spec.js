@@ -68,7 +68,7 @@ describe('User API', () => {
       .end((err, res) => {
         if (err) return err;
         expect(res.status).to.equal(400);
-        expect(res.body.message).to.equal(
+        expect(res.body.error.message).to.equal(
           'Validation error: Minimum of 8 characters is required');
         done();
       });
@@ -80,7 +80,7 @@ describe('User API', () => {
         .end((err, res) => {
           if (err) return err;
           expect(res.status).to.equal(201);
-          expect(res.body.newUser.roleId).to.equal(2);
+          expect(res.body.user.roleId).to.equal(2);
           done();
         });
     });
