@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactPaginate from 'react-paginate';
 import ReduxSweetAlert, { swal, close } from 'react-redux-sweetalert';
-import { SearchBar } from '../../components/searchBar/searchBar';
+import { SearchBar } from '../../components/searchBar/SearchBar';
 import * as listUsers from '../../actions/userAction';
 import * as searchAction from '../../actions/searchAction';
 
