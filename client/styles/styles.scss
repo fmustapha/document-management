@@ -1,0 +1,276 @@
+/* Styles */
+$theme-color : #004d40;
+$grey-color: #bdbdbd;
+$light-grey: #eeeeee ;
+$tab-text: #ffffff;
+$padding-left:10px; 
+
+
+#layout{
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: $theme-color;
+  min-width: 550px;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+body {
+  font-family: Courgette;
+}
+
+h1 {
+    color: white;
+    text-shadow: 1px 1px 2px black, 0 0 25px green, 0 0 5px $theme-color;
+}
+
+button {
+  margin: 20px;
+}
+#nav-support {
+  background-color: $grey-color;
+  height: 10px; 
+}
+
+.active{
+color:orange;
+}
+
+.tabs .tab a:hover, .tabs .tab a {
+  color: white !important;
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+  color: orange !important;
+}
+
+#pagination {
+  width: 20%;
+  margin-left: 80%;
+  margin-right: 10%;
+  border-color: $theme-color;
+  float: right;
+}
+#page-padding {
+  margin: 50px;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+select {
+    display: block !important ;
+    width: 50%;
+    margin-top: 30%;
+}
+
+
+
+.pad-icons {
+  position: absolute;
+  top: 17%;
+  left: 2%;
+}
+
+#input-margin {
+  margin-left: 16px;
+}
+
+#login-padding {
+  padding: 30px;
+  text-align: center;
+  width: 40%;
+  margin: 100px 0px 60px 370px;
+  border: 1px;
+  border-style: dashed;
+  border-color: $theme-color
+}
+
+#account {
+  padding: 0 100px;
+}
+
+.account-side {
+  background-image: url("./image/profile-pic.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  display: inline-block;
+  width: 35%;
+  height: 60%;
+}
+
+#form {
+  display: inline-block;
+  width: 50%;
+  margin-right: 20px;
+}
+
+.card{
+ width: 100%;
+}
+
+.table {
+tr:hover {background-color: $grey-color }
+}
+
+.table-div {
+border: 1px;
+border-style: dashed;
+border-color: $theme-color;
+}
+
+.float-icons-left{
+  float: left;
+  font-size: 50px;
+}
+
+.page-center-padding {
+  width: 80%;
+  padding-left: $padding-left;
+  padding-right:10px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.search_style{
+  width: 80%;
+  margin: 0 10%;
+  text-align: center;
+}
+
+span {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.search-icon {
+  cursor: pointer !important;
+}
+.search-wrap {
+  float: right
+}
+
+.search_nav {
+  background-color: $tab-text;
+  color: #000000;
+  width: 30%;
+  margin-right: 10%;
+  float: right;
+}
+
+.document-view {
+  width: 80%;
+  padding-left: $padding-left;
+  padding-right:10px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 20px;
+  text-align: center;
+  background-color: $light-grey;
+}
+
+.dashboard-header {
+padding-left: $padding-left;  
+float: left
+}
+
+.dashboard-welcome {
+  font-size: 20px;
+  font-style: bold;
+}
+
+.welcome-message{
+  padding-left: 70px;
+  //  float: right
+}
+
+.dashboard-title {
+  font-size: 2.28rem;
+  line-height: 0.5;
+}
+
+.document-icon {
+  float: left;
+  padding-right: 5px;
+}
+
+.document-title {
+  width: 70%;
+  float: left;
+}
+
+.page-header {
+  margin-top: 10px;
+  padding-top: 10px;
+}
+.document-title > i {
+  font-size: 40px;
+}
+
+.white-text {
+ color: white;
+}
+
+.action-icons {
+  width: 15%;
+  float: right;
+}
+
+.button-right {
+  padding-left: 308px;
+}
+
+.action-icons > i {
+  margin-left: 30px;
+}
+.action-icons > i:hover {
+  cursor: pointer;
+}
+
+.create-logo{
+  bottom: 0;
+  right: 0;
+  position: fixed;
+}
+
+.tab-text{
+  color:$tab-text;
+}
+
+.clear {
+  clear: both;
+}
+
+nav{
+  padding-top: 0px;
+}
+custom{
+  max-width: 50px;
+}
+
+#button-style {
+  margin: 0px 0px 0px 40px;
+}
+
+#bg {
+  background-image: url("./image/bg.jpg");
+  background-size: cover;
+  padding-left: 10px;
+  background-repeat: no-repeat;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; 
+}
+
+.footer {
+  position: absolute;
+  width: 100%;
+  height: 60px;
+}
+
+.padded {
+  padding: 0 10px 10px 10px;
+}
