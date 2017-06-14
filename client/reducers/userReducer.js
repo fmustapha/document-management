@@ -18,19 +18,16 @@ export default function userReducer(state = initialState.users, action) {
         );
 
     case types.UPDATE_USER:
+    console.log('action', action);
       return Object.assign({}, state, { userProfile: action.userUpdate });
 
     case types.UPDATE_USER_LIST:
-      return Object.assign({}, state, {
-        users: {
-          ...state.users,
-          rows: [...state.users.rows].map((user) => {
-            if (user.id === action.userUpdate.id) {
-              return { ...user, roleId: parseInt(action.userUpdate.roleId, 10) };
-            }
-            return user;
-          }) },
-        isListing: true
+      return Object.assign({}, state, { rows: [...state.rows].map((user) => {
+        if (user.id === action.userUpdate.id) {
+          return { ...user, roleId: parseInt(action.userUpdate.roleId, 10) };
+        }
+        return user;
+      }),
       });
 
     case types.VIEW_USER:
@@ -38,11 +35,7 @@ export default function userReducer(state = initialState.users, action) {
 
     case types.DELETE_USER:
       return Object.assign({}, state, {
-        users: {
-          ...state.users,
-          rows: [...state.users.rows].filter(user => user.id !== action.id)
-        },
-        totalUsers: state.totalUsers - 1,
+        rows: [...state.rows].filter(user => user.id !== action.id)
       });
     default:
       return state;

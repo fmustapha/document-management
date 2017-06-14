@@ -22,6 +22,7 @@ export default function authReducer(state = initialState, action) {
         loggedInUser: {
           data: { id: action.response.id, user: action.response.user } } };
     case types.SET_CURRENT_USER:
+    console.log('i am here')
       return {
         isAuthenticated: true,
         loggedInUser: action.user

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import types from './actionTypes';
-
+import { setCurrentUser } from './auth';
 
 export const listUsersSuccess = users => ({
   type: types.LIST_USERS, users });
@@ -57,6 +57,7 @@ export function updateUser(id, userUpdate) {
     .then((response) => {
       dispatch({ type: types.UPDATE_USER, userUpdate: { id, ...response.data.updatedUser } });
       dispatch({ type: types.UPDATE_USER_LIST, id, userUpdate: { id, ...response.data.updatedUser } });
+      dispatch(setCurrentUser({ data: { id, ...response.data.updatedUser } }));
     }).catch((error) => {
       dispatch({ type: types.UPDATE_ERROR, error });
     });

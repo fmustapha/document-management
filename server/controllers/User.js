@@ -65,8 +65,8 @@ const User = {
   /**
    *
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {Object} req
+   * @param {Object} res
    * @returns {Object} containing pagination limit
    */
   getUserPagination(req, res) {
@@ -227,7 +227,7 @@ const User = {
           });
         }
         return user.update({
-          firstname: req.body.name || user.firstname,
+          firstname: req.body.firstname || user.firstname,
           lastname: req.body.lastname || user.lastname,
           username: req.body.username || user.username,
           email: req.body.email || user.email,

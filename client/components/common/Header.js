@@ -46,6 +46,7 @@ class Header extends React.Component {
    * @memberof Header
    */
   render() {
+    console.log('loggedIn', this.props.auth.loggedInUser);
     const id = (this.props.auth.loggedInUser) ?
       this.props.auth.loggedInUser.data.id : null;
     const roleId = (this.props.auth.loggedInUser) ?
