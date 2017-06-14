@@ -1,11 +1,10 @@
 import chai from 'chai';
 import supertest from 'supertest';
-import jwt from 'jsonwebtoken';
 import db from '../../models';
 import helper from '../helper/test.helper';
 import app from '../../../server';
 
-const secret = process.env.SECRET || 'samplesecret';
+
 const request = supertest(app);
 const expect = chai.expect;
 const goodUser = helper.regularUser;
@@ -14,11 +13,7 @@ const adminUser = helper.adminUser;
 const badUser = helper.badUser;
 
 
-let token;
-let userId;
 let adminUserToken;
-let goodUserToken;
-let regularToken;
 
 describe('User API', () => {
   beforeEach((done) => {
@@ -28,10 +23,7 @@ describe('User API', () => {
         db.User.create(adminUser)
           .then(() => {
             db.User.create(goodUser2)
-              .then((user) => {
-                regularToken = jwt.sign({ id: user.id, roleId: 2 }, secret, {
-                  expiresIn: '24h' // expires in 24 hours
-                });
+              .then(() => {
                 request.post('/users/login')
                   .send(adminUser)
                   .end((err, res) => {
@@ -53,7 +45,7 @@ describe('User API', () => {
           if (err) return err;
           expect(res.status).to.equal(400);
           expect(res.body.message).to.equal(
-            'Validation error: Minimum of 8 characters is required,\nValidation error: Input a valid username,\nValidation error: This field cannot be empty,\nValidation error: Input a valid firstname,\nValidation error: This field cannot be empty,\nValidation error: Input a valid lastname,\nValidation error: Input a valid email address');
+            'enter a valid username');
           done();
         });
     });
@@ -150,7 +142,7 @@ describe('User API', () => {
           .end((err, res) => {
             expect(res.status).to.equal(200);
             expect(res.body.users.rows.length).to.equal(res.body.pagination.total_count);
-            expect(res.body.message).to.equal('Successfull');
+            expect(res.body.message).to.equal('This is Successfull');
             done();
           });
       });

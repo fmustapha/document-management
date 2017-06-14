@@ -18,7 +18,8 @@ describe('User Model', () => {
   let regularUser;
 
   before((done) => {
-    db.Role.create({ title: 'regular', id: 2 }).then(() => {
+    db.Role.create({ title: 'regular', description: 'regular user', id: 2 })
+    .then(() => {
       done();
     });
   });
@@ -71,9 +72,14 @@ describe('User Model', () => {
 
   describe('Unique', () => {
     uniqueFields.forEach((field) => {
-      const uniqueTest = Object.assign({}, helper.firstUser);
+      const firstUser = { firstname: 'Estelle',
+        username: 'estel',
+        lastname: 'Jova',
+        email: 'Jovani27@yahoo.com',
+        password: 'password' };
+      const uniqueTest = Object.assign({}, firstUser);
       uniqueTest[field] = helper.regularUser[field];
-      it(`should fails for existing ${field}`, (done) => {
+      it(`should fail for existing ${field}`, (done) => {
         db.User.create(uniqueTest)
         .then()
         .catch((error) => {
@@ -88,7 +94,7 @@ describe('User Model', () => {
 
   describe('NOT NULL VIOLATIONS', () => {
     requiredFields.forEach((field) => {
-      it(`should fails when ${field} is null`, (done) => {
+      it(`should fail when ${field} is null`, (done) => {
         const nullField = Object.assign({}, helper.secondUser);
         nullField[field] = null;
         db.User.create(nullField)
@@ -104,7 +110,7 @@ describe('User Model', () => {
 
   describe('Empty string Violations', () => {
     emptyFields.forEach((field) => {
-      it(`should fails when ${field} is empty`, (done) => {
+      it(`should fail when ${field} is empty`, (done) => {
         const emptyField = Object.assign({}, helper.secondUser);
         emptyField[field] = '';
         db.User.create(emptyField)

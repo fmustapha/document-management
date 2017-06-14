@@ -23,7 +23,7 @@ describe('ROLE', () => {
     });
 
     it('should fail when role title already exist', (done) => {
-      const newRole = { title: 'guest' };
+      const newRole = { title: 'guest', description: 'guest user can only view ten public documents' };
       db.Role.create(newRole)
         .then()
         .catch((error) => {
@@ -52,7 +52,7 @@ describe('ROLE', () => {
 
   describe('EMPTY String violation', () => {
     it('should fail for empty string title', (done) => {
-      const emptyTitle = { title: ' ' };
+      const emptyTitle = { title: ' ', description: 'an empty title' };
       db.Role.create(emptyTitle)
         .then()
         .catch((error) => {
