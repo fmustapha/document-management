@@ -7,6 +7,15 @@ const Search = {
     res.send('You are now on the search page');
   },
 
+/**
+  * Search Users
+  * Route: GET:
+  * search/users/?term=[username]
+  *
+  * @param {Object} req request object
+  * @param {Object} res response object
+  * @returns {Response} response object
+  */
   userSearch(req, res) {
     return db.User
       .findAndCountAll({
@@ -46,7 +55,14 @@ const Search = {
         }));
   },
 
-
+/**
+  * Search documents
+  * Route: GET: search/documents/?term=[string]
+  *
+  * @param {Object} req request object
+  * @param {Object} res response object
+  * @returns {Response} response object
+  */
   documentSearch(req, res) {
     return db.Document
      .findAndCountAll(req.odmsFilter)
@@ -72,8 +88,7 @@ const Search = {
       })
         .catch(() => res.status(400)
         .send({
-          message: `Error occurred while retrieving
-           documents: Invalid parameters`
+          message: 'Connection refused: Invalid parameters supplied'
         }));
   }
 };
