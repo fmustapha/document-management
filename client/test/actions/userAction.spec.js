@@ -96,7 +96,6 @@ describe('userActions', () => {
 
     store.dispatch(auth.updateUser(1, {})).then(() => {
       expect(store.getActions()).to.eql(expectedActions);
-      done();
     });
 
     moxios.wait(() => {
@@ -105,6 +104,7 @@ describe('userActions', () => {
         status: 200,
         response: { updatedUser: {} }
       });
+      done();
     });
   });
 
@@ -123,7 +123,6 @@ describe('userActions', () => {
 
     store.dispatch(auth.viewUser(1, {})).then(() => {
       expect(store.getActions()).to.eql(expectedActions);
-      done();
     });
 
     moxios.wait(() => {
@@ -133,6 +132,7 @@ describe('userActions', () => {
         response: { user: [], pagination: {} }
       });
     });
+    done();
   });
 
   it('should return action type and delete a user', (done) => {
@@ -147,7 +147,6 @@ describe('userActions', () => {
 
     store.dispatch(auth.deleteUser(1)).then(() => {
       expect(store.getActions()).to.eql(expectedActions);
-      done();
     });
 
     moxios.wait(() => {
@@ -157,5 +156,6 @@ describe('userActions', () => {
         response: { user: { id: 1 } }
       });
     });
+    done();
   });
 });

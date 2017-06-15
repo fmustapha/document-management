@@ -19,7 +19,7 @@ describe('searchAction', () => {
     moxios.uninstall();
   });
 
-  it('should return type and payload on successfull user search', () => {
+  it('should return type and payload on successful user search', () => {
     const result = [{}];
     expect(auth.searchUserSuccess(result)).to.eql({
       type: types.SEARCH_USER,
@@ -27,10 +27,10 @@ describe('searchAction', () => {
     });
   });
 
-  it('should return type and payload on successfull document search', () => {
-    const result = [{}];
-    expect(auth.searchDocumentSuccess(result)).to.eql({
-      type: types.SEARCH_DOCUMENT, result
+  it('should return type and payload on successful document search', () => {
+    const documents = [{}];
+    expect(auth.searchDocumentSuccess(documents)).to.eql({
+      type: types.LIST_DOCUMENT, documents
     });
   });
 
@@ -46,7 +46,6 @@ describe('searchAction', () => {
 
     store.dispatch(auth.searchUser(0, 1)).then(() => {
       expect(store.getActions()).to.eql(expectedActions);
-      done();
     });
 
     moxios.wait(() => {
@@ -55,6 +54,7 @@ describe('searchAction', () => {
         status: 200,
         response: { users: [], pagination: {} }
       });
+      done();
     });
   });
 
@@ -71,7 +71,6 @@ describe('searchAction', () => {
     } });
     store.dispatch(auth.searchDocument(1, {})).then(() => {
       expect(store.getActions()).to.eql(expectedActions);
-      done();
     });
 
     moxios.wait(() => {
@@ -80,6 +79,7 @@ describe('searchAction', () => {
         status: 200,
         response: { documents: [], pagination: {} }
       });
+      done();
     });
   });
 });

@@ -29,7 +29,7 @@ export class UserAccountPage extends React.Component {
         lastname: props.user.lastname,
         email: props.user.email,
         password: ''
-      },
+      }
     };
     this.onClickEdit = this.onClickEdit.bind(this);
     this.onClickBack = this.onClickBack.bind(this);
@@ -58,7 +58,7 @@ export class UserAccountPage extends React.Component {
    *
    *
    * @param {Object} event
-   *
+   * @returns {void}
    * @memberof UserAccountPage
    */
   onClickEdit(event) {
@@ -189,6 +189,13 @@ export class UserAccountPage extends React.Component {
   }
 }
 
+UserAccountPage.prpTypes = {
+  userUpdateAction: React.PropTypes.func.isRequired,
+  browserHistory: React.PropTypes.func.isRequired,
+  user: React.PropTypes.func.isRequired,
+  actions: React.PropTypes.func.isRequired
+};
+
 /**
  *
  *
@@ -214,12 +221,5 @@ function mapDispatchToProps(dispatch) {
     userUpdateAction: bindActionCreators(userAction.updateUser, dispatch)
   };
 }
-
-UserAccountPage.prpTypes = {
-  userUpdateAction: React.PropTypes.func.isRequired,
-  browserHistory: React.PropTypes.func.isRequired,
-  user: React.PropTypes.func.isRequired,
-  actions: React.PropTypes.func.isRequired
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserAccountPage);

@@ -42,8 +42,9 @@ describe('User Reducer', () => {
   });
 
   describe('DELETE_USER', () => {
-    it('should update the state with a list of users apart from the deleted user', () => {
-      const initialState = { users: { rows: {
+    it(`should update the state with a list of 
+    users apart from the deleted user`, () => {
+      const initialState = { rows: [{
         id: 23,
         username: 'Galy',
         firstname: 'Galy',
@@ -52,15 +53,13 @@ describe('User Reducer', () => {
         roleId: 2,
         createdAt: '2017-05-31T16:24:33.529Z',
         updatedAt: '2017-05-31T16:24:33.529Z'
-      }
-      }
+      }],
+        totalUsers: 1
       };
       const action = { type: types.DELETE_USER, id: 23 };
-      const expectedState = {
-        users: { rows: [] }
-      };
+      const expectedState = { rows: [], totalUsers: 0 };
       const newState = userReducer(initialState, action);
-      expect(newState.users).to.eql(expectedState.users);
+      expect(newState).to.eql(expectedState);
     });
   });
 });

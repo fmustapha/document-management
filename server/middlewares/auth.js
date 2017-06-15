@@ -35,7 +35,6 @@ export default {
      String(id) === String(req.params.id)) {
       next();
     } else {
-      console.log('end call');
       res.status(403).send({
         message: 'Access denied'
       });
@@ -124,9 +123,7 @@ export default {
         };
       }
     }
-    console.log('==================route path', req.route.path, req.baseUrl);
     if (`${req.baseUrl}${req.route.path}` === '/search/documents') {
-      console.log('searching', req.query);
       const roleId = req.decoded.roleId || req.decoded.data.roleId;
       const id = req.decoded.id || req.decoded.data.id;
       query.where = {

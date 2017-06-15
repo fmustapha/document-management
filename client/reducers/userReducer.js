@@ -21,7 +21,6 @@ export default function userReducer(state = initialState.users, action) {
       return Object.assign({}, state, { userProfile: action.userUpdate });
 
     case types.UPDATE_USER_LIST:
-      console.log('user update', action.userUpdate);
       return Object.assign({}, state, { rows: [...state.rows].map((user) => {
         if (user.id === action.userUpdate.id) {
           return { ...user, roleId: parseInt(action.userUpdate.roleId, 10) };
@@ -34,7 +33,6 @@ export default function userReducer(state = initialState.users, action) {
       return Object.assign({}, state, { userProfile: action.getUser });
 
     case types.DELETE_USER:
-      console.log('I am here', state.totalUsers);
       return Object.assign({}, state, {
         rows: [...state.rows].filter(user => user.id !== action.id),
         totalUsers: state.totalUsers - 1,

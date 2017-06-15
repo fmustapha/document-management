@@ -103,7 +103,7 @@ describe('documentActions', () => {
   it(`should return payload and action type
    that lists a users document`, (done) => {
     const expectedActions = [
-      { type: 'LIST_USER_DOCUMENT',
+      { type: 'LIST_DOCUMENT',
         documents: { documents: [], pagination: {} } }
     ];
 
@@ -113,7 +113,7 @@ describe('documentActions', () => {
       isCreating: false,
       isDeleting: false,
     } });
-
+  
     store.dispatch(auth.listUserDocument(1)).then(() => {
       expect(store.getActions()).to.eql(expectedActions);
       done();
