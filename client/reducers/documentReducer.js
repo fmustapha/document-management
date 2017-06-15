@@ -29,13 +29,6 @@ export default function documentReducer(state = initialState.documents, action) 
             }
           }),
         },
-        userDocuments:
-          [...state.userDocuments].filter((document) => {
-            if (document.id !== action.id) {
-              return document;
-            }
-            return false;
-          }),
         deleteComplete: true,
         isCreating: false
       });
@@ -68,11 +61,13 @@ export default function documentReducer(state = initialState.documents, action) 
     case types.LIST_USER_DOCUMENT:
       return Object.assign({}, state, { userDocuments:
          action.documents.documents,
-        pagination: action.documents.pagination
+        pagination: action.documents.pagination,
+        status: false
       });
 
     case types.SWITCH_DOCUMENT:
-      return Object.assign({}, state, { searchRoute: action.searchRoute });
+      return Object.assign({}, state, { searchRoute: action.searchRoute,
+      });
 
     case types.UPDATE_DOCUMENT:
       return Object.assign({}, state, { currentDocument:

@@ -68,8 +68,8 @@ class DocumentsListPage extends React.Component {
   /**
    *
    *
-   * @param {any} nextProps
-   *
+   * @param {Object} nextProps
+   * @returns {void}
    * @memberof DocumentsListPage
    */
   componentWillReceiveProps(nextProps) {
@@ -91,8 +91,22 @@ class DocumentsListPage extends React.Component {
   componentWillUnmount() {
     $('.tooltipped').tooltip('remove');
   }
-   
+
   /**
+   *
+   *
+   * @param {Object} event
+   * @returns {void}
+   * @memberof DocumentsListPage
+   */
+  onAccessChange(event) {
+    const access = event.target.value;
+    this.setState({
+      access
+    });
+  }
+
+/**
    *
    * @return {void}
    * @param {Number} id
@@ -112,20 +126,6 @@ class DocumentsListPage extends React.Component {
   /**
    *
    *
-   * @param {Object} event
-   *
-   * @memberof DocumentsListPage
-   */
-  onAccessChange(event) {
-    const access = event.target.value;
-    this.setState({
-      access
-    });
-  }
-
-  /**
-   *
-   *
    * @param {Object} data
    * @returns {void}
    *
@@ -136,6 +136,24 @@ class DocumentsListPage extends React.Component {
     const offset = Math.ceil(selected * this.state.limit);
     this.setState({ offset });
     this.props.actions.listDocument(this.state.limit, offset);
+  }
+
+  /**
+   *
+   *
+   * @param {String} document
+   * @returns {void}
+   *
+   * @memberof DocumentsListPage
+   */
+  switchDocument(document) {
+    this.props.actions.switchDocument(document);
+    if (document === 'allDocuments') {
+      this.props.actions.listDocument(this.state.limit, this.state.offset);
+    } else {
+      const loggedInUser = this.props.auth.loggedInUser.data.id;
+      this.props.actions.listUserDocument(loggedInUser);
+    }
   }
 
 /**
@@ -156,24 +174,6 @@ class DocumentsListPage extends React.Component {
       onConfirm: (() => this.deleteDocument(documentId)),
       onCancel: this.props.close,
     });
-  }
-
-  /**
-   *
-   *
-   * @param {String} document
-   * @returns {void}
-   *
-   * @memberof DocumentsListPage
-   */
-  switchDocument(document) {
-    this.props.actions.switchDocument(document);
-    if (document === 'allDocuments') {
-      this.props.actions.listDocument(this.state.limit, this.state.offset);
-    } else {
-      const loggedInUser = this.props.auth.loggedInUser.data.id;
-      this.props.actions.listUserDocument(loggedInUser);
-    }
   }
 
   /**
@@ -215,7 +215,10 @@ class DocumentsListPage extends React.Component {
               <div className="dashboard-title">Dashboard</div>
               <p>Welcome, { user.firstname }</p>
             </div>
-              <SearchBar searchFor="document" offset={this.state.offset} performSearch={this.props.searchAction} searchRoute={this.props.documents.searchRoute} />
+            <SearchBar
+              searchFor="document" offset={this.state.offset}
+               performSearch={this.props.searchAction}
+                searchRoute={this.props.documents.searchRoute} />
           </div>
           <div className="create-logo">
             <a
@@ -347,6 +350,12 @@ class DocumentsListPage extends React.Component {
                              data-delay="50"
                             data-tooltip="click to view/edit document"
                               />
+                              <i
+                            id="float-icons-left"
+                            className="fa fa-trash"
+                            aria-hidden="true"
+                            onClick={() => this.renderAlert(document.id)}
+                            />
                           </div>
                           <div className="clear" />
                         </div>
