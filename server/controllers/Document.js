@@ -8,7 +8,7 @@ const Document = {
     *
     * @param {Object} req request object
     * @param {Object} res response object
-    * @returns {void} response object or void
+    * @returns {void|Response} response object or void
     */
   createDocument(req, res) {
     if (!req.body.ownerId) {
@@ -40,7 +40,7 @@ const Document = {
     *
     * @param {Object} req request object
     * @param {Object} res response object
-    * @returns {void} response object or void
+    * @returns {void|Response} response object or void
     */
   findDocument(req, res) {
     return db.Document.findById(req.params.id,
@@ -84,7 +84,7 @@ const Document = {
     *
     * @param {Object} req request object
     * @param {Object} res response object
-    * @returns {void} response object or void
+    * @returns {void|Response} response object or void
     */
   listDocuments(req, res) {
     req.odmsFilter.attributes = Helper.getDocAttribute();
@@ -112,7 +112,7 @@ const Document = {
    *
    * @param {Object} req request object
    * @param {Object} res response object
-   * @returns {void} response object or void
+   * @returns {void|Response} response object or void
    */
   modifyDocument(req, res) {
     const roleId = req.decoded.roleId || req.decoded.data.roleId;

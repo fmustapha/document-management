@@ -69,7 +69,7 @@ const User = {
     * Route: GET: /users/:id/documents
     * @param {Object} req request object
     * @param {Object} res response object
-    * @returns {void} no returns
+    * @returns {void|Response} response object or void
     */
   getUserDocuments(req, res) {
     db.Document.findAll({
@@ -135,10 +135,11 @@ const User = {
   /**
    * login
    * Route: POST: /users/login
+   *
+   * @param {Object} req request object
+   * @param {Object} res respponse object
    * @return {void|Response} response object or void
    * a message
-   * @param {Object} req
-   * @param {Object} res
    */
   login(req, res) {
     db.User
@@ -186,7 +187,7 @@ const User = {
     * @param {Object} req request object
     * @param {Object} res response object
     *
-    * @returns {void} no returns
+    * @returns {Response} response object
     */
   logout(req, res) {
     return res.status(200).send({
@@ -242,11 +243,13 @@ const User = {
   },
 
   /**
+   * Get active users
+   * Route: GET: user/active
    *
-   * @returns {Object} containing response status and
-   * a message
-   * @param {any} req
-   * @param {any} res
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {void|Response} containing response status or void
+   *
    */
   activeUser(req, res) {
     db.User.findById(req.decoded.id)
