@@ -1,7 +1,9 @@
 import axios from 'axios';
+import toastr from 'toastr';
 import types from './actionTypes';
 import { listDocument } from './documentAction';
 import { listUsers } from './userAction';
+
 
 /**
  *
@@ -92,9 +94,11 @@ export function searchDocument(event, term, limit, offset, searchRoute) {
     .then((response) => {
       response.data.term = term;
       dispatch(searchDocumentSuccess(response.data));
+      toastr.success('Document(s) found!');
     })
     .catch((error) => {
       dispatch({ type: types.LIST_DOCUMENT_ERROR, error });
+      toastr.success('Document(s) not found!');
     });
   };
 }

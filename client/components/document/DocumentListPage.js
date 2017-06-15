@@ -77,8 +77,6 @@ class DocumentsListPage extends React.Component {
       this.setState({
         documents: nextProps.documents.documents.rows
       });
-    } else {
-      toastr.error('Document not found');
     }
   }
 
