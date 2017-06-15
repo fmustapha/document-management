@@ -71,6 +71,9 @@ export default function documentReducer(state = initialState.documents, action) 
         pagination: action.documents.pagination
       });
 
+    case types.SWITCH_DOCUMENT:
+      return Object.assign({}, state, { searchRoute: action.searchRoute });
+
     case types.UPDATE_DOCUMENT:
       return Object.assign({}, state, { currentDocument:
         action.updatedDocument });

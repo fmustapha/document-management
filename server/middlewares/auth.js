@@ -77,6 +77,21 @@ export default {
     query.limit = limit;
     query.offset = offset;
     query.order = [['createdAt', order]];
+    if (`${req.route.path}` === '/:id/documents') {
+      query.include = [
+        {
+          model: db.User,
+          attributes: [
+            'id',
+            'username',
+            'roleId'
+          ]
+        }
+      ];
+      query.where = {
+        ownerId: req.decoded.data.id
+      };
+    }
     if (`${req.baseUrl}${req.route.path}` === '/documents/') {
       query.include = [
         {
@@ -109,7 +124,9 @@ export default {
         };
       }
     }
+    console.log('==================route path', req.route.path, req.baseUrl);
     if (`${req.baseUrl}${req.route.path}` === '/search/documents') {
+      console.log('searching', req.query);
       const roleId = req.decoded.roleId || req.decoded.data.roleId;
       const id = req.decoded.id || req.decoded.data.id;
       query.where = {
@@ -120,16 +137,20 @@ export default {
           ]
         }, {
           $or: [
-            { access: 'public' },
             { ownerId: id },
+            { access: 'public' },
             { $and: [
               { '$User.roleId$': roleId },
               { access: 'role' }
             ] }
           ]
-
         }]
       };
+      
+      if (req.query.searchRoute === 'myDocuments') {
+        delete query.where.$and[1].$or[1];
+        delete query.where.$and[1].$or[2];
+      }
       query.include = [
         {
           model: db.User,

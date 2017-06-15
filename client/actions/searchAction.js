@@ -75,7 +75,7 @@ export function searchUser(event, term, limit, offset) {
  * @param {Number} offset
  * @returns {func|Object} containing type and/response data
  */
-export function searchDocument(event, term) {
+export function searchDocument(event, term, limit, offset, searchRoute) {
   return (dispatch) => {
     if (term === '') {
       dispatch(searchDocumentSuccess({
@@ -88,7 +88,7 @@ export function searchDocument(event, term) {
       return dispatch(listDocument());
     }
     return axios
-    .get(`/search/documents/?term=${term}`)
+    .get(`/search/documents/?term=${term}&limit=${limit}&offset=${offset}&searchRoute=${searchRoute}`)
     .then((response) => {
       response.data.term = term;
       dispatch(searchDocumentSuccess(response.data));

@@ -36,6 +36,7 @@ class DocumentsListPage extends React.Component {
     this.handlePageClick = this.handlePageClick.bind(this);
     this.renderAlert = this.renderAlert.bind(this);
     this.onAccessChange = this.onAccessChange.bind(this);
+    this.switchDocument = this.switchDocument.bind(this);
   }
   /**
    *
@@ -45,9 +46,9 @@ class DocumentsListPage extends React.Component {
    * @memberof DocumentsListPage
    */
   componentWillMount() {
-    const loggedInUser = this.props.auth.loggedInUser.data.id;
+    // const loggedInUser = this.props.auth.loggedInUser.data.id;
     this.props.actions.listDocument(this.state.limit, this.state.offset);
-    this.props.actions.listUserDocument(loggedInUser);
+    // this.props.actions.listUserDocument(loggedInUser);
   }
 
   /**
@@ -141,7 +142,7 @@ class DocumentsListPage extends React.Component {
    *
    *
    * @param {Number} documentId
-   * @returns {func} call to deleteDocument
+   * @returns {void}
    *
    * @memberof DocumentsListPage
    */
@@ -155,6 +156,24 @@ class DocumentsListPage extends React.Component {
       onConfirm: (() => this.deleteDocument(documentId)),
       onCancel: this.props.close,
     });
+  }
+
+  /**
+   *
+   *
+   * @param {String} document
+   * @returns {void}
+   *
+   * @memberof DocumentsListPage
+   */
+  switchDocument(document) {
+    this.props.actions.switchDocument(document);
+    if (document === 'allDocuments') {
+      this.props.actions.listDocument(this.state.limit, this.state.offset);
+    } else {
+      const loggedInUser = this.props.auth.loggedInUser.data.id;
+      this.props.actions.listUserDocument(loggedInUser);
+    }
   }
 
   /**
@@ -178,26 +197,25 @@ class DocumentsListPage extends React.Component {
     //   availableDocuments = this.state.documents
     // .filter(document => document.access === this.state.access);
     // }
-    const allDocuments = this.props.documents.documents ?
-      this.props.documents.documents.rows : null;
+    const allDocuments = this.props.documents.documents.rows;
     // if (this.props.search.document.documents.rows.length > 0) {
     //   allDocuments = this.props.search.document.documents.rows
     //   .filter(document => document.access === this.state.access);
     // } else {
     //   allDocuments = availableDocuments;
     // }
-    const userDocuments = this.props.documents.userDocuments ?
-      this.props.documents.userDocuments : null;
+    // const userDocuments = this.props.documents.userDocuments ?
+    //   this.props.documents.userDocuments : null;
 
     return (
       <div>
-        <SearchBar searchFor="document" offset={this.state.offset} performSearch={this.props.searchAction} />
         <div id="page-padding">
           <div className="row">
             <div className="col s6">
               <div className="dashboard-title">Dashboard</div>
               <p>Welcome, { user.firstname }</p>
             </div>
+              <SearchBar searchFor="document" offset={this.state.offset} performSearch={this.props.searchAction} searchRoute={this.props.documents.searchRoute} />
           </div>
           <div className="create-logo">
             <a
@@ -214,13 +232,15 @@ class DocumentsListPage extends React.Component {
                 <li className="tab col s3 white-text">
                   <a
                 className="all-documents"
-               href="#allDocuments">All Documents
+               href="#allDocuments"
+               onClick={() => { this.switchDocument('allDocuments'); }}>All Documents
                </a>
                 </li>
                 <li className="tab col s3 white-text">
                   <a
                 className="my-documents"
-                href="#myDocuments">My Documents
+                href="#myDocuments"
+                onClick={() => { this.switchDocument('myDocuments'); }}>My Documents
                 </a>
                 </li>
               </ul>
@@ -283,30 +303,16 @@ class DocumentsListPage extends React.Component {
                       </div>
                     </div>
                   </div>
-                )) : '' }
+                )) : 'ggg' }
               </div>
             </div>
             <div id="myDocuments" className="col s12">
               <div className="row">
-                {(!userDocuments
-                || userDocuments.length < 1) ?
+                {allDocuments ? allDocuments
+                .map(document => (
                   <div className="col s12 m12" key={document.id}>
                     <div className="card">
                       <div className="card-content teal-text lighten-1">
-                        <div className="card-title">
-                          <div className="document-title">
-                            <p>No Documents yet! Click create icon below</p>
-                          </div>
-                          <div className="clear" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                :
-                userDocuments.map(document => (
-                  <div className="col s12 m12" key={document.id}>
-                    <div className="card">
-                      <div className="card-content green-text">
                         <div className="card-title">
                           <div className="document-icon">
                             <i
@@ -324,8 +330,10 @@ class DocumentsListPage extends React.Component {
                               {`Access: ${document.access}`}
                             </h6>
                             <h6 className="grey-text">
-                            Last updated: {new Date(document.updatedAt)
-                            .toDateString()}
+                            Last updated: {new Date(document.updatedAt).toDateString()}
+                            </h6>
+                            <h6 className="grey-text">
+                            Author: {document.User && document.User.username}
                             </h6>
                           </div>
                           <div className="action-icons">
@@ -339,21 +347,15 @@ class DocumentsListPage extends React.Component {
                              data-delay="50"
                             data-tooltip="click to view/edit document"
                               />
-                            <i
-                            id="float-icons-left"
-                            className="fa fa-trash"
-                            aria-hidden="true"
-                            onClick={() => this.renderAlert(document.id)}
-                            />
                           </div>
                           <div className="clear" />
                         </div>
                       </div>
                     </div>
                   </div>
-                ))
-                }
+                )) : 'sfsf' }
               </div>
+              
             </div>
           </div>
         </div>

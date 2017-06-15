@@ -87,6 +87,20 @@ export function listDocument(limit, offset) {
     });
 }
 
+
+/**
+ *
+ *
+ * @export
+ * @param {String} documentType
+ * @returns {Object} containing action type and payload
+ */
+export function switchDocument(documentType) {
+  return (dispatch) => {
+    dispatch({ type: types.SWITCH_DOCUMENT, searchRoute: documentType });
+  };
+}
+
 /**
  *
  *
@@ -100,10 +114,12 @@ export function listUserDocument(id) {
       const documents = response.data.documents;
       const pagination = response.data.pagination;
       const listUserDocuments = { documents, pagination };
-      dispatch(listUserDocumentSuccess(listUserDocuments));
+      dispatch(listDocumentSuccess(listUserDocuments));
+      // dispatch(listUserDocumentSuccess(listUserDocuments));
     })
     .catch((error) => {
-      dispatch({ type: types.LIST_ERROR, error });
+      dispatch({ type: types.LIST_DOCUMENT_ERROR, error });
+      // dispatch({ type: types.LIST_ERROR, error });
     });
 }
 

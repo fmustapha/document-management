@@ -61,7 +61,7 @@ export class SearchBar extends React.Component {
    */
   onSubmit(event) {
     event.preventDefault();
-    this.props.performSearch(event, this.state.term, this.state.limit, this.props.offset);
+    this.props.performSearch(event, this.state.term, this.state.limit, this.props.offset, this.props.searchRoute);
   }
 
   /**

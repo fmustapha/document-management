@@ -9,11 +9,12 @@ const InitialState = {
   isListing: false,
   userDocuments: [],
   documents: {
-    documents: [],
+    documents: { rows: [] },
     isCreated: false,
     isCreating: false,
     isDeleting: false,
-    status: false
+    status: false,
+    searchRoute: 'allDocuments',
   },
   currentDocument: null
 };

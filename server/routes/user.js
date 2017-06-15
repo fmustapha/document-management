@@ -9,7 +9,7 @@ user.get('/', auth.verifyToken, auth.authorizeAdmin,
  auth.validateSearch, User.getAllUsers);
 user.get('/:id', auth.verifyToken, auth.authorizeAdmin, User.getOneUser);
 user.get('/:id/documents',
-auth.verifyToken, auth.authorizeAdmin, User.getUserDocuments);
+auth.verifyToken, auth.validateSearch, User.getUserDocuments);
 user.post('/', validateSignup, User.createUser);
 user.post('/login', User.login);
 user.post('/logout', User.logout);

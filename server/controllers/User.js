@@ -67,23 +67,29 @@ const User = {
   /**
     * Get all user's documents by user id
     * Route: GET: /users/:id/documents
+    *
     * @param {Object} req request object
     * @param {Object} res response object
     * @returns {void|Response} response object or void
     */
   getUserDocuments(req, res) {
-    db.Document.findAll({
-      where: {
-        ownerId: req.params.id
-      }
-    }).then(documents => res.status(200)
-      .json({
-        message: 'Successfull',
-        documents
-      })).catch(() => {
-        res.status(400)
-        .send({ message: 'Invalid credentials supplied' });
-      });
+    req.odmsFilter.attributes = Helper.getDocAttribute();
+    db.Document
+    .findAndCountAll(req.odmsFilter)
+    .then((documents) => {
+        const condition = {
+          count: documents.count,
+          limit: req.odmsFilter.limit,
+          offset: req.odmsFilter.offset
+        };
+        const pagination = Helper.pagination(condition);
+        res.status(200)
+          .send({
+            message: 'You have successfully retrieved documents',
+            documents,
+            pagination
+          });
+      }).catch(() => res.status(400).send({ message: 'Invalid parameter(s)' }));
   },
 
   /**
