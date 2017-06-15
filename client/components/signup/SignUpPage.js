@@ -83,6 +83,7 @@ export class SignUpPage extends React.Component {
       toastr.error(`An Error occurred: Password and Confirm 
       password do not match, try again!`);
     } else {
+      toastr.success('Successful sign up!');
       this.props.actions.signUp(this.state.signUp);
     }
   }
