@@ -261,7 +261,7 @@ class DocumentsListPage extends React.Component {
               <div className="row">
                 {allDocuments ? allDocuments
                 .map(document => (
-                  <div className="col s12 m12" key={document.id}>
+                  <div className="col s12 m12 grided" key={document.id}>
                     <div className="card">
                       <div className="card-content teal-text lighten-1">
                         <div className="card-title">
@@ -311,7 +311,7 @@ class DocumentsListPage extends React.Component {
               <div className="row">
                 {allDocuments ? allDocuments
                 .map(document => (
-                  <div className="col s12 m12" key={document.id}>
+                  <div className="col s12 m12 grided" key={document.id}>
                     <div className="card">
                       <div className="card-content teal-text lighten-1">
                         <div className="card-title">
