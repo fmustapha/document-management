@@ -274,3 +274,9 @@ custom{
 .padded {
   padding: 0 10px 10px 10px;
 }
+
+.grided {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, min-max(280px, 1fr));
+  grid-gap: 25px;
+}
